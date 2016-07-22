@@ -194,8 +194,13 @@ function Server:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
-function Server:setSendChannel(val)
-   self.sendChannel = val
+function Server:setSendChannel(channel)
+    if channel > (self.maxChannels - 1) then
+        self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
+        channel = 0
+    end
+
+    self.sendChannel = channel
 end
 
 function Server:setDefaultSendChannel(val)
@@ -341,12 +346,17 @@ function Client:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
-function Client:setSendChannel(val)
-   self.sendChannel = val
+function Client:setSendChannel(channel)
+    if channel > (self.maxChannels - 1) then
+        self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
+        channel = 0
+    end
+
+    self.sendChannel = channel
 end
 
 function Client:setDefaultSendChannel(val)
-   self.defaultSendChannel = val
+    self.defaultSendChannel = val
 end
 
 function Client:resetSendSettings()
@@ -356,7 +366,7 @@ end
 
 function Client:connect()
     -- number of channels for the client and server must match
-    self.server = self.host:connect(self.address .. ":" .. self.port, client.maxChannels)
+    self.server = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
     self.connectId = self.server:connect_id()
 end
 
@@ -452,7 +462,7 @@ function Client:getLastServiceTime()
     return self.host:service_time()
 end
 
-sock.newServer = function(address, port, peers, channels, inBandwidth, outBandwidth)
+sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)
     address         = address or "localhost" 
     port            = port or 22122
     maxPeers        = maxPeers or 64
