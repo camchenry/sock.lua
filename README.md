@@ -3,7 +3,7 @@
 sock.lua is a networking library for Lua/LÖVE games. It wraps around lua-enet
 and uses bitser to make getting started with networking as easy as possible.
 
-*sock requires (bitser)[https://github.com/gvx/bitser].*
+*sock requires [bitser](https://github.com/gvx/bitser).*
 
 ## Features
 
