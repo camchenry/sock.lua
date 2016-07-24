@@ -1,7 +1,7 @@
 local sock = {
     _VERSION     = 'sock.lua v0.1.0',
     _DESCRIPTION = 'A networking library for Lua games',
-    _URL         = '',
+    _URL         = 'https://github.com/camchenry/sock.lua',
     _LICENSE     = [[
         MIT License
 
