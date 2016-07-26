@@ -1,3 +1,6 @@
+
+--- A networking library for Lua games
+-- @module sock
 local sock = {
     _VERSION     = 'sock.lua v0.1.0',
     _DESCRIPTION = 'A networking library for Lua games',
@@ -156,6 +159,9 @@ function Listener:trigger(event, data, client)
         return false
     end
 end
+
+--- Server
+-- The server allows clients to connect your computer.
 
 local Server = {}
 local Server_mt = {__index = Server}
@@ -462,6 +468,14 @@ function Client:getLastServiceTime()
     return self.host:service_time()
 end
 
+--- Creates a new server instance
+-- @tparam ?string address Hostname or IP address to bind to. (default: "localhost")
+-- @tparam ?number port Port to listen to for data. (default: 22122) 
+-- @tparam ?number maxPeers Maximum peers that can connect to the server. (default: 64)
+-- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
+-- @tparam ?number inBandwidth Maximum incoming bandwidth (default: 0)
+-- @tparam ?number outBandwidth Maximum outgoing bandwidth (default: 0)
+-- @return A new Server object
 sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)
     address         = address or "localhost" 
     port            = port or 22122
@@ -510,6 +524,11 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
     return server
 end
 
+--- Creates a new Client instance
+-- @tparam ?string/peer serverOrAddress Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
+-- @tparam ?number port port number of the server to connect to. (default: 22122)
+-- @tparam ?number maxChannels maximum channels available to send and receive data. (default: 1)
+-- @return A new Client object
 sock.newClient = function(serverOrAddress, port, maxChannels)
     serverOrAddress = serverOrAddress or "localhost"
     port            = port or 22122
