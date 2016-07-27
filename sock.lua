@@ -1,5 +1,8 @@
 
 --- A networking library for Lua games
+-- @module sock
+-- @usage local sock = require "sock"
+
 local sock = {
     _VERSION     = 'sock.lua v0.1.0',
     _DESCRIPTION = 'A networking library for Lua games',

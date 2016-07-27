@@ -1,21 +1,13 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN"
-   "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
 <html>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
 <head>
     <title>sock.lua Documentation</title>
-    <link rel="stylesheet" href="ldoc.css" type="text/css" />
+    <meta charset="utf-8">
+    <link rel="stylesheet" href="ldoc.css">
 </head>
 <body>
 
 <div id="container">
-
-<div id="product">
-	<div id="product_logo"></div>
-	<div id="product_name"><big><b></b></big></div>
-	<div id="product_description"></div>
-</div> <!-- id="product" -->
-
 
 <div id="main">
 
@@ -27,23 +19,17 @@
 <h1>sock.lua</h1>
 
 
-<h2>Contents</h2>
-<ul>
-<li><a href="#Functions">Functions</a></li>
-<li><a href="#Tables">Tables</a></li>
-</ul>
-
 
 <h2>Modules</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
-  <li><strong>sock</strong></li>
+<ul class="nowrap">
+<li><strong>sock</strong></li>
 </ul>
 <h2>Topics</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
+<ul class="">
   <li><a href="topics/README.md.html">README</a></li>
 </ul>
 <h2>Examples</h2>
-<ul class="$(kind=='Topics' and '' or 'nowrap'">
+<ul class="nowrap">
   <li><a href="examples/main.lua.html">main.lua</a></li>
 </ul>
 
@@ -51,177 +37,189 @@
 
 <div id="content">
 
+
 <h1>Module <code>sock</code></h1>
 <p>A networking library for Lua games</p>
 <p>
 
 </p>
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">local sock = require &quot;sock&quot;</pre>
+    </ul>
 
 
+<div id="contents">
+<h2>Table of Contents</h2>
+<ul>
+<li><a href="#Functions">Functions</a></li>
+<li><a href="#Tables">Tables</a></li>
+</ul>
+</div>
 <h2><a href="#Functions">Functions</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#Server:getClient">Server:getClient (peer)</a></td>
-	<td class="summary">Gets the Client object associated with an enet peer.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:getClientByConnectId">Server:getClientByConnectId (connectId)</a></td>
-	<td class="summary">Gets the Client object that has the given connection id.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setSendMode">Server:setSendMode (mode)</a></td>
-	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode (mode)</a></td>
-	<td class="summary">Set the default send mode for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setSendChannel">Server:setSendChannel (channel)</a></td>
-	<td class="summary">Set the send channel for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel (channel)</a></td>
-	<td class="summary">Set the default send channel for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:resetSendSettings">Server:resetSendSettings ()</a></td>
-	<td class="summary">Reset all send options to their default values.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:update">Server:update ()</a></td>
-	<td class="summary">Check for network events and handle them.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:emitToAllBut">Server:emitToAllBut (peer, name, data)</a></td>
-	<td class="summary">Send a message to all peers, except one.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:emitToAll">Server:emitToAll (name, data)</a></td>
-	<td class="summary">Send a message to all peers.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:on">Server:on (name, callback)</a></td>
-	<td class="summary">Add a callback to an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setDataFormat">Server:setDataFormat (event, format)</a></td>
-	<td class="summary">Set the data format for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:removeCallback">Server:removeCallback (name, callback)</a></td>
-	<td class="summary">Remove a specific callback for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:log">Server:log (event, data)</a></td>
-	<td class="summary">Log an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:getTotalSentData">Server:getTotalSentData ()</a></td>
-	<td class="summary">Get the total sent data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData ()</a></td>
-	<td class="summary">Get the total received data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit (incoming, outgoing)</a></td>
-	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Server:getLastServiceTime">Server:getLastServiceTime ()</a></td>
-	<td class="summary">Get the last time since network events were serviced.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setSendMode">Client:setSendMode (mode)</a></td>
-	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setDefaultSendMode">Client:setDefaultSendMode (mode)</a></td>
-	<td class="summary">Set the default send mode for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setSendChannel">Client:setSendChannel (channel)</a></td>
-	<td class="summary">Set the send channel for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setDefaultSendChannel">Client:setDefaultSendChannel (channel)</a></td>
-	<td class="summary">Set the default send channel for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:resetSendSettings">Client:resetSendSettings ()</a></td>
-	<td class="summary">Reset all send options to their default values.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:connect">Client:connect ()</a></td>
+	<td class="name" ><a href="#Client:connect">Client:connect()</a></td>
 	<td class="summary">Connect to the chosen server.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Client:disconnect">Client:disconnect (code)</a></td>
+	<td class="name" ><a href="#Client:disconnect">Client:disconnect(code)</a></td>
 	<td class="summary">Disconnect from the server, if connected.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Client:update">Client:update ()</a></td>
-	<td class="summary">Check for network events and handle them.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:emit">Client:emit (name, data)</a></td>
+	<td class="name" ><a href="#Client:emit">Client:emit(name, data)</a></td>
 	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Client:on">Client:on (name, callback)</a></td>
-	<td class="summary">Add a callback to an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setDataFormat">Client:setDataFormat (event, format)</a></td>
-	<td class="summary">Set the data format for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:removeCallback">Client:removeCallback (name, callback)</a></td>
-	<td class="summary">Remove a specific callback for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:log">Client:log (event, data)</a></td>
-	<td class="summary">Log an event.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:getTotalSentData">Client:getTotalSentData ()</a></td>
-	<td class="summary">Get the total sent data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData ()</a></td>
-	<td class="summary">Get the total received data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit (incoming, outgoing)</a></td>
-	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client:getLastServiceTime">Client:getLastServiceTime ()</a></td>
+	<td class="name" ><a href="#Client:getLastServiceTime">Client:getLastServiceTime()</a></td>
 	<td class="summary">Get the last time since network events were serviced.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#newServer">newServer (address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</a></td>
-	<td class="summary">Creates a new server instance</td>
+	<td class="name" ><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData()</a></td>
+	<td class="summary">Get the total received data since the server was created.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#newClient">newClient (serverOrAddress, port, maxChannels)</a></td>
+	<td class="name" ><a href="#Client:getTotalSentData">Client:getTotalSentData()</a></td>
+	<td class="summary">Get the total sent data since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:log">Client:log(event, data)</a></td>
+	<td class="summary">Log an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:on">Client:on(name, callback)</a></td>
+	<td class="summary">Add a callback to an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:removeCallback">Client:removeCallback(name, callback)</a></td>
+	<td class="summary">Remove a specific callback for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:resetSendSettings">Client:resetSendSettings()</a></td>
+	<td class="summary">Reset all send options to their default values.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit(incoming, outgoing)</a></td>
+	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setDataFormat">Client:setDataFormat(event, format)</a></td>
+	<td class="summary">Set the data format for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setDefaultSendChannel">Client:setDefaultSendChannel(channel)</a></td>
+	<td class="summary">Set the default send channel for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setDefaultSendMode">Client:setDefaultSendMode(mode)</a></td>
+	<td class="summary">Set the default send mode for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setSendChannel">Client:setSendChannel(channel)</a></td>
+	<td class="summary">Set the send channel for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setSendMode">Client:setSendMode(mode)</a></td>
+	<td class="summary">Set the send mode for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:update">Client:update()</a></td>
+	<td class="summary">Check for network events and handle them.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(name, data)</a></td>
+	<td class="summary">Send a message to all peers.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(peer, name, data)</a></td>
+	<td class="summary">Send a message to all peers, except one.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></td>
+	<td class="summary">Gets the Client object associated with an enet peer.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClientByConnectId">Server:getClientByConnectId(connectId)</a></td>
+	<td class="summary">Gets the Client object that has the given connection id.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
+	<td class="summary">Get the last time since network events were serviced.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
+	<td class="summary">Get the total received data since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalSentData">Server:getTotalSentData()</a></td>
+	<td class="summary">Get the total sent data since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:log">Server:log(event, data)</a></td>
+	<td class="summary">Log an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:on">Server:on(name, callback)</a></td>
+	<td class="summary">Add a callback to an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:removeCallback">Server:removeCallback(name, callback)</a></td>
+	<td class="summary">Remove a specific callback for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:resetSendSettings">Server:resetSendSettings()</a></td>
+	<td class="summary">Reset all send options to their default values.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></td>
+	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDataFormat">Server:setDataFormat(event, format)</a></td>
+	<td class="summary">Set the data format for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></td>
+	<td class="summary">Set the default send channel for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode(mode)</a></td>
+	<td class="summary">Set the default send mode for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
+	<td class="summary">Set the send channel for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
+	<td class="summary">Set the send mode for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:update">Server:update()</a></td>
+	<td class="summary">Check for network events and handle them.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#newClient">newClient(serverOrAddress, port, maxChannels)</a></td>
 	<td class="summary">Creates a new Client instance</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#newServer">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</a></td>
+	<td class="summary">Creates a new server instance</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" nowrap><a href="#SEND_MODES">SEND_MODES</a></td>
+	<td class="name" ><a href="#Client">Client</a></td>
+	<td class="summary">Connects to servers.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#SEND_MODES">SEND_MODES</a></td>
 	<td class="summary">Valid modes for sending messages.</td>
 	</tr>
 	<tr>
-	<td class="name" nowrap><a href="#Server">Server</a></td>
+	<td class="name" ><a href="#Server">Server</a></td>
 	<td class="summary">Manages all clients and receives network events.</td>
-	</tr>
-	<tr>
-	<td class="name" nowrap><a href="#Client">Client</a></td>
-	<td class="summary">Connects to servers.</td>
 	</tr>
 </table>
 
@@ -233,26 +231,19 @@
 
     <dl class="function">
     <dt>
-    <a name = "Server:getClient"></a>
-    <strong>Server:getClient (peer)</strong>
+    <a name = "Client:connect"></a>
+    <strong>Client:connect()</strong>
     </dt>
     <dd>
-    Gets the Client object associated with an enet peer.
+    Connect to the chosen server.
 
 
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">peer</span>
-            <span class="types"><span class="type">peer</span></span>
-         An enet peer.
-        </li>
-    </ul>
 
     <h3>Returns:</h3>
     <ol>
 
-           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-        Object associated with the peer.
+           <span class="types"><span class="type">boolean</span></span>
+        Status indicating whether or not the connection was successful.
     </ol>
 
 
@@ -260,64 +251,276 @@
 
 </dd>
     <dt>
-    <a name = "Server:getClientByConnectId"></a>
-    <strong>Server:getClientByConnectId (connectId)</strong>
+    <a name = "Client:disconnect"></a>
+    <strong>Client:disconnect(code)</strong>
     </dt>
     <dd>
-    Gets the Client object that has the given connection id.
+    Disconnect from the server, if connected.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">connectId</span>
-            <span class="types"><span class="type">number</span></span>
-         The unique client connection id.
+        <li><span class="parameter">code</span>
+            <span class="types">optional <span class="type">number</span></span>
+         A code to associate with this disconnect event.
         </li>
     </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-
-
-
-    </ol>
 
 
 
 
 </dd>
     <dt>
-    <a name = "Server:setSendMode"></a>
-    <strong>Server:setSendMode (mode)</strong>
+    <a name = "Client:emit"></a>
+    <strong>Client:emit(name, data)</strong>
     </dt>
     <dd>
-    Set the send mode for the next outgoing message. <br/>
- The mode will be reset after the next message is sent. The initial default
- is "reliable".
+    Send a message to the server.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">mode</span>
+        <li><span class="parameter">name</span>
             <span class="types"><span class="type">string</span></span>
-         A valid send mode.
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+            <span class="types"><span class="type">table</span></span>
+         The data to send.
         </li>
     </ul>
 
 
 
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#SEND_MODES">SEND_MODES</a>
-    </ul>
 
 
 </dd>
     <dt>
-    <a name = "Server:setDefaultSendMode"></a>
-    <strong>Server:setDefaultSendMode (mode)</strong>
+    <a name = "Client:getLastServiceTime"></a>
+    <strong>Client:getLastServiceTime()</strong>
+    </dt>
+    <dd>
+    Get the last time since network events were serviced.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Seconds since the last time events were serviced.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:getTotalReceivedData"></a>
+    <strong>Client:getTotalReceivedData()</strong>
+    </dt>
+    <dd>
+    Get the total received data since the server was created.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The total received data in bytes.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:getTotalSentData"></a>
+    <strong>Client:getTotalSentData()</strong>
+    </dt>
+    <dd>
+    Get the total sent data since the server was created.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The total sent data in bytes.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:log"></a>
+    <strong>Client:log(event, data)</strong>
+    </dt>
+    <dd>
+    Log an event.
+ Alias for Client.logger:log.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The type of event that happened.
+        </li>
+        <li><span class="parameter">data</span>
+            <span class="types"><span class="type">string</span></span>
+         The message to log.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:on"></a>
+    <strong>Client:on(name, callback)</strong>
+    </dt>
+    <dd>
+    Add a callback to an event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><span class="type">string</span></span>
+         The event that will trigger the callback.
+        </li>
+        <li><span class="parameter">callback</span>
+            <span class="types"><span class="type">function</span></span>
+         The callback to be triggered.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:removeCallback"></a>
+    <strong>Client:removeCallback(name, callback)</strong>
+    </dt>
+    <dd>
+    Remove a specific callback for an event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><span class="type">string</span></span>
+         The event associated with the callback.
+        </li>
+        <li><span class="parameter">callback</span>
+            <span class="types"><span class="type">function</span></span>
+         The callback to remove.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:resetSendSettings"></a>
+    <strong>Client:resetSendSettings()</strong>
+    </dt>
+    <dd>
+    Reset all send options to their default values.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:setBandwidthLimit"></a>
+    <strong>Client:setBandwidthLimit(incoming, outgoing)</strong>
+    </dt>
+    <dd>
+    Set the incoming and outgoing bandwidth limits.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">incoming</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum incoming bandwidth in bytes.
+        </li>
+        <li><span class="parameter">outgoing</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum outgoing bandwidth in bytes.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:setDataFormat"></a>
+    <strong>Client:setDataFormat(event, format)</strong>
+    </dt>
+    <dd>
+    Set the data format for an event.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to set the data format for.
+        </li>
+        <li><span class="parameter">format</span>
+            <span class="types"><span class="type">table</span></span>
+         The data format.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:setDefaultSendChannel"></a>
+    <strong>Client:setDefaultSendChannel(channel)</strong>
+    </dt>
+    <dd>
+    Set the default send channel for all future outgoing messages.
+ The initial default is 0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         Channel to send data on.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:setDefaultSendMode"></a>
+    <strong>Client:setDefaultSendMode(mode)</strong>
     </dt>
     <dd>
     Set the default send mode for all future outgoing messages. <br/>
@@ -335,15 +538,17 @@
 
 
     <h3>See also:</h3>
-    <ul>
-         <a href="index.html#SEND_MODES">SEND_MODES</a>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
     </ul>
 
 
 </dd>
     <dt>
-    <a name = "Server:setSendChannel"></a>
-    <strong>Server:setSendChannel (channel)</strong>
+    <a name = "Client:setSendChannel"></a>
+    <strong>Client:setSendChannel(channel)</strong>
     </dt>
     <dd>
     Set the send channel for the next outgoing message. <br/>
@@ -366,44 +571,37 @@
 
 </dd>
     <dt>
-    <a name = "Server:setDefaultSendChannel"></a>
-    <strong>Server:setDefaultSendChannel (channel)</strong>
+    <a name = "Client:setSendMode"></a>
+    <strong>Client:setSendMode(mode)</strong>
     </dt>
     <dd>
-    Set the default send channel for all future outgoing messages.
- The initial default is 0.
+    Set the send mode for the next outgoing message. <br/>
+ The mode will be reset after the next message is sent. The initial default
+ is "reliable".
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">channel</span>
-            <span class="types"><span class="type">number</span></span>
-         Channel to send data on.
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">string</span></span>
+         A valid send mode.
         </li>
     </ul>
 
 
 
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
 
 
 </dd>
     <dt>
-    <a name = "Server:resetSendSettings"></a>
-    <strong>Server:resetSendSettings ()</strong>
-    </dt>
-    <dd>
-    Reset all send options to their default values.
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Server:update"></a>
-    <strong>Server:update ()</strong>
+    <a name = "Client:update"></a>
+    <strong>Client:update()</strong>
     </dt>
     <dd>
     Check for network events and handle them.
@@ -416,8 +614,32 @@
 
 </dd>
     <dt>
+    <a name = "Server:emitToAll"></a>
+    <strong>Server:emitToAll(name, data)</strong>
+    </dt>
+    <dd>
+    Send a message to all peers.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">name</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Server:emitToAllBut"></a>
-    <strong>Server:emitToAllBut (peer, name, data)</strong>
+    <strong>Server:emitToAllBut(peer, name, data)</strong>
     </dt>
     <dd>
     Send a message to all peers, except one.
@@ -447,99 +669,116 @@
 
 </dd>
     <dt>
-    <a name = "Server:emitToAll"></a>
-    <strong>Server:emitToAll (name, data)</strong>
+    <a name = "Server:getClient"></a>
+    <strong>Server:getClient(peer)</strong>
     </dt>
     <dd>
-    Send a message to all peers.
+    Gets the Client object associated with an enet peer.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
+        <li><span class="parameter">peer</span>
+            <span class="types"><span class="type">peer</span></span>
+         An enet peer.
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+        Object associated with the peer.
+    </ol>
 
 
 
 
 </dd>
     <dt>
-    <a name = "Server:on"></a>
-    <strong>Server:on (name, callback)</strong>
+    <a name = "Server:getClientByConnectId"></a>
+    <strong>Server:getClientByConnectId(connectId)</strong>
     </dt>
     <dd>
-    Add a callback to an event.
+    Gets the Client object that has the given connection id.
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
-            <span class="types"><span class="type">string</span></span>
-         The event that will trigger the callback.
-        </li>
-        <li><span class="parameter">callback</span>
-            <span class="types"><span class="type">function</span></span>
-         The callback to be triggered.
+        <li><span class="parameter">connectId</span>
+            <span class="types"><span class="type">number</span></span>
+         The unique client connection id.
         </li>
     </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+
+
+
+    </ol>
 
 
 
 
 </dd>
     <dt>
-    <a name = "Server:setDataFormat"></a>
-    <strong>Server:setDataFormat (event, format)</strong>
+    <a name = "Server:getLastServiceTime"></a>
+    <strong>Server:getLastServiceTime()</strong>
     </dt>
     <dd>
-    Set the data format for an event.
+    Get the last time since network events were serviced.
 
 
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to set the data format for.
-        </li>
-        <li><span class="parameter">format</span>
-            <span class="types"><span class="type">table</span></span>
-         The data format.
-        </li>
-    </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Seconds since the last time events were serviced.
+    </ol>
 
 
 
 
 </dd>
     <dt>
-    <a name = "Server:removeCallback"></a>
-    <strong>Server:removeCallback (name, callback)</strong>
+    <a name = "Server:getTotalReceivedData"></a>
+    <strong>Server:getTotalReceivedData()</strong>
     </dt>
     <dd>
-    Remove a specific callback for an event.
+    Get the total received data since the server was created.
 
 
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">name</span>
-            <span class="types"><span class="type">string</span></span>
-         The event associated with the callback.
-        </li>
-        <li><span class="parameter">callback</span>
-            <span class="types"><span class="type">function</span></span>
-         The callback to remove.
-        </li>
-    </ul>
 
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The total received data in bytes.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:getTotalSentData"></a>
+    <strong>Server:getTotalSentData()</strong>
+    </dt>
+    <dd>
+    Get the total sent data since the server was created.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The total sent data in bytes.
+    </ol>
 
 
 
@@ -547,7 +786,7 @@
 </dd>
     <dt>
     <a name = "Server:log"></a>
-    <strong>Server:log (event, data)</strong>
+    <strong>Server:log(event, data)</strong>
     </dt>
     <dd>
     Log an event.
@@ -572,286 +811,8 @@
 
 </dd>
     <dt>
-    <a name = "Server:getTotalSentData"></a>
-    <strong>Server:getTotalSentData ()</strong>
-    </dt>
-    <dd>
-    Get the total sent data since the server was created.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        The total sent data in bytes.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Server:getTotalReceivedData"></a>
-    <strong>Server:getTotalReceivedData ()</strong>
-    </dt>
-    <dd>
-    Get the total received data since the server was created.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        The total received data in bytes.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Server:setBandwidthLimit"></a>
-    <strong>Server:setBandwidthLimit (incoming, outgoing)</strong>
-    </dt>
-    <dd>
-    Set the incoming and outgoing bandwidth limits.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">incoming</span>
-            <span class="types"><span class="type">number</span></span>
-         The maximum incoming bandwidth in bytes.
-        </li>
-        <li><span class="parameter">outgoing</span>
-            <span class="types"><span class="type">number</span></span>
-         The maximum outgoing bandwidth in bytes.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Server:getLastServiceTime"></a>
-    <strong>Server:getLastServiceTime ()</strong>
-    </dt>
-    <dd>
-    Get the last time since network events were serviced.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        Seconds since the last time events were serviced.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:setSendMode"></a>
-    <strong>Client:setSendMode (mode)</strong>
-    </dt>
-    <dd>
-    Set the send mode for the next outgoing message. <br/>
- The mode will be reset after the next message is sent. The initial default
- is "reliable".
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">string</span></span>
-         A valid send mode.
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#SEND_MODES">SEND_MODES</a>
-    </ul>
-
-
-</dd>
-    <dt>
-    <a name = "Client:setDefaultSendMode"></a>
-    <strong>Client:setDefaultSendMode (mode)</strong>
-    </dt>
-    <dd>
-    Set the default send mode for all future outgoing messages. <br/>
- The initial default is "reliable".
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">string</span></span>
-         A valid send mode.
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#SEND_MODES">SEND_MODES</a>
-    </ul>
-
-
-</dd>
-    <dt>
-    <a name = "Client:setSendChannel"></a>
-    <strong>Client:setSendChannel (channel)</strong>
-    </dt>
-    <dd>
-    Set the send channel for the next outgoing message. <br/>
- The channel will be reset after the next message. Channels are zero-indexed
- and cannot exceed the maximum number of channels allocated. The initial
- default is 0.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
-            <span class="types"><span class="type">number</span></span>
-         Channel to send data on.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:setDefaultSendChannel"></a>
-    <strong>Client:setDefaultSendChannel (channel)</strong>
-    </dt>
-    <dd>
-    Set the default send channel for all future outgoing messages.
- The initial default is 0.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
-            <span class="types"><span class="type">number</span></span>
-         Channel to send data on.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:resetSendSettings"></a>
-    <strong>Client:resetSendSettings ()</strong>
-    </dt>
-    <dd>
-    Reset all send options to their default values.
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:connect"></a>
-    <strong>Client:connect ()</strong>
-    </dt>
-    <dd>
-    Connect to the chosen server.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">boolean</span></span>
-        Status indicating whether or not the connection was successful.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:disconnect"></a>
-    <strong>Client:disconnect (code)</strong>
-    </dt>
-    <dd>
-    Disconnect from the server, if connected.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">code</span>
-            <span class="types">optional <span class="type">number</span></span>
-         A code to associate with this disconnect event.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:update"></a>
-    <strong>Client:update ()</strong>
-    </dt>
-    <dd>
-    Check for network events and handle them.
-
-
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:emit"></a>
-    <strong>Client:emit (name, data)</strong>
-    </dt>
-    <dd>
-    Send a message to the server.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">name</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-            <span class="types"><span class="type">table</span></span>
-         The data to send.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:on"></a>
-    <strong>Client:on (name, callback)</strong>
+    <a name = "Server:on"></a>
+    <strong>Server:on(name, callback)</strong>
     </dt>
     <dd>
     Add a callback to an event.
@@ -875,33 +836,8 @@
 
 </dd>
     <dt>
-    <a name = "Client:setDataFormat"></a>
-    <strong>Client:setDataFormat (event, format)</strong>
-    </dt>
-    <dd>
-    Set the data format for an event.
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to set the data format for.
-        </li>
-        <li><span class="parameter">format</span>
-            <span class="types"><span class="type">table</span></span>
-         The data format.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:removeCallback"></a>
-    <strong>Client:removeCallback (name, callback)</strong>
+    <a name = "Server:removeCallback"></a>
+    <strong>Server:removeCallback(name, callback)</strong>
     </dt>
     <dd>
     Remove a specific callback for an event.
@@ -925,25 +861,13 @@
 
 </dd>
     <dt>
-    <a name = "Client:log"></a>
-    <strong>Client:log (event, data)</strong>
+    <a name = "Server:resetSendSettings"></a>
+    <strong>Server:resetSendSettings()</strong>
     </dt>
     <dd>
-    Log an event.
- Alias for Client.logger:log.
+    Reset all send options to their default values.
 
 
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The type of event that happened.
-        </li>
-        <li><span class="parameter">data</span>
-            <span class="types"><span class="type">string</span></span>
-         The message to log.
-        </li>
-    </ul>
 
 
 
@@ -951,48 +875,8 @@
 
 </dd>
     <dt>
-    <a name = "Client:getTotalSentData"></a>
-    <strong>Client:getTotalSentData ()</strong>
-    </dt>
-    <dd>
-    Get the total sent data since the server was created.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        The total sent data in bytes.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:getTotalReceivedData"></a>
-    <strong>Client:getTotalReceivedData ()</strong>
-    </dt>
-    <dd>
-    Get the total received data since the server was created.
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        The total received data in bytes.
-    </ol>
-
-
-
-
-</dd>
-    <dt>
-    <a name = "Client:setBandwidthLimit"></a>
-    <strong>Client:setBandwidthLimit (incoming, outgoing)</strong>
+    <a name = "Server:setBandwidthLimit"></a>
+    <strong>Server:setBandwidthLimit(incoming, outgoing)</strong>
     </dt>
     <dd>
     Set the incoming and outgoing bandwidth limits.
@@ -1016,28 +900,205 @@
 
 </dd>
     <dt>
-    <a name = "Client:getLastServiceTime"></a>
-    <strong>Client:getLastServiceTime ()</strong>
+    <a name = "Server:setDataFormat"></a>
+    <strong>Server:setDataFormat(event, format)</strong>
     </dt>
     <dd>
-    Get the last time since network events were serviced.
+    Set the data format for an event.
 
 
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to set the data format for.
+        </li>
+        <li><span class="parameter">format</span>
+            <span class="types"><span class="type">table</span></span>
+         The data format.
+        </li>
+    </ul>
 
-    <h3>Returns:</h3>
-    <ol>
-
-           <span class="types"><span class="type">number</span></span>
-        Seconds since the last time events were serviced.
-    </ol>
 
 
 
 
 </dd>
     <dt>
+    <a name = "Server:setDefaultSendChannel"></a>
+    <strong>Server:setDefaultSendChannel(channel)</strong>
+    </dt>
+    <dd>
+    Set the default send channel for all future outgoing messages.
+ The initial default is 0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         Channel to send data on.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:setDefaultSendMode"></a>
+    <strong>Server:setDefaultSendMode(mode)</strong>
+    </dt>
+    <dd>
+    Set the default send mode for all future outgoing messages. <br/>
+ The initial default is "reliable".
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">string</span></span>
+         A valid send mode.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Server:setSendChannel"></a>
+    <strong>Server:setSendChannel(channel)</strong>
+    </dt>
+    <dd>
+    Set the send channel for the next outgoing message. <br/>
+ The channel will be reset after the next message. Channels are zero-indexed
+ and cannot exceed the maximum number of channels allocated. The initial
+ default is 0.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         Channel to send data on.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:setSendMode"></a>
+    <strong>Server:setSendMode(mode)</strong>
+    </dt>
+    <dd>
+    Set the send mode for the next outgoing message. <br/>
+ The mode will be reset after the next message is sent. The initial default
+ is "reliable".
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">string</span></span>
+         A valid send mode.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
+
+
+</dd>
+    <dt>
+    <a name = "Server:update"></a>
+    <strong>Server:update()</strong>
+    </dt>
+    <dd>
+    Check for network events and handle them.
+
+
+
+
+
+
+
+</dd>
+    <dt>
+    <a name = "newClient"></a>
+    <strong>newClient(serverOrAddress, port, maxChannels)</strong>
+    </dt>
+    <dd>
+    Creates a new Client instance
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">serverOrAddress</span>
+            <span class="types">optional <span class="type">string/peer</span></span>
+         Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
+        </li>
+        <li><span class="parameter">port</span>
+            <span class="types">optional <span class="type">number</span></span>
+         port number of the server to connect to. (default: 22122)
+        </li>
+        <li><span class="parameter">maxChannels</span>
+            <span class="types">optional <span class="type">number</span></span>
+         maximum channels available to send and receive data. (default: 1)
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+
+        A new Client object
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#Client">Client</a>
+    </li>
+    </ul>
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+<span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
+
+ <span class="comment">-- Client that will connect to localhost:22122 (by default)
+</span>client = sock.newClient()
+
+ <span class="comment">-- Client that will connect to localhost:1234
+</span>client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">1234</span>)
+
+ <span class="comment">-- Client that will connect to 123.45.67.89:1234, using two channels
+</span> <span class="comment">-- NOTE: Server must also allocate two channels!
+</span>client = sock.newClient(<span class="string">"123.45.67.89"</span>, <span class="number">1234</span>, <span class="number">2</span>)</pre>
+    </ul>
+
+</dd>
+    <dt>
     <a name = "newServer"></a>
-    <strong>newServer (address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</strong>
+    <strong>newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</strong>
     </dt>
     <dd>
     Creates a new server instance
@@ -1079,8 +1140,10 @@
 
 
     <h3>See also:</h3>
-    <ul>
-         <a href="index.html#Server">Server</a>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#Server">Server</a>
+    </li>
     </ul>
 
     <h3>Usage:</h3>
@@ -1108,63 +1171,24 @@
     </ul>
 
 </dd>
-    <dt>
-    <a name = "newClient"></a>
-    <strong>newClient (serverOrAddress, port, maxChannels)</strong>
-    </dt>
-    <dd>
-    Creates a new Client instance
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">serverOrAddress</span>
-            <span class="types">optional <span class="type">string/peer</span></span>
-         Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
-        </li>
-        <li><span class="parameter">port</span>
-            <span class="types">optional <span class="type">number</span></span>
-         port number of the server to connect to. (default: 22122)
-        </li>
-        <li><span class="parameter">maxChannels</span>
-            <span class="types">optional <span class="type">number</span></span>
-         maximum channels available to send and receive data. (default: 1)
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-
-        A new Client object
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul>
-         <a href="index.html#Client">Client</a>
-    </ul>
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
-<span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
-
- <span class="comment">-- Client that will connect to localhost:22122 (by default)
-</span>client = sock.newClient()
-
- <span class="comment">-- Client that will connect to localhost:1234
-</span>client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">1234</span>)
-
- <span class="comment">-- Client that will connect to 123.45.67.89:1234, using two channels
-</span> <span class="comment">-- NOTE: Server must also allocate two channels!
-</span>client = sock.newClient(<span class="string">"123.45.67.89"</span>, <span class="number">1234</span>, <span class="number">2</span>)</pre>
-    </ul>
-
-</dd>
 </dl>
     <h2 class="section-header "><a name="Tables"></a>Tables</h2>
 
     <dl class="function">
+    <dt>
+    <a name = "Client"></a>
+    <strong>Client</strong>
+    </dt>
+    <dd>
+    Connects to servers.
+
+
+
+
+
+
+
+</dd>
     <dt>
     <a name = "SEND_MODES"></a>
     <strong>SEND_MODES</strong>
@@ -1205,28 +1229,14 @@
 
 
 </dd>
-    <dt>
-    <a name = "Client"></a>
-    <strong>Client</strong>
-    </dt>
-    <dd>
-    Connects to servers.
-
-
-
-
-
-
-
-</dd>
 </dl>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
-<i>generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-07-26 23:44:54 </i>
+<i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-07-27 12:48:18 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

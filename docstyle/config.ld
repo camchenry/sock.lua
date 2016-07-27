@@ -6,8 +6,6 @@ file        = 'sock.lua'
 
 examples    = {'examples'}
 
-style       = 'docstyle'
-template    = 'docstyle'
 format      = 'markdown'
 all         = true
 no_lua_ref  = true

@@ -94,7 +94,7 @@ h2 { font-size: 1.25em; }
 h3 { font-size: 1.15em; }
 h4 { font-size: 1.06em; }
 
-a:link { color: #004080; text-decoration: none; }
+a:link { font-weight: bold; color: #004080; text-decoration: none; }
 a:visited { font-weight: bold; color: #006699; text-decoration: none; }
 a:link:hover { text-decoration: underline; }
 
@@ -182,6 +182,7 @@ table.index td { text-align: left; vertical-align: top; }
 #about {
     clear: both;
     padding: 5px;
+    background-color: #eee;
 }
 
 @media print {
