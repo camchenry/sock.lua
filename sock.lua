@@ -336,6 +336,11 @@ end
 --- Add a callback to an event.
 -- @tparam string name The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
+-- @treturn function The callback that was passed in.
+--@usage
+--server:on("connect", function(data, client)
+--    print("Client connected!")
+--end)
 function Server:on(name, callback)
     return self.listener:addCallback(name, callback)
 end
@@ -360,6 +365,11 @@ end
 --- Remove a specific callback for an event.
 -- @tparam string name The event associated with the callback.
 -- @tparam function callback The callback to remove.
+--@usage
+--local callback = server:on("chatMessage", function(message)
+--    print(message)
+--end)
+--server:removeCallback("chatMessage", callback)
 function Server:removeCallback(name, callback)
     self.listener:removeCallback(name, callback)    
 end
@@ -526,6 +536,11 @@ end
 --- Add a callback to an event.
 -- @tparam string name The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
+-- @treturn function The callback that was passed in.
+--@usage
+--client:on("connect", function(data)
+--    print("Connected to the server!")
+--end)
 function Client:on(name, callback)
     return self.listener:addCallback(name, callback)
 end
@@ -550,6 +565,11 @@ end
 --- Remove a specific callback for an event.
 -- @tparam string name The event associated with the callback.
 -- @tparam function callback The callback to remove.
+--@usage
+--local callback = client:on("chatMessage", function(message)
+--    print(message)
+--end)
+--client:removeCallback("chatMessage", callback)
 function Client:removeCallback(name, callback)
     return self.listener:removeCallback(name, callback)
 end
