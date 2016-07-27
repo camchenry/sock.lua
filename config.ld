@@ -6,5 +6,6 @@ readme      = 'README.md'
 examples    = {'examples'}
 
 format      = 'markdown'
-all         = false
+all         = true
 no_lua_ref  = true
+not_luadoc  = true

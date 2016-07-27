@@ -1,6 +1,5 @@
 
 --- A networking library for Lua games
--- @module sock
 local sock = {
     _VERSION     = 'sock.lua v0.1.0',
     _DESCRIPTION = 'A networking library for Lua games',
@@ -50,8 +49,20 @@ local function zipTable(items, keys)
     return data
 end
 
+--- Valid modes for sending messages.
+local SEND_MODES = {
+    "reliable",     -- Message is guaranteed to arrive, and arrive in the order in which it is sent.
+    "unsequenced",  -- Message has no guarantee on the order that it arrives.
+    "unreliable",   -- Message is not guaranteed to arrive.
+}
+
 local function isValidSendMode(mode)
-    return mode == "reliable" or mode == "unsequenced" or mode == "unreliable"
+    for i, validMode in pairs(SEND_MODES) do
+        if mode == validMode then
+            return true
+        end
+    end
+    return false
 end
 
 local Logger = {}
@@ -160,12 +171,13 @@ function Listener:trigger(event, data, client)
     end
 end
 
---- Server
--- The server allows clients to connect your computer.
-
+--- Manages all clients and receives network events.
 local Server = {}
 local Server_mt = {__index = Server}
 
+--- Gets the Client object associated with an enet peer.
+-- @tparam peer peer An enet peer.
+-- @treturn Client Object associated with the peer.
 function Server:getClient(peer)
     for i, client in pairs(self.clients) do
         if peer == client.server then
@@ -174,6 +186,9 @@ function Server:getClient(peer)
     end
 end
 
+--- Gets the Client object that has the given connection id.
+-- @tparam number connectId The unique client connection id.
+-- @treturn Client
 function Server:getClientByConnectId(connectId)
     for i, client in pairs(self.clients) do
         if connectId == client.connectId then
@@ -182,6 +197,11 @@ function Server:getClientByConnectId(connectId)
     end
 end
 
+--- Set the send mode for the next outgoing message. 
+-- The mode will be reset after the next message is sent. The initial default 
+-- is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
 function Server:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -191,6 +211,10 @@ function Server:setSendMode(mode)
     self.sendMode = mode
 end
 
+--- Set the default send mode for all future outgoing messages. 
+-- The initial default is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
 function Server:setDefaultSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("error", "Tried to set default send mode to invalid mode: '" .. mode .. "'")
@@ -200,6 +224,11 @@ function Server:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
+--- Set the send channel for the next outgoing message. 
+-- The channel will be reset after the next message. Channels are zero-indexed
+-- and cannot exceed the maximum number of channels allocated. The initial 
+-- default is 0.
+-- @tparam number channel Channel to send data on.
 function Server:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -209,16 +238,21 @@ function Server:setSendChannel(channel)
     self.sendChannel = channel
 end
 
-function Server:setDefaultSendChannel(val)
-   self.defaultSendChannel = val
+--- Set the default send channel for all future outgoing messages.
+-- The initial default is 0.
+-- @tparam number channel Channel to send data on.
+function Server:setDefaultSendChannel(channel)
+   self.defaultSendChannel = channel
 end
 
+--- Reset all send options to their default values.
 function Server:resetSendSettings()
     self.sendMode = self.defaultSendMode
     self.sendChannel = self.defaultSendChannel
 end
 
-function Server:update(dt)
+--- Check for network events and handle them.
+function Server:update()
     local event = self.host:service(self.timeout)
     
     while event do
@@ -260,9 +294,14 @@ function Server:update(dt)
     end
 end
 
+--- Send a message to all peers, except one.
 -- Useful for when the client does something locally, but other clients
 -- need to be updated at the same time. This way avoids duplicating objects by
 -- never sending its own event to itself in the first place.
+-- @todo This function is bugged (I think.) It should accept clients, not peers.
+-- @tparam enet_peer peer The peer to not receive the message.
+-- @tparam string name The event to trigger with this message. 
+-- @param data The data to send.
 function Server:emitToAllBut(peer, name, data)
     local message = {name, data}
     local serializedMessage = bitser.dumps(message)
@@ -277,6 +316,9 @@ function Server:emitToAllBut(peer, name, data)
     self:resetSendSettings()
 end
 
+--- Send a message to all peers.
+-- @tparam string name The event to trigger with this message.
+-- @param data The data to send.
 function Server:emitToAll(name, data)
     local message = {name, data}
     local serializedMessage = bitser.dumps(message)
@@ -288,10 +330,16 @@ function Server:emitToAll(name, data)
     self:resetSendSettings()
 end
 
+--- Add a callback to an event.
+-- @tparam string name The event that will trigger the callback.
+-- @tparam function callback The callback to be triggered.
 function Server:on(name, callback)
     return self.listener:addCallback(name, callback)
 end
 
+--- Set the data format for an event.
+-- @tparam string event The event to set the data format for. 
+-- @tparam table format The data format.
 function Server:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
@@ -306,34 +354,55 @@ function Server:_activateTriggers(name, data, client)
     end
 end
 
-function Server:removeCallbackOn(name, callback)
+--- Remove a specific callback for an event.
+-- @tparam string name The event associated with the callback.
+-- @tparam function callback The callback to remove.
+function Server:removeCallback(name, callback)
     self.listener:removeCallback(name, callback)    
 end
 
--- Alias for Server.logger:log
+--- Log an event.
+-- Alias for Server.logger:log.
+-- @tparam string event The type of event that happened.
+-- @tparam string data The message to log.
 function Server:log(event, data)
     return self.logger:log(event, data)
 end
 
+--- Get the total sent data since the server was created.
+-- @treturn number The total sent data in bytes.
 function Server:getTotalSentData()
     return self.host:total_sent_data()
 end
 
+--- Get the total received data since the server was created.
+-- @treturn number The total received data in bytes.
 function Server:getTotalReceivedData()
     return self.host:total_received_data()
 end
 
+--- Set the incoming and outgoing bandwidth limits.
+-- @tparam number incoming The maximum incoming bandwidth in bytes.
+-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
 function Server:setBandwidthLimit(incoming, outgoing)
     return self.host:bandwidth_limit(incoming, outgoing)
 end
 
+--- Get the last time since network events were serviced.
+-- @treturn number Seconds since the last time events were serviced.
 function Server:getLastServiceTime()
     return self.host:service_time()
 end
 
+--- Connects to servers.
 local Client = {}
 local Client_mt = {__index = Client}
 
+--- Set the send mode for the next outgoing message. 
+-- The mode will be reset after the next message is sent. The initial default 
+-- is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
 function Client:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -343,6 +412,10 @@ function Client:setSendMode(mode)
     self.sendMode = mode
 end
 
+--- Set the default send mode for all future outgoing messages. 
+-- The initial default is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
 function Client:setDefaultSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("error", "Tried to set default send mode to invalid mode: '" .. mode .. "'")
@@ -352,6 +425,11 @@ function Client:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
+--- Set the send channel for the next outgoing message. 
+-- The channel will be reset after the next message. Channels are zero-indexed
+-- and cannot exceed the maximum number of channels allocated. The initial 
+-- default is 0.
+-- @tparam number channel Channel to send data on.
 function Client:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -361,21 +439,33 @@ function Client:setSendChannel(channel)
     self.sendChannel = channel
 end
 
-function Client:setDefaultSendChannel(val)
-    self.defaultSendChannel = val
+--- Set the default send channel for all future outgoing messages.
+-- The initial default is 0.
+-- @tparam number channel Channel to send data on.
+function Client:setDefaultSendChannel(channel)
+    self.defaultSendChannel = channel
 end
 
+--- Reset all send options to their default values.
 function Client:resetSendSettings()
     self.sendMode = self.defaultSendMode
     self.sendChannel = self.defaultSendChannel
 end
 
+--- Connect to the chosen server.
+-- @treturn boolean Status indicating whether or not the connection was successful.
+-- @todo Actually return the status.
 function Client:connect()
     -- number of channels for the client and server must match
     self.server = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
     self.connectId = self.server:connect_id()
+
+    return true
 end
 
+--- Disconnect from the server, if connected.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
 function Client:disconnect(code)
     code = code or 0
     self.server:disconnect_later(code)
@@ -384,7 +474,8 @@ function Client:disconnect(code)
     end
 end
 
-function Client:update(dt)
+--- Check for network events and handle them.
+function Client:update()
     local event = self.host:service(self.timeout)
     
     while event do
@@ -408,6 +499,9 @@ function Client:update(dt)
     end
 end
 
+--- Send a message to the server.
+-- @tparam string name The event to trigger with this message.
+-- @tparam table data The data to send.
 function Client:emit(name, data)
     local message = {name, data}
     local serializedMessage = nil
@@ -426,10 +520,16 @@ function Client:emit(name, data)
     self:resetSendSettings()
 end
 
+--- Add a callback to an event.
+-- @tparam string name The event that will trigger the callback.
+-- @tparam function callback The callback to be triggered.
 function Client:on(name, callback)
     return self.listener:addCallback(name, callback)
 end
 
+--- Set the data format for an event.
+-- @tparam string event The event to set the data format for. 
+-- @tparam table format The data format.
 function Client:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
@@ -444,26 +544,42 @@ function Client:_activateTriggers(name, data)
     end
 end
 
-function Client:removeCallbackOn(name, callback)
+--- Remove a specific callback for an event.
+-- @tparam string name The event associated with the callback.
+-- @tparam function callback The callback to remove.
+function Client:removeCallback(name, callback)
     return self.listener:removeCallback(name, callback)
 end
 
+--- Log an event.
+-- Alias for Client.logger:log.
+-- @tparam string event The type of event that happened.
+-- @tparam string data The message to log.
 function Client:log(event, data)
     return self.logger:log(event, data)
 end
 
+--- Get the total sent data since the server was created.
+-- @treturn number The total sent data in bytes.
 function Client:getTotalSentData()
     return self.host:total_sent_data()
 end
 
+--- Get the total received data since the server was created.
+-- @treturn number The total received data in bytes.
 function Client:getTotalReceivedData()
     return self.host:total_received_data()
 end
 
+--- Set the incoming and outgoing bandwidth limits.
+-- @tparam number incoming The maximum incoming bandwidth in bytes.
+-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
 function Client:setBandwidthLimit(incoming, outgoing)
     return self.host:bandwidth_limit(incoming, outgoing)
 end
 
+--- Get the last time since network events were serviced.
+-- @treturn number Seconds since the last time events were serviced.
 function Client:getLastServiceTime()
     return self.host:service_time()
 end
@@ -476,6 +592,27 @@ end
 -- @tparam ?number inBandwidth Maximum incoming bandwidth (default: 0)
 -- @tparam ?number outBandwidth Maximum outgoing bandwidth (default: 0)
 -- @return A new Server object
+-- @see Server
+-- @usage 
+--local sock = require "sock"
+--
+-- -- Local server hosted on localhost:22122 (by default)
+--server = sock.newServer()
+--
+-- -- Local server only, on port 1234
+--server = sock.newServer("localhost", 1234)
+--
+-- -- Server hosted on static IP 123.45.67.89, on port 22122
+--server = sock.newServer("123.45.67.89", 22122)
+--
+-- -- Server hosted on any IP, on port 22122
+--server = sock.newServer("*", 22122)
+--
+-- -- Limit peers to 10, channels to 2
+--server = sock.newServer("*", 22122, 10, 2)
+--
+-- -- Limit incoming/outgoing bandwidth to 1kB/s (1000 bytes/s)
+--server = sock.newServer("*", 22122, 10, 2, 1000, 1000)
 sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)
     address         = address or "localhost" 
     port            = port or 22122
@@ -529,6 +666,19 @@ end
 -- @tparam ?number port port number of the server to connect to. (default: 22122)
 -- @tparam ?number maxChannels maximum channels available to send and receive data. (default: 1)
 -- @return A new Client object
+-- @see Client
+-- @usage
+--local sock = require "sock"
+--
+-- -- Client that will connect to localhost:22122 (by default)
+--client = sock.newClient()
+--
+-- -- Client that will connect to localhost:1234
+--client = sock.newClient("localhost", 1234)
+--
+-- -- Client that will connect to 123.45.67.89:1234, using two channels
+-- -- NOTE: Server must also allocate two channels!
+--client = sock.newClient("123.45.67.89", 1234, 2)
 sock.newClient = function(serverOrAddress, port, maxChannels)
     serverOrAddress = serverOrAddress or "localhost"
     port            = port or 22122
