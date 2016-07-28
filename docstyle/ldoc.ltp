@@ -3,6 +3,7 @@
 <head>
     <title>$(ldoc.title)</title>
     <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet">
     <link rel="stylesheet" href="$(ldoc.css)">
 </head>
 <body>
