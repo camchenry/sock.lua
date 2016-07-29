@@ -1,4 +1,5 @@
--- Loading sock from root directory
+-- Loading sock from root directory relative to this one
+-- This is not required in your own projects
 package.path = package.path .. ";../../?.lua"
 local sock = require "sock"
 
