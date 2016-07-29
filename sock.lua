@@ -378,6 +378,10 @@ end
 -- Alias for Server.logger:log.
 -- @tparam string event The type of event that happened.
 -- @tparam string data The message to log.
+--@usage
+--if somethingBadHappened then
+--    server:log("error", "Something bad happened!")
+--end
 function Server:log(event, data)
     return self.logger:log(event, data)
 end
@@ -593,6 +597,10 @@ end
 -- Alias for Client.logger:log.
 -- @tparam string event The type of event that happened.
 -- @tparam string data The message to log.
+--@usage
+--if somethingBadHappened then
+--    client:log("error", "Something bad happened!")
+--end
 function Client:log(event, data)
     return self.logger:log(event, data)
 end
