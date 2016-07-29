@@ -131,24 +131,23 @@ function Listener:addCallback(event, callback)
         self.triggers[event] = {}
     end
 
-    table.insert(self.triggers[event], {callback = callback})
+    table.insert(self.triggers[event], callback)
 
     return callback
 end
 
 -- Removes a callback on a given trigger
 -- Returns a boolean indicating if the callback was removed
-function Listener:removeCallback(event, callback)
-    if self.triggers[event] then
-        for i, trigger in pairs(self.triggers[event]) do
+function Listener:removeCallback(callback)
+    for event, triggers in pairs(self.triggers) do
+        for i, trigger in pairs(triggers) do
             if trigger == callback then
-                self.triggers[event][i] = nil
+                table.remove(triggers, i)
+                return true
             end
         end
-        return true
-    else
-        return false
     end
+    return false
 end
 
 -- Accepts: event (string), format (table)
@@ -166,7 +165,7 @@ function Listener:trigger(event, data, client)
             if self.formats[event] then
                 data = zipTable(data, self.formats[event])
             end
-            trigger.callback(data, client)
+            trigger(data, client)
         end
         return true
     else
@@ -363,15 +362,15 @@ function Server:_activateTriggers(name, data, client)
 end
 
 --- Remove a specific callback for an event.
--- @tparam string name The event associated with the callback.
 -- @tparam function callback The callback to remove.
+-- @treturn Whether or not the callback was removed.
 --@usage
 --local callback = server:on("chatMessage", function(message)
 --    print(message)
 --end)
---server:removeCallback("chatMessage", callback)
-function Server:removeCallback(name, callback)
-    self.listener:removeCallback(name, callback)    
+--server:removeCallback(callback)
+function Server:removeCallback(callback)
+    return self.listener:removeCallback(callback)    
 end
 
 --- Log an event.
@@ -582,15 +581,15 @@ function Client:_activateTriggers(name, data)
 end
 
 --- Remove a specific callback for an event.
--- @tparam string name The event associated with the callback.
 -- @tparam function callback The callback to remove.
+-- @treturn Whether or not the callback was removed.
 --@usage
 --local callback = client:on("chatMessage", function(message)
 --    print(message)
 --end)
---client:removeCallback("chatMessage", callback)
-function Client:removeCallback(name, callback)
-    return self.listener:removeCallback(name, callback)
+--client:removeCallback(callback)
+function Client:removeCallback(callback)
+    return self.listener:removeCallback(callback)
 end
 
 --- Log an event.
