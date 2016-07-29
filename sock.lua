@@ -363,7 +363,7 @@ end
 
 --- Remove a specific callback for an event.
 -- @tparam function callback The callback to remove.
--- @treturn Whether or not the callback was removed.
+-- @treturn boolean Whether or not the callback was removed.
 --@usage
 --local callback = server:on("chatMessage", function(message)
 --    print(message)
@@ -610,7 +610,7 @@ end
 
 --- Remove a specific callback for an event.
 -- @tparam function callback The callback to remove.
--- @treturn Whether or not the callback was removed.
+-- @treturn boolean Whether or not the callback was removed.
 --@usage
 --local callback = client:on("chatMessage", function(message)
 --    print(message)

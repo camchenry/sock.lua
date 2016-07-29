@@ -30,7 +30,7 @@
 
 # if not ldoc.single and module then -- reference back to project index
 <ul>
-  <li><a href="../$(ldoc.output).html">Index</a></li>
+    <li><a href="../$(ldoc.output).html">Index</a></li>
 </ul>
 # end
 
@@ -147,15 +147,18 @@
 #   end
     <dl class="function">
 #  for item in items() do
+    <div class="function_def">
     <dt>
     <a name = "$(item.name)"></a>
-    <strong>$(display_name(item))</strong>
+    <h2 class="function_name">$(display_name(item))</h2>
 #   if ldoc.prettify_files then
     <a style="float:right;" href="$(ldoc.source_ref(item))">line $(item.lineno)</a>
 #  end
     </dt>
     <dd>
+    <p>
     $(M(ldoc.descript(item),item))
+    </p>
 
 #   if ldoc.custom_tags then
 #    for custom in iter(ldoc.custom_tags) do
@@ -213,7 +216,7 @@
 #   for i,group in ldoc.ipairs(groups) do local li,il = use_li(group)
     <ol>
 #   for r in group:iter() do local type, ctypes = item:return_type(r); local rt = ldoc.typename(type)
-        $(li)
+        <li>
 #     if rt ~= '' then
            <span class="types">$(rt)</span>
 #     end
@@ -227,6 +230,7 @@
 #     end
         </ul>
 #    end -- if ctypes
+        </li>
 #     end -- for r
     </ol>
 #   if i < #groups then
@@ -263,6 +267,7 @@
 #   end -- if usage
 
 </dd>
+</div>
 # end -- for items
 </dl>
 # end -- for kinds

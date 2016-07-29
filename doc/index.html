@@ -282,32 +282,40 @@
     <h2 class="section-header "><a name="Functions"></a>Functions</h2>
 
     <dl class="function">
+    <div class="function_def">
     <dt>
     <a name = "Client:connect"></a>
-    <strong>Client:connect()</strong>
+    <h2 class="function_name">Client:connect()</h2>
     </dt>
     <dd>
+    <p>
     Connect to the chosen server.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">boolean</span></span>
         Status indicating whether or not the connection was successful.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:disconnect"></a>
-    <strong>Client:disconnect(code)</strong>
+    <h2 class="function_name">Client:disconnect(code)</h2>
     </dt>
     <dd>
+    <p>
     Disconnect from the server, if connected.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -323,12 +331,16 @@
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:emit"></a>
-    <strong>Client:emit(event, data)</strong>
+    <h2 class="function_name">Client:emit(event, data)</h2>
     </dt>
     <dd>
+    <p>
     Send a message to the server.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -347,123 +359,153 @@
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getConnectId"></a>
-    <strong>Client:getConnectId()</strong>
+    <h2 class="function_name">Client:getConnectId()</h2>
     </dt>
     <dd>
+    <p>
     Get the unique connection id, if connected.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The connection id.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getLastServiceTime"></a>
-    <strong>Client:getLastServiceTime()</strong>
+    <h2 class="function_name">Client:getLastServiceTime()</h2>
     </dt>
     <dd>
+    <p>
     Get the last time since network events were serviced.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Seconds since the last time events were serviced.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getMaxChannels"></a>
-    <strong>Client:getMaxChannels()</strong>
+    <h2 class="function_name">Client:getMaxChannels()</h2>
     </dt>
     <dd>
+    <p>
     Get the number of allocated channels.
  Channels are zero-indexed, e.g. 16 channels allocated means that the
  maximum channel that can be used is 15.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Number of allocated channels.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getTimeout"></a>
-    <strong>Client:getTimeout()</strong>
+    <h2 class="function_name">Client:getTimeout()</h2>
     </dt>
     <dd>
+    <p>
     Get the timeout for packets.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Time to wait for incoming packets in milliseconds. The
  initial default is 0.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getTotalReceivedData"></a>
-    <strong>Client:getTotalReceivedData()</strong>
+    <h2 class="function_name">Client:getTotalReceivedData()</h2>
     </dt>
     <dd>
+    <p>
     Get the total received data since the server was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total received data in bytes.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getTotalReceivedPackets"></a>
-    <strong>Client:getTotalReceivedPackets()</strong>
+    <h2 class="function_name">Client:getTotalReceivedPackets()</h2>
     </dt>
     <dd>
+    <p>
     Get the total number of packets (messages) received since the client was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total number of received packets.
+        </li>
     </ol>
 
 
@@ -476,56 +518,70 @@
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getTotalSentData"></a>
-    <strong>Client:getTotalSentData()</strong>
+    <h2 class="function_name">Client:getTotalSentData()</h2>
     </dt>
     <dd>
+    <p>
     Get the total sent data since the server was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total sent data in bytes.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:getTotalSentPackets"></a>
-    <strong>Client:getTotalSentPackets()</strong>
+    <h2 class="function_name">Client:getTotalSentPackets()</h2>
     </dt>
     <dd>
+    <p>
     Get the total number of packets (messages) sent since the client was created.
  Everytime a message is sent or received, the corresponding figure is incremented.
  Therefore, this is not necessarily an accurate indicator of how many packets were actually
  exchanged over the network.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total number of sent packets.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:log"></a>
-    <strong>Client:log(event, data)</strong>
+    <h2 class="function_name">Client:log(event, data)</h2>
     </dt>
     <dd>
+    <p>
     Log an event.
  Alias for Client.logger:log.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -552,12 +608,16 @@
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:on"></a>
-    <strong>Client:on(event, callback)</strong>
+    <h2 class="function_name">Client:on(event, callback)</h2>
     </dt>
     <dd>
+    <p>
     Add a callback to an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -574,9 +634,10 @@
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">function</span></span>
         The callback that was passed in.
+        </li>
     </ol>
 
 
@@ -590,12 +651,16 @@ client:on(<span class="string">"connect"</span>, <span class="keyword">function<
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:removeCallback"></a>
-    <strong>Client:removeCallback(callback)</strong>
+    <h2 class="function_name">Client:removeCallback(callback)</h2>
     </dt>
     <dd>
+    <p>
     Remove a specific callback for an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -608,9 +673,10 @@ client:on(<span class="string">"connect"</span>, <span class="keyword">function<
 
     <h3>Returns:</h3>
     <ol>
-
-           <span class="types"><span class="type">Whether</span></span>
-        or not the callback was removed.
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether or not the callback was removed.
+        </li>
     </ol>
 
 
@@ -625,12 +691,16 @@ client:removeCallback(callback)</pre>
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:resetSendSettings"></a>
-    <strong>Client:resetSendSettings()</strong>
+    <h2 class="function_name">Client:resetSendSettings()</h2>
     </dt>
     <dd>
+    <p>
     Reset all send options to their default values.
+    </p>
 
 
 
@@ -639,12 +709,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setBandwidthLimit"></a>
-    <strong>Client:setBandwidthLimit(incoming, outgoing)</strong>
+    <h2 class="function_name">Client:setBandwidthLimit(incoming, outgoing)</h2>
     </dt>
     <dd>
+    <p>
     Set the incoming and outgoing bandwidth limits.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -664,12 +738,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setDataFormat"></a>
-    <strong>Client:setDataFormat(event, format)</strong>
+    <h2 class="function_name">Client:setDataFormat(event, format)</h2>
     </dt>
     <dd>
+    <p>
     Set the data format for an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -689,13 +767,17 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setDefaultSendChannel"></a>
-    <strong>Client:setDefaultSendChannel(channel)</strong>
+    <h2 class="function_name">Client:setDefaultSendChannel(channel)</h2>
     </dt>
     <dd>
+    <p>
     Set the default send channel for all future outgoing messages.
  The initial default is 0.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -711,13 +793,17 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setDefaultSendMode"></a>
-    <strong>Client:setDefaultSendMode(mode)</strong>
+    <h2 class="function_name">Client:setDefaultSendMode(mode)</h2>
     </dt>
     <dd>
+    <p>
     Set the default send mode for all future outgoing messages. <br/>
  The initial default is "reliable".
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -739,15 +825,19 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setSendChannel"></a>
-    <strong>Client:setSendChannel(channel)</strong>
+    <h2 class="function_name">Client:setSendChannel(channel)</h2>
     </dt>
     <dd>
+    <p>
     Set the send channel for the next outgoing message. <br/>
  The channel will be reset after the next message. Channels are zero-indexed
  and cannot exceed the maximum number of channels allocated. The initial
  default is 0.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -763,14 +853,18 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setSendMode"></a>
-    <strong>Client:setSendMode(mode)</strong>
+    <h2 class="function_name">Client:setSendMode(mode)</h2>
     </dt>
     <dd>
+    <p>
     Set the send mode for the next outgoing message. <br/>
  The mode will be reset after the next message is sent. The initial default
  is "reliable".
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -792,12 +886,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:setTimeout"></a>
-    <strong>Client:setTimeout(timeout)</strong>
+    <h2 class="function_name">Client:setTimeout(timeout)</h2>
     </dt>
     <dd>
+    <p>
     Set the timeout to wait for packets.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -814,12 +912,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Client:update"></a>
-    <strong>Client:update()</strong>
+    <h2 class="function_name">Client:update()</h2>
     </dt>
     <dd>
+    <p>
     Check for network events and handle them.
+    </p>
 
 
 
@@ -828,12 +930,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:emitToAll"></a>
-    <strong>Server:emitToAll(event, data)</strong>
+    <h2 class="function_name">Server:emitToAll(event, data)</h2>
     </dt>
     <dd>
+    <p>
     Send a message to all peers.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -852,15 +958,19 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:emitToAllBut"></a>
-    <strong>Server:emitToAllBut(peer, event, data)</strong>
+    <h2 class="function_name">Server:emitToAllBut(peer, event, data)</h2>
     </dt>
     <dd>
+    <p>
     Send a message to all peers, except one.
  Useful for when the client does something locally, but other clients
  need to be updated at the same time. This way avoids duplicating objects by
  never sending its own event to itself in the first place.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -883,12 +993,16 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getClient"></a>
-    <strong>Server:getClient(peer)</strong>
+    <h2 class="function_name">Server:getClient(peer)</h2>
     </dt>
     <dd>
+    <p>
     Gets the Client object associated with an enet peer.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -901,21 +1015,26 @@ client:removeCallback(callback)</pre>
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
         Object associated with the peer.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getClientByConnectId"></a>
-    <strong>Server:getClientByConnectId(connectId)</strong>
+    <h2 class="function_name">Server:getClientByConnectId(connectId)</h2>
     </dt>
     <dd>
+    <p>
     Gets the Client object that has the given connection id.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -928,134 +1047,165 @@ client:removeCallback(callback)</pre>
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
 
 
 
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getLastServiceTime"></a>
-    <strong>Server:getLastServiceTime()</strong>
+    <h2 class="function_name">Server:getLastServiceTime()</h2>
     </dt>
     <dd>
+    <p>
     Get the last time since network events were serviced.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Seconds since the last time events were serviced.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getMaxChannels"></a>
-    <strong>Server:getMaxChannels()</strong>
+    <h2 class="function_name">Server:getMaxChannels()</h2>
     </dt>
     <dd>
+    <p>
     Get the number of allocated channels.
  Channels are zero-indexed, e.g. 16 channels allocated means that the
  maximum channel that can be used is 15.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Number of allocated channels.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getMaxPeers"></a>
-    <strong>Server:getMaxPeers()</strong>
+    <h2 class="function_name">Server:getMaxPeers()</h2>
     </dt>
     <dd>
+    <p>
     Get the number of allocated slots for peers.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Number of allocated slots.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getTimeout"></a>
-    <strong>Server:getTimeout()</strong>
+    <h2 class="function_name">Server:getTimeout()</h2>
     </dt>
     <dd>
+    <p>
     Get the timeout for packets.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         Time to wait for incoming packets in milliseconds. The
  initial default is 0.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getTotalReceivedData"></a>
-    <strong>Server:getTotalReceivedData()</strong>
+    <h2 class="function_name">Server:getTotalReceivedData()</h2>
     </dt>
     <dd>
+    <p>
     Get the total received data since the server was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total received data in bytes.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getTotalReceivedPackets"></a>
-    <strong>Server:getTotalReceivedPackets()</strong>
+    <h2 class="function_name">Server:getTotalReceivedPackets()</h2>
     </dt>
     <dd>
+    <p>
     Get the total number of packets (messages) received since the server was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total number of received packets.
+        </li>
     </ol>
 
 
@@ -1068,56 +1218,70 @@ client:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getTotalSentData"></a>
-    <strong>Server:getTotalSentData()</strong>
+    <h2 class="function_name">Server:getTotalSentData()</h2>
     </dt>
     <dd>
+    <p>
     Get the total sent data since the server was created.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total sent data in bytes.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:getTotalSentPackets"></a>
-    <strong>Server:getTotalSentPackets()</strong>
+    <h2 class="function_name">Server:getTotalSentPackets()</h2>
     </dt>
     <dd>
+    <p>
     Get the total number of packets (messages) sent since the server was created.
  Everytime a message is sent or received, the corresponding figure is incremented.
  Therefore, this is not necessarily an accurate indicator of how many packets were actually
  exchanged over the network.
+    </p>
 
 
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">number</span></span>
         The total number of sent packets.
+        </li>
     </ol>
 
 
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:log"></a>
-    <strong>Server:log(event, data)</strong>
+    <h2 class="function_name">Server:log(event, data)</h2>
     </dt>
     <dd>
+    <p>
     Log an event.
  Alias for Server.logger:log.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1144,12 +1308,16 @@ client:removeCallback(callback)</pre>
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:on"></a>
-    <strong>Server:on(event, callback)</strong>
+    <h2 class="function_name">Server:on(event, callback)</h2>
     </dt>
     <dd>
+    <p>
     Add a callback to an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1166,9 +1334,10 @@ client:removeCallback(callback)</pre>
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
            <span class="types"><span class="type">function</span></span>
         The callback that was passed in.
+        </li>
     </ol>
 
 
@@ -1182,12 +1351,16 @@ server:on(<span class="string">"connect"</span>, <span class="keyword">function<
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:removeCallback"></a>
-    <strong>Server:removeCallback(callback)</strong>
+    <h2 class="function_name">Server:removeCallback(callback)</h2>
     </dt>
     <dd>
+    <p>
     Remove a specific callback for an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1200,9 +1373,10 @@ server:on(<span class="string">"connect"</span>, <span class="keyword">function<
 
     <h3>Returns:</h3>
     <ol>
-
-           <span class="types"><span class="type">Whether</span></span>
-        or not the callback was removed.
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether or not the callback was removed.
+        </li>
     </ol>
 
 
@@ -1217,12 +1391,16 @@ server:removeCallback(callback)</pre>
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:resetSendSettings"></a>
-    <strong>Server:resetSendSettings()</strong>
+    <h2 class="function_name">Server:resetSendSettings()</h2>
     </dt>
     <dd>
+    <p>
     Reset all send options to their default values.
+    </p>
 
 
 
@@ -1231,12 +1409,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setBandwidthLimit"></a>
-    <strong>Server:setBandwidthLimit(incoming, outgoing)</strong>
+    <h2 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h2>
     </dt>
     <dd>
+    <p>
     Set the incoming and outgoing bandwidth limits.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1256,12 +1438,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setDataFormat"></a>
-    <strong>Server:setDataFormat(event, format)</strong>
+    <h2 class="function_name">Server:setDataFormat(event, format)</h2>
     </dt>
     <dd>
+    <p>
     Set the data format for an event.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1281,13 +1467,17 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setDefaultSendChannel"></a>
-    <strong>Server:setDefaultSendChannel(channel)</strong>
+    <h2 class="function_name">Server:setDefaultSendChannel(channel)</h2>
     </dt>
     <dd>
+    <p>
     Set the default send channel for all future outgoing messages.
  The initial default is 0.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1303,13 +1493,17 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setDefaultSendMode"></a>
-    <strong>Server:setDefaultSendMode(mode)</strong>
+    <h2 class="function_name">Server:setDefaultSendMode(mode)</h2>
     </dt>
     <dd>
+    <p>
     Set the default send mode for all future outgoing messages. <br/>
  The initial default is "reliable".
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1331,15 +1525,19 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setSendChannel"></a>
-    <strong>Server:setSendChannel(channel)</strong>
+    <h2 class="function_name">Server:setSendChannel(channel)</h2>
     </dt>
     <dd>
+    <p>
     Set the send channel for the next outgoing message. <br/>
  The channel will be reset after the next message. Channels are zero-indexed
  and cannot exceed the maximum number of channels allocated. The initial
  default is 0.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1355,14 +1553,18 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setSendMode"></a>
-    <strong>Server:setSendMode(mode)</strong>
+    <h2 class="function_name">Server:setSendMode(mode)</h2>
     </dt>
     <dd>
+    <p>
     Set the send mode for the next outgoing message. <br/>
  The mode will be reset after the next message is sent. The initial default
  is "reliable".
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1384,12 +1586,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:setTimeout"></a>
-    <strong>Server:setTimeout(timeout)</strong>
+    <h2 class="function_name">Server:setTimeout(timeout)</h2>
     </dt>
     <dd>
+    <p>
     Set the timeout to wait for packets.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1406,12 +1612,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server:update"></a>
-    <strong>Server:update()</strong>
+    <h2 class="function_name">Server:update()</h2>
     </dt>
     <dd>
+    <p>
     Check for network events and handle them.
+    </p>
 
 
 
@@ -1420,12 +1630,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "newClient"></a>
-    <strong>newClient(serverOrAddress, port, maxChannels)</strong>
+    <h2 class="function_name">newClient(serverOrAddress, port, maxChannels)</h2>
     </dt>
     <dd>
+    <p>
     Creates a new Client instance.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1446,8 +1660,9 @@ server:removeCallback(callback)</pre>
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
         A new Client object.
+        </li>
     </ol>
 
 
@@ -1475,12 +1690,16 @@ server:removeCallback(callback)</pre>
     </ul>
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "newServer"></a>
-    <strong>newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</strong>
+    <h2 class="function_name">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</h2>
     </dt>
     <dd>
+    <p>
     Creates a new Server object.
+    </p>
 
 
     <h3>Parameters:</h3>
@@ -1513,8 +1732,9 @@ server:removeCallback(callback)</pre>
 
     <h3>Returns:</h3>
     <ol>
-
+        <li>
         A new Server object.
+        </li>
     </ol>
 
 
@@ -1550,16 +1770,20 @@ server:removeCallback(callback)</pre>
     </ul>
 
 </dd>
+</div>
 </dl>
     <h2 class="section-header "><a name="Tables"></a>Tables</h2>
 
     <dl class="function">
+    <div class="function_def">
     <dt>
     <a name = "Client"></a>
-    <strong>Client</strong>
+    <h2 class="function_name">Client</h2>
     </dt>
     <dd>
+    <p>
     Connects to servers.
+    </p>
 
 
 
@@ -1568,12 +1792,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "SEND_MODES"></a>
-    <strong>SEND_MODES</strong>
+    <h2 class="function_name">SEND_MODES</h2>
     </dt>
     <dd>
+    <p>
     Valid modes for sending messages.
+    </p>
 
 
     <h3>Fields:</h3>
@@ -1594,12 +1822,16 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
+    <div class="function_def">
     <dt>
     <a name = "Server"></a>
-    <strong>Server</strong>
+    <h2 class="function_name">Server</h2>
     </dt>
     <dd>
+    <p>
     Manages all clients and receives network events.
+    </p>
 
 
 
@@ -1608,6 +1840,7 @@ server:removeCallback(callback)</pre>
 
 
 </dd>
+</div>
 </dl>
 
 
@@ -1615,7 +1848,7 @@ server:removeCallback(callback)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-07-29 02:57:09 </i>
+<i style="float:right;">Last updated 2016-07-29 18:48:37 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
