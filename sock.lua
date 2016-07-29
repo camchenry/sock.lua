@@ -425,6 +425,34 @@ function Server:getLastServiceTime()
     return self.host:service_time()
 end
 
+--- Get the number of allocated slots for peers.
+-- @treturn number Number of allocated slots.
+function Server:getMaxPeers()
+    return self.maxPeers 
+end
+
+--- Get the number of allocated channels.
+-- Channels are zero-indexed, e.g. 16 channels allocated means that the
+-- maximum channel that can be used is 15.
+-- @treturn number Number of allocated channels.
+function Server:getMaxChannels()
+    return self.maxChannels 
+end
+
+--- Set the timeout to wait for packets.
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
+-- default is 0.
+function Server:setTimeout(timeout)
+    self.timeout = timeout
+end
+
+--- Get the timeout for packets.
+-- @treturn number Time to wait for incoming packets in milliseconds. The
+-- initial default is 0.
+function Server:getTimeout()
+    return self.timeout
+end
+
 --- Connects to servers.
 local Client = {}
 local Client_mt = {__index = Client}
@@ -643,6 +671,36 @@ end
 -- @treturn number Seconds since the last time events were serviced.
 function Client:getLastServiceTime()
     return self.host:service_time()
+end
+
+--- Get the number of allocated channels.
+-- Channels are zero-indexed, e.g. 16 channels allocated means that the
+-- maximum channel that can be used is 15.
+-- @treturn number Number of allocated channels.
+function Client:getMaxChannels()
+    return self.maxChannels 
+end
+
+--- Set the timeout to wait for packets.
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
+-- default is 0.
+function Client:setTimeout(timeout)
+    self.timeout = timeout
+end
+
+--- Get the timeout for packets.
+-- @treturn number Time to wait for incoming packets in milliseconds. The
+-- initial default is 0.
+function Client:getTimeout()
+    return self.timeout
+end
+
+--- Get the unique connection id, if connected.
+-- @treturn number The connection id.
+function Client:getConnectId()
+    if self.server then
+        return self.server:connect_id()
+    end
 end
 
 --- Creates a new Server object.

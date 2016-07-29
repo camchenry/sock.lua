@@ -75,8 +75,20 @@
 	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:getConnectId">Client:getConnectId()</a></td>
+	<td class="summary">Get the unique connection id, if connected.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:getLastServiceTime">Client:getLastServiceTime()</a></td>
 	<td class="summary">Get the last time since network events were serviced.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getMaxChannels">Client:getMaxChannels()</a></td>
+	<td class="summary">Get the number of allocated channels.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getTimeout">Client:getTimeout()</a></td>
+	<td class="summary">Get the timeout for packets.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData()</a></td>
@@ -135,6 +147,10 @@
 	<td class="summary">Set the send mode for the next outgoing message.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:setTimeout">Client:setTimeout(timeout)</a></td>
+	<td class="summary">Set the timeout to wait for packets.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:update">Client:update()</a></td>
 	<td class="summary">Check for network events and handle them.</td>
 	</tr>
@@ -157,6 +173,18 @@
 	<tr>
 	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
 	<td class="summary">Get the last time since network events were serviced.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></td>
+	<td class="summary">Get the number of allocated channels.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getMaxPeers">Server:getMaxPeers()</a></td>
+	<td class="summary">Get the number of allocated slots for peers.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTimeout">Server:getTimeout()</a></td>
+	<td class="summary">Get the timeout for packets.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
@@ -213,6 +241,10 @@
 	<tr>
 	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
 	<td class="summary">Set the send mode for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setTimeout">Server:setTimeout(timeout)</a></td>
+	<td class="summary">Set the timeout to wait for packets.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:update">Server:update()</a></td>
@@ -316,6 +348,26 @@
 
 </dd>
     <dt>
+    <a name = "Client:getConnectId"></a>
+    <strong>Client:getConnectId()</strong>
+    </dt>
+    <dd>
+    Get the unique connection id, if connected.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        The connection id.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
     <a name = "Client:getLastServiceTime"></a>
     <strong>Client:getLastServiceTime()</strong>
     </dt>
@@ -329,6 +381,49 @@
 
            <span class="types"><span class="type">number</span></span>
         Seconds since the last time events were serviced.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:getMaxChannels"></a>
+    <strong>Client:getMaxChannels()</strong>
+    </dt>
+    <dd>
+    Get the number of allocated channels.
+ Channels are zero-indexed, e.g. 16 channels allocated means that the
+ maximum channel that can be used is 15.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Number of allocated channels.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Client:getTimeout"></a>
+    <strong>Client:getTimeout()</strong>
+    </dt>
+    <dd>
+    Get the timeout for packets.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Time to wait for incoming packets in milliseconds. The
+ initial default is 0.
     </ol>
 
 
@@ -698,6 +793,28 @@ client:removeCallback(callback)</pre>
 
 </dd>
     <dt>
+    <a name = "Client:setTimeout"></a>
+    <strong>Client:setTimeout(timeout)</strong>
+    </dt>
+    <dd>
+    Set the timeout to wait for packets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+            <span class="types"><span class="type">number</span></span>
+         Time to wait for incoming packets in milliseconds. The initial
+ default is 0.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Client:update"></a>
     <strong>Client:update()</strong>
     </dt>
@@ -836,6 +953,69 @@ client:removeCallback(callback)</pre>
 
            <span class="types"><span class="type">number</span></span>
         Seconds since the last time events were serviced.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:getMaxChannels"></a>
+    <strong>Server:getMaxChannels()</strong>
+    </dt>
+    <dd>
+    Get the number of allocated channels.
+ Channels are zero-indexed, e.g. 16 channels allocated means that the
+ maximum channel that can be used is 15.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Number of allocated channels.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:getMaxPeers"></a>
+    <strong>Server:getMaxPeers()</strong>
+    </dt>
+    <dd>
+    Get the number of allocated slots for peers.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Number of allocated slots.
+    </ol>
+
+
+
+
+</dd>
+    <dt>
+    <a name = "Server:getTimeout"></a>
+    <strong>Server:getTimeout()</strong>
+    </dt>
+    <dd>
+    Get the timeout for packets.
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+
+           <span class="types"><span class="type">number</span></span>
+        Time to wait for incoming packets in milliseconds. The
+ initial default is 0.
     </ol>
 
 
@@ -1205,6 +1385,28 @@ server:removeCallback(callback)</pre>
 
 </dd>
     <dt>
+    <a name = "Server:setTimeout"></a>
+    <strong>Server:setTimeout(timeout)</strong>
+    </dt>
+    <dd>
+    Set the timeout to wait for packets.
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+            <span class="types"><span class="type">number</span></span>
+         Time to wait for incoming packets in milliseconds. The initial
+ default is 0.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+    <dt>
     <a name = "Server:update"></a>
     <strong>Server:update()</strong>
     </dt>
@@ -1413,7 +1615,7 @@ server:removeCallback(callback)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-07-29 02:15:46 </i>
+<i style="float:right;">Last updated 2016-07-29 02:48:10 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
