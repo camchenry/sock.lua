@@ -532,7 +532,7 @@ end
 
 --- Send a message to the server.
 -- @tparam string name The event to trigger with this message.
--- @tparam table data The data to send.
+-- @param data The data to send.
 function Client:emit(name, data)
     local message = {name, data}
     local serializedMessage = nil
