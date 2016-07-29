@@ -393,6 +393,21 @@ end
 function Server:getTotalReceivedData()
     return self.host:total_received_data()
 end
+--- Get the total number of packets (messages) sent since the server was created.
+-- Everytime a message is sent or received, the corresponding figure is incremented.
+-- Therefore, this is not necessarily an accurate indicator of how many packets were actually
+-- exchanged over the network.
+-- @treturn number The total number of sent packets.
+function Server:getTotalSentPackets()
+    return self.packetsSent
+end
+
+--- Get the total number of packets (messages) received since the server was created.
+-- @treturn number The total number of received packets.
+-- @see Server:getTotalSentPackets
+function Server:getTotalReceivedPackets()
+    return self.packetsReceived
+end
 
 --- Set the incoming and outgoing bandwidth limits.
 -- @tparam number incoming The maximum incoming bandwidth in bytes.
@@ -594,6 +609,22 @@ function Client:getTotalReceivedData()
     return self.host:total_received_data()
 end
 
+--- Get the total number of packets (messages) sent since the client was created.
+-- Everytime a message is sent or received, the corresponding figure is incremented.
+-- Therefore, this is not necessarily an accurate indicator of how many packets were actually
+-- exchanged over the network.
+-- @treturn number The total number of sent packets.
+function Client:getTotalSentPackets()
+    return self.packetsSent
+end
+
+--- Get the total number of packets (messages) received since the client was created.
+-- @treturn number The total number of received packets.
+-- @see Client:getTotalSentPackets
+function Client:getTotalReceivedPackets()
+    return self.packetsReceived
+end
+
 --- Set the incoming and outgoing bandwidth limits.
 -- @tparam number incoming The maximum incoming bandwidth in bytes.
 -- @tparam number outgoing The maximum outgoing bandwidth in bytes.
@@ -652,10 +683,6 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
         timeout         = 0,
         maxChannels     = maxChannels,
         maxPeers        = maxPeers,
-        -- sendMode is one of "reliable", "unsequenced", or "unreliable". 
-        -- Reliable packets are guaranteed to arrive, and arrive in the order 
-        -- in which they are sent. Unsequenced packets are unreliable and 
-        -- have no guarantee on the order they arrive.
         sendMode        = "reliable",
         defaultSendMode = "reliable",
         sendChannel     = 0,
@@ -717,10 +744,6 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
         timeout         = 0,
         maxChannels     = maxChannels,
-        -- sendMode is one of "reliable", "unsequenced", or "unreliable". Reliable 
-        -- packets are guaranteed to arrive, and arrive in the order in which they 
-        -- are sent. Unsequenced packets are unreliable and have no guarantee on 
-        -- the order they arrive.
         sendMode        = "reliable",
         defaultSendMode = "reliable",
         sendChannel     = 0,
