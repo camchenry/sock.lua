@@ -268,10 +268,10 @@ function Server:update()
         elseif event.type == "receive" then
             local message = bitser.loads(event.data)
             local eventClient = self:getClient(event.peer)
-            local name = message[1]
+            local event = message[1]
             local data = message[2]
 
-            self:_activateTriggers(name, data, eventClient)
+            self:_activateTriggers(event, data, eventClient)
             self:log(event.type, message.data)
 
         elseif event.type == "disconnect" then
@@ -302,10 +302,10 @@ end
 -- never sending its own event to itself in the first place.
 -- @todo This function is bugged (I think.) It should accept clients, not peers.
 -- @tparam enet_peer peer The peer to not receive the message.
--- @tparam string name The event to trigger with this message. 
+-- @tparam string event The event to trigger with this message. 
 -- @param data The data to send.
-function Server:emitToAllBut(peer, name, data)
-    local message = {name, data}
+function Server:emitToAllBut(peer, event, data)
+    local message = {event, data}
     local serializedMessage = bitser.dumps(message)
 
     for i, p in pairs(self.peers) do
@@ -319,10 +319,10 @@ function Server:emitToAllBut(peer, name, data)
 end
 
 --- Send a message to all peers.
--- @tparam string name The event to trigger with this message.
+-- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
-function Server:emitToAll(name, data)
-    local message = {name, data}
+function Server:emitToAll(event, data)
+    local message = {event, data}
     local serializedMessage = bitser.dumps(message)
     
     self.packetsSent = self.packetsSent + #self.peers
@@ -333,15 +333,15 @@ function Server:emitToAll(name, data)
 end
 
 --- Add a callback to an event.
--- @tparam string name The event that will trigger the callback.
+-- @tparam string event The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
 -- @treturn function The callback that was passed in.
 --@usage
 --server:on("connect", function(data, client)
 --    print("Client connected!")
 --end)
-function Server:on(name, callback)
-    return self.listener:addCallback(name, callback)
+function Server:on(event, callback)
+    return self.listener:addCallback(event, callback)
 end
 
 --- Set the data format for an event.
@@ -351,13 +351,13 @@ function Server:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
 
-function Server:_activateTriggers(name, data, client)
-    local result = self.listener:trigger(name, data, client)
+function Server:_activateTriggers(event, data, client)
+    local result = self.listener:trigger(event, data, client)
 
     self.packetsReceived = self.packetsReceived + 1
 
     if not result then
-        self:log("warning", "Tried to activate trigger: '" .. name .. "' but it does not exist.")
+        self:log("warning", "Tried to activate trigger: '" .. tostring(event) .. "' but it does not exist.")
     end
 end
 
@@ -515,10 +515,10 @@ function Client:update()
             self:log(event.type, "Connected to " .. tostring(self.server))
         elseif event.type == "receive" then
             local message = bitser.loads(event.data)
-            local name = message[1]
+            local event = message[1]
             local data = message[2]
 
-            self:_activateTriggers(name, data)
+            self:_activateTriggers(event, data)
             self:log(event.type, message.data)
 
         elseif event.type == "disconnect" then
@@ -531,10 +531,10 @@ function Client:update()
 end
 
 --- Send a message to the server.
--- @tparam string name The event to trigger with this message.
+-- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
-function Client:emit(name, data)
-    local message = {name, data}
+function Client:emit(event, data)
+    local message = {event, data}
     local serializedMessage = nil
 
     -- 'Data' = binary data class in Love
@@ -552,15 +552,15 @@ function Client:emit(name, data)
 end
 
 --- Add a callback to an event.
--- @tparam string name The event that will trigger the callback.
+-- @tparam string event The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
 -- @treturn function The callback that was passed in.
 --@usage
 --client:on("connect", function(data)
 --    print("Connected to the server!")
 --end)
-function Client:on(name, callback)
-    return self.listener:addCallback(name, callback)
+function Client:on(event, callback)
+    return self.listener:addCallback(event, callback)
 end
 
 --- Set the data format for an event.
@@ -570,13 +570,13 @@ function Client:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
 
-function Client:_activateTriggers(name, data)
-    local result = self.listener:trigger(name, data, client)
+function Client:_activateTriggers(event, data)
+    local result = self.listener:trigger(event, data, client)
 
     self.packetsReceived = self.packetsReceived + 1
 
     if not result then
-        self:log("warning", "Tried to activate trigger: '" .. name .. "' but it does not exist.")
+        self:log("warning", "Tried to activate trigger: '" .. tostring(event) .. "' but it does not exist.")
     end
 end
 
@@ -645,14 +645,14 @@ function Client:getLastServiceTime()
     return self.host:service_time()
 end
 
---- Creates a new server instance
+--- Creates a new Server object.
 -- @tparam ?string address Hostname or IP address to bind to. (default: "localhost")
 -- @tparam ?number port Port to listen to for data. (default: 22122) 
 -- @tparam ?number maxPeers Maximum peers that can connect to the server. (default: 64)
 -- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
 -- @tparam ?number inBandwidth Maximum incoming bandwidth (default: 0)
 -- @tparam ?number outBandwidth Maximum outgoing bandwidth (default: 0)
--- @return A new Server object
+-- @return A new Server object.
 -- @see Server
 -- @usage 
 --local sock = require "sock"
@@ -718,11 +718,11 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
     return server
 end
 
---- Creates a new Client instance
+--- Creates a new Client instance.
 -- @tparam ?string/peer serverOrAddress Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
 -- @tparam ?number port port number of the server to connect to. (default: 22122)
 -- @tparam ?number maxChannels maximum channels available to send and receive data. (default: 1)
--- @return A new Client object
+-- @return A new Client object.
 -- @see Client
 -- @usage
 --local sock = require "sock"

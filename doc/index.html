@@ -71,7 +71,7 @@
 	<td class="summary">Disconnect from the server, if connected.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Client:emit">Client:emit(name, data)</a></td>
+	<td class="name" ><a href="#Client:emit">Client:emit(event, data)</a></td>
 	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
@@ -99,7 +99,7 @@
 	<td class="summary">Log an event.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Client:on">Client:on(name, callback)</a></td>
+	<td class="name" ><a href="#Client:on">Client:on(event, callback)</a></td>
 	<td class="summary">Add a callback to an event.</td>
 	</tr>
 	<tr>
@@ -139,11 +139,11 @@
 	<td class="summary">Check for network events and handle them.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(name, data)</a></td>
+	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(event, data)</a></td>
 	<td class="summary">Send a message to all peers.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(peer, name, data)</a></td>
+	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(peer, event, data)</a></td>
 	<td class="summary">Send a message to all peers, except one.</td>
 	</tr>
 	<tr>
@@ -179,7 +179,7 @@
 	<td class="summary">Log an event.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Server:on">Server:on(name, callback)</a></td>
+	<td class="name" ><a href="#Server:on">Server:on(event, callback)</a></td>
 	<td class="summary">Add a callback to an event.</td>
 	</tr>
 	<tr>
@@ -220,11 +220,11 @@
 	</tr>
 	<tr>
 	<td class="name" ><a href="#newClient">newClient(serverOrAddress, port, maxChannels)</a></td>
-	<td class="summary">Creates a new Client instance</td>
+	<td class="summary">Creates a new Client instance.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#newServer">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</a></td>
-	<td class="summary">Creates a new server instance</td>
+	<td class="summary">Creates a new Server object.</td>
 	</tr>
 </table>
 <h2><a href="#Tables">Tables</a></h2>
@@ -293,7 +293,7 @@
 </dd>
     <dt>
     <a name = "Client:emit"></a>
-    <strong>Client:emit(name, data)</strong>
+    <strong>Client:emit(event, data)</strong>
     </dt>
     <dd>
     Send a message to the server.
@@ -301,7 +301,7 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
+        <li><span class="parameter">event</span>
             <span class="types"><span class="type">string</span></span>
          The event to trigger with this message.
         </li>
@@ -459,7 +459,7 @@
 </dd>
     <dt>
     <a name = "Client:on"></a>
-    <strong>Client:on(name, callback)</strong>
+    <strong>Client:on(event, callback)</strong>
     </dt>
     <dd>
     Add a callback to an event.
@@ -467,7 +467,7 @@
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
+        <li><span class="parameter">event</span>
             <span class="types"><span class="type">string</span></span>
          The event that will trigger the callback.
         </li>
@@ -713,7 +713,7 @@ client:removeCallback(callback)</pre>
 </dd>
     <dt>
     <a name = "Server:emitToAll"></a>
-    <strong>Server:emitToAll(name, data)</strong>
+    <strong>Server:emitToAll(event, data)</strong>
     </dt>
     <dd>
     Send a message to all peers.
@@ -721,7 +721,7 @@ client:removeCallback(callback)</pre>
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
+        <li><span class="parameter">event</span>
             <span class="types"><span class="type">string</span></span>
          The event to trigger with this message.
         </li>
@@ -737,7 +737,7 @@ client:removeCallback(callback)</pre>
 </dd>
     <dt>
     <a name = "Server:emitToAllBut"></a>
-    <strong>Server:emitToAllBut(peer, name, data)</strong>
+    <strong>Server:emitToAllBut(peer, event, data)</strong>
     </dt>
     <dd>
     Send a message to all peers, except one.
@@ -752,7 +752,7 @@ client:removeCallback(callback)</pre>
             <span class="types"><span class="type">enet_peer</span></span>
          The peer to not receive the message.
         </li>
-        <li><span class="parameter">name</span>
+        <li><span class="parameter">event</span>
             <span class="types"><span class="type">string</span></span>
          The event to trigger with this message.
         </li>
@@ -966,7 +966,7 @@ client:removeCallback(callback)</pre>
 </dd>
     <dt>
     <a name = "Server:on"></a>
-    <strong>Server:on(name, callback)</strong>
+    <strong>Server:on(event, callback)</strong>
     </dt>
     <dd>
     Add a callback to an event.
@@ -974,7 +974,7 @@ client:removeCallback(callback)</pre>
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">name</span>
+        <li><span class="parameter">event</span>
             <span class="types"><span class="type">string</span></span>
          The event that will trigger the callback.
         </li>
@@ -1223,7 +1223,7 @@ server:removeCallback(callback)</pre>
     <strong>newClient(serverOrAddress, port, maxChannels)</strong>
     </dt>
     <dd>
-    Creates a new Client instance
+    Creates a new Client instance.
 
 
     <h3>Parameters:</h3>
@@ -1245,7 +1245,7 @@ server:removeCallback(callback)</pre>
     <h3>Returns:</h3>
     <ol>
 
-        A new Client object
+        A new Client object.
     </ol>
 
 
@@ -1278,7 +1278,7 @@ server:removeCallback(callback)</pre>
     <strong>newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</strong>
     </dt>
     <dd>
-    Creates a new server instance
+    Creates a new Server object.
 
 
     <h3>Parameters:</h3>
@@ -1312,7 +1312,7 @@ server:removeCallback(callback)</pre>
     <h3>Returns:</h3>
     <ol>
 
-        A new Server object
+        A new Server object.
     </ol>
 
 
@@ -1413,7 +1413,7 @@ server:removeCallback(callback)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-07-29 02:07:13 </i>
+<i style="float:right;">Last updated 2016-07-29 02:15:46 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
