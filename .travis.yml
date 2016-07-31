@@ -12,10 +12,11 @@ before_install:
     - pip install hererocks
     - hererocks lua_install -r^ --$LUA
     - export PATH=$PATH:$PWD/lua_install/bin
+    - git clone https://github.com/lsalzman/enet.git
 
 install:
     - luarocks install busted
-    - luarocks install enet
+    - luarocks install enet ENET_DIR=./enet
 
 script:
     - busted --verbose
