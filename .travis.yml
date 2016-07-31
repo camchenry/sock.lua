@@ -19,8 +19,8 @@ before_install:
     - ./configure && sudo make && sudo make install
 
 install:
-    - sudo luarocks install busted
-    - sudo luarocks install enet
+    - luarocks install busted
+    - luarocks install enet
 
 script:
     - busted --verbose
