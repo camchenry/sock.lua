@@ -23,5 +23,5 @@ install:
     - luarocks install enet
 
 script:
-    - busted --verbose
+    - busted --verbose -p ".*%.lua$" spec
 
