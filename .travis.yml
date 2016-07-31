@@ -16,7 +16,7 @@ before_install:
 
 install:
     - luarocks install busted
-    - luarocks install enet ENET_INCDIR=./enet/include
+    - luarocks install enet ENET_DIR=.
 
 script:
     - busted --verbose
