@@ -17,6 +17,7 @@ before_install:
     - cd enet
     - autoreconf -vfi
     - ./configure && sudo make && sudo make install
+    - cd ..
 
 install:
     - luarocks install busted
