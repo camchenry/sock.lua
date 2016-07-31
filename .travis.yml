@@ -14,7 +14,7 @@ before_install:
   - export PATH=$PATH:$PWD/lua_install/bin
 
 install:
-  - luarocks installed busted
+  - luarocks install busted
 
 script:
   - busted --verbose
