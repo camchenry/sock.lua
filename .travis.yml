@@ -1,5 +1,5 @@
 language: python
-sudo: false
+sudo: required
 
 env:
     - LUA="lua=5.1"
@@ -13,14 +13,14 @@ before_install:
     - hererocks lua_install -r^ --$LUA
     - export PATH=$PATH:$PWD/lua_install/bin
     - git clone https://github.com/lsalzman/enet.git
-    - apt-get install -y dh-autoreconf
+    - sudo apt-get install -y dh-autoreconf
     - cd enet
     - autoreconf -vfi
-    - ./configure && make && make install
+    - ./configure && sudo make && sudo make install
 
 install:
-    - luarocks install busted
-    - luarocks install enet
+    - sudo luarocks install busted
+    - sudo luarocks install enet
 
 script:
     - busted --verbose
