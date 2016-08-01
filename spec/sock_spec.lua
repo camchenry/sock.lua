@@ -35,3 +35,65 @@ describe('sock.lua core', function()
         assert.equal(server.maxChannels, 1)
     end)
 end)
+
+describe("clients", function()
+    it("should add callbacks", function()
+        local client = sock.newClient()
+
+        local helloCallback = function()
+            print("hello")
+        end
+
+        local callback = client:on("helloMessage", helloCallback)
+        assert.equal(helloCallback, callback)
+        
+        local found = false
+        for i, callbacks in pairs(client.listener.triggers) do
+            for j, callback in pairs(callbacks) do
+                if callback == helloCallback then
+                    found = true
+                end
+            end
+        end
+        assert.True(found)
+    end)
+
+    it("should remove callbacks", function()
+        local client = sock.newClient()
+
+        local helloCallback = function()
+            print("hello")
+        end
+
+        local callback = client:on("helloMessage", helloCallback)
+
+        assert.True(client:removeCallback(callback))
+    end)
+
+    it("should trigger callbacks", function()
+        local client = sock.newClient()
+
+        local handled = false
+        local handleConnect = function()
+            handled = true
+        end
+
+        client:on("connect", handleConnect)
+        client:_activateTriggers("connect", "connection event test")
+
+        assert.True(handled)
+    end)
+
+    it("should connect to a server", function()
+        local client = sock.newClient("localhost", 22122)
+        local server = sock.newServer("localhost", 22122)
+
+        assert.falsy(client.connectId)
+        client:connect()
+        client:update()
+        server:update()
+        client:update()
+
+        assert.True(client.connectId >= 0)
+    end)
+end)
