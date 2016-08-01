@@ -83,17 +83,4 @@ describe("clients", function()
 
         assert.True(handled)
     end)
-
-    it("should connect to a server", function()
-        local client = sock.newClient("0.0.0.0", 22122)
-        local server = sock.newServer("0.0.0.0", 22122)
-
-        assert.falsy(client.connectId)
-        client:connect()
-        client:update()
-        server:update()
-        client:update()
-
-        assert.True(client.connectId >= 0)
-    end)
 end)
