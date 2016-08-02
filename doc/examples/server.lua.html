@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>sock.lua Documentation</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="../ldoc.css">
+</head>
+<body>
+
+<div id="container">
+
+<!-- Header -->
+<header id="header">
+    <h1>sock.lua</h1>
+</header>
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+
+
+
+<h2>Examples</h2>
+<ul class="nowrap">
+  <li><a href="../examples/client.lua.html">client.lua</a></li>
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+<li><strong>server.lua</strong></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../index.html">sock</a></li>
+</ul>
+<h2>Topics</h2>
+<ul class="">
+  <li><a href="../topics/README.md.html">README</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+    <h2>server.lua</h2>
+<pre>
+<span class="comment">-- libraries
+</span>sock = <span class="global">require</span> <span class="string">"sock"</span>
+
+<span class="keyword">function</span> love.<span class="global">load</span>()
+    <span class="comment">-- how often an update is sent out
+</span>    tickRate = <span class="number">1</span>/<span class="number">30</span>
+    tick = <span class="number">0</span>
+
+    server = sock.newServer(<span class="string">"*"</span>, <span class="number">22122</span>, <span class="number">2</span>)
+
+    server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, peer)
+        <span class="comment">-- tell the peer what their index is
+</span>        peer:emit(<span class="string">"playerNum"</span>, peer.server:index())
+    <span class="keyword">end</span>)
+
+    <span class="comment">-- receive info on where a player is located
+</span>    server:on(<span class="string">"mouseY"</span>, <span class="keyword">function</span>(data, peer)
+        <span class="keyword">local</span> mouseY = data
+        <span class="keyword">local</span> index = peer.server:index()
+
+        players[index].y = mouseY
+    <span class="keyword">end</span>)
+
+
+    <span class="keyword">local</span> xMargin = <span class="number">50</span>
+
+    playerSize = {
+        w = <span class="number">20</span>,
+        h = <span class="number">100</span>
+    }
+
+    ballSize = {
+        w = <span class="number">15</span>,
+        h = <span class="number">15</span>
+    }
+
+    players = {
+        {x = xMargin,
+         y = love.graphics.getHeight()/<span class="number">2</span>
+        },
+
+        {x = love.graphics.getWidth() - xMargin,
+         y = love.graphics.getHeight()/<span class="number">2</span>
+        }
+    }
+
+    ball = {
+        x = love.graphics.getWidth()/<span class="number">2</span>,
+        y = love.graphics.getHeight()/<span class="number">2</span>,
+        vx = <span class="number">150</span>,
+        vy = <span class="number">150</span>
+    }
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> love.update(dt)
+    server:update()
+
+    ball.x = ball.x + ball.vx * dt
+    ball.y = ball.y + ball.vy * dt
+
+    <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+        <span class="keyword">if</span> ball.x &lt; player.x + playerSize.w <span class="keyword">and</span>
+            ball.x + ballSize.w &gt; player.x <span class="keyword">and</span>
+            ball.y &lt; player.y + playerSize.h <span class="keyword">and</span>
+            ball.y + ballSize.h &gt; player.y <span class="keyword">then</span>
+
+            ball.vx = ball.vx * -<span class="number">1</span>
+            ball.vy = ball.vy * -<span class="number">1</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.x &lt; <span class="number">0</span> <span class="keyword">then</span>
+        ball.x = love.graphics.getWidth()/<span class="number">2</span>
+        ball.y = love.graphics.getHeight()/<span class="number">2</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.x &gt; love.graphics.getWidth() <span class="keyword">then</span>
+        ball.x = love.graphics.getWidth()/<span class="number">2</span>
+        ball.y = love.graphics.getHeight()/<span class="number">2</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.y &lt; <span class="number">0</span> <span class="keyword">then</span>
+        ball.y = <span class="number">0</span>
+        ball.vy = ball.vy * -<span class="number">1</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.y &gt; love.graphics.getHeight() <span class="keyword">then</span>
+        ball.y = love.graphics.getHeight()
+        ball.vy = ball.vy * -<span class="number">1</span>
+    <span class="keyword">end</span>
+
+    tick = tick + dt
+
+    <span class="keyword">if</span> tick &gt;= tickRate <span class="keyword">then</span>
+        tick = <span class="number">0</span>
+
+        <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+            server:emitToAll(<span class="string">"playerState"</span>, {index = k, player = player})
+        <span class="keyword">end</span>
+
+        server:emitToAll(<span class="string">"ballState"</span>, ball)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> love.draw()
+    <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+        <span class="keyword">local</span> w, h = playerSize.w, playerSize.h
+        love.graphics.rectangle(<span class="string">'fill'</span>, player.x - w/<span class="number">2</span>, player.y - h/<span class="number">2</span>, w, h)
+    <span class="keyword">end</span>
+
+    <span class="keyword">local</span> w, h = ballSize.w, ballSize.h
+    love.graphics.rectangle(<span class="string">'fill'</span>, ball.x - w/<span class="number">2</span>, ball.y - h/<span class="number">2</span>, w, h)
+
+    love.graphics.<span class="global">print</span>(<span class="string">"Hello"</span>, <span class="number">5</span>, <span class="number">5</span>)
+<span class="keyword">end</span></pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-08-01 20:55:11 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
