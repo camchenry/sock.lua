@@ -447,7 +447,7 @@ function Server:setTimeout(timeout)
 end
 
 --- Get the timeout for packets.
--- @treturn number Time to wait for incoming packets in milliseconds. The
+-- @treturn number Time to wait for incoming packets in milliseconds.
 -- initial default is 0.
 function Server:getTimeout()
     return self.timeout
@@ -689,7 +689,7 @@ function Client:setTimeout(timeout)
 end
 
 --- Get the timeout for packets.
--- @treturn number Time to wait for incoming packets in milliseconds. The
+-- @treturn number Time to wait for incoming packets in milliseconds.
 -- initial default is 0.
 function Client:getTimeout()
     return self.timeout
