@@ -860,7 +860,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
     -- Second form: (enet peer)
     elseif type(serverOrAddress) == "userdata" then
-        client.server = serverOrAddress
+        client.connection = serverOrAddress
         client.connectId = client.server:connect_id()
     end
 
