@@ -52,6 +52,22 @@ local function zipTable(items, keys)
     return data
 end
 
+--- All of the possible connection statuses for a client connection.
+-- @see Client:getState
+local CONNECTION_STATUSES = {
+    "disconnected",             -- Disconnected from the server.
+    "connecting",               -- In the process of connecting to the server.
+    "acknowledging_connect",    -- 
+    "connection_pending",       --
+    "connection_succeeded",     --
+    "connected",                -- Successfully connected to the server.
+    "disconnect_later",         -- Disconnecting, but only after sending all queued packets.
+    "disconnecting",            -- In the process of disconnecting from the server.
+    "acknowledging_disconnect", --
+    "zombie",                   --
+    "unknown",                  --
+}
+
 --- Valid modes for sending messages.
 local SEND_MODES = {
     "reliable",     -- Message is guaranteed to arrive, and arrive in the order in which it is sent.
@@ -705,6 +721,7 @@ end
 
 --- Get the current connection state, if connected.
 -- @treturn string The connection state.
+-- @see CONNECTION_STATUSES
 function Client:getState()
     if self.connection then
         return self.connection:state()
@@ -812,7 +829,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         port            = nil,
         host            = nil,
 
-        server          = nil,
+        connection      = nil,
         connectId       = nil,
 
         timeout         = 0,
