@@ -516,8 +516,8 @@ end
 -- @todo Actually return the status.
 function Client:connect()
     -- number of channels for the client and server must match
-    self.server = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
-    self.connectId = self.server:connect_id()
+    self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
+    self.connectId = self.connection:connect_id()
 
     return true
 end
@@ -527,7 +527,7 @@ end
 -- @todo Pass the code into the disconnect callback on the server
 function Client:disconnect(code)
     code = code or 0
-    self.server:disconnect_later(code)
+    self.connection:disconnect_later(code)
     if self.host then
         self.host:flush()
     end
@@ -540,7 +540,7 @@ function Client:update()
     while event do
         if event.type == "connect" then
             self:_activateTriggers("connect", event.data)
-            self:log(event.type, "Connected to " .. tostring(self.server))
+            self:log(event.type, "Connected to " .. tostring(self.connection))
         elseif event.type == "receive" then
             local message = bitser.loads(event.data)
             local event = message[1]
@@ -551,7 +551,7 @@ function Client:update()
 
         elseif event.type == "disconnect" then
             self:_activateTriggers("disconnect", event.data)
-            self:log(event.type, "Disconnected from " .. tostring(self.server))
+            self:log(event.type, "Disconnected from " .. tostring(self.connection))
         end
 
         event = self.host:service()
@@ -572,7 +572,7 @@ function Client:emit(event, data)
         serializedMessage = bitser.dumps(message)
     end
 
-    self.server:send(serializedMessage, self.sendChannel, self.sendMode)
+    self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
 
     self.packetsSent = self.packetsSent + 1
 
@@ -698,8 +698,16 @@ end
 --- Get the unique connection id, if connected.
 -- @treturn number The connection id.
 function Client:getConnectId()
-    if self.server then
-        return self.server:connect_id()
+    if self.connection then
+        return self.connection:connect_id()
+    end
+end
+
+--- Get the current connection state, if connected.
+-- @treturn string The connection state.
+function Client:getState()
+    if self.connection then
+        return self.connection:state()
     end
 end
 

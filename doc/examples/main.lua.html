@@ -28,6 +28,8 @@
 <ul class="nowrap">
   <li><a href="../examples/client.lua.html">client.lua</a></li>
 <li><strong>main.lua</strong></li>
+<li><strong>main.lua</strong></li>
+<li><strong>main.lua</strong></li>
   <li><a href="../examples/server.lua.html">server.lua</a></li>
 </ul>
 <h2>Modules</h2>
@@ -46,40 +48,122 @@
 
     <h2>main.lua</h2>
 <pre>
-<span class="comment">-- Loading sock from root directory relative to this one
-</span><span class="comment">-- This is not required in your own projects
-</span><span class="global">package</span>.path = <span class="global">package</span>.path .. <span class="string">";../../?.lua"</span>
-<span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
+<span class="comment">-- libraries
+</span>sock = <span class="global">require</span> <span class="string">"sock"</span>
 
 <span class="keyword">function</span> love.<span class="global">load</span>()
-    client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">22122</span>)
-    server = sock.newServer(<span class="string">"localhost"</span>, <span class="number">22122</span>)
+    <span class="comment">-- how often an update is sent out
+</span>    tickRate = <span class="number">1</span>/<span class="number">30</span>
+    tick = <span class="number">0</span>
 
-    <span class="comment">-- If the connect/disconnect callbacks aren't defined some warnings will
-</span>    <span class="comment">-- be thrown, but nothing bad will happen.
-</span>
-    <span class="comment">-- Called when someone connects to the server
-</span>    server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, peer)
-        <span class="keyword">local</span> msg = <span class="string">"Hello from server!"</span>
-        peer:emit(<span class="string">"hello"</span>, msg)
+    server = sock.newServer(<span class="string">"*"</span>, <span class="number">22122</span>, <span class="number">2</span>)
+
+    server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, peer)
+        <span class="comment">-- tell the peer what their index is
+</span>        peer:emit(<span class="string">"playerNum"</span>, peer.server:index())
     <span class="keyword">end</span>)
 
-    <span class="comment">-- Called when a connection is made to the server
-</span>    client:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data)
-        <span class="global">print</span>(<span class="string">"Client connected to the server."</span>)
+    <span class="comment">-- receive info on where a player is located
+</span>    server:on(<span class="string">"mouseY"</span>, <span class="keyword">function</span>(data, peer)
+        <span class="keyword">local</span> mouseY = data
+        <span class="keyword">local</span> index = peer.server:index()
+
+        players[index].y = mouseY
     <span class="keyword">end</span>)
 
-    <span class="comment">-- Custom callback, called whenever you send the event from the server
-</span>    client:on(<span class="string">"hello"</span>, <span class="keyword">function</span>(msg)
-        <span class="global">print</span>(msg)
-    <span class="keyword">end</span>)
 
-    client:connect()
+    <span class="keyword">local</span> xMargin = <span class="number">50</span>
+
+    playerSize = {
+        w = <span class="number">20</span>,
+        h = <span class="number">100</span>
+    }
+
+    ballSize = {
+        w = <span class="number">15</span>,
+        h = <span class="number">15</span>
+    }
+
+    players = {
+        {x = xMargin,
+         y = love.graphics.getHeight()/<span class="number">2</span>
+        },
+
+        {x = love.graphics.getWidth() - xMargin,
+         y = love.graphics.getHeight()/<span class="number">2</span>
+        }
+    }
+
+    ball = {
+        x = love.graphics.getWidth()/<span class="number">2</span>,
+        y = love.graphics.getHeight()/<span class="number">2</span>,
+        vx = <span class="number">150</span>,
+        vy = <span class="number">150</span>
+    }
 <span class="keyword">end</span>
 
 <span class="keyword">function</span> love.update(dt)
     server:update()
-    client:update()
+
+    ball.x = ball.x + ball.vx * dt
+    ball.y = ball.y + ball.vy * dt
+
+    <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+        <span class="keyword">if</span> ball.x &lt; player.x + playerSize.w <span class="keyword">and</span>
+            ball.x + ballSize.w &gt; player.x <span class="keyword">and</span>
+            ball.y &lt; player.y + playerSize.h <span class="keyword">and</span>
+            ball.y + ballSize.h &gt; player.y <span class="keyword">then</span>
+
+            ball.vx = ball.vx * -<span class="number">1</span>
+            ball.vy = ball.vy * -<span class="number">1</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.x &lt; <span class="number">0</span> <span class="keyword">then</span>
+        ball.x = love.graphics.getWidth()/<span class="number">2</span>
+        ball.y = love.graphics.getHeight()/<span class="number">2</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.x &gt; love.graphics.getWidth() <span class="keyword">then</span>
+        ball.x = love.graphics.getWidth()/<span class="number">2</span>
+        ball.y = love.graphics.getHeight()/<span class="number">2</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.y &lt; <span class="number">0</span> <span class="keyword">then</span>
+        ball.y = <span class="number">0</span>
+        ball.vy = ball.vy * -<span class="number">1</span>
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> ball.y &gt; love.graphics.getHeight() <span class="keyword">then</span>
+        ball.y = love.graphics.getHeight()
+        ball.vy = ball.vy * -<span class="number">1</span>
+    <span class="keyword">end</span>
+
+    tick = tick + dt
+
+    <span class="keyword">if</span> tick &gt;= tickRate <span class="keyword">then</span>
+        tick = <span class="number">0</span>
+
+        <span class="global">print</span>(server:getLastServiceTime())
+
+        <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+            server:emitToAll(<span class="string">"playerState"</span>, {index = k, player = player})
+        <span class="keyword">end</span>
+
+        server:emitToAll(<span class="string">"ballState"</span>, ball)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> love.draw()
+    <span class="keyword">for</span> k, player <span class="keyword">in</span> <span class="global">pairs</span>(players) <span class="keyword">do</span>
+        <span class="keyword">local</span> w, h = playerSize.w, playerSize.h
+        love.graphics.rectangle(<span class="string">'fill'</span>, player.x - w/<span class="number">2</span>, player.y - h/<span class="number">2</span>, w, h)
+    <span class="keyword">end</span>
+
+    <span class="keyword">local</span> w, h = ballSize.w, ballSize.h
+    love.graphics.rectangle(<span class="string">'fill'</span>, ball.x - w/<span class="number">2</span>, ball.y - h/<span class="number">2</span>, w, h)
+
+    love.graphics.<span class="global">print</span>(<span class="string">"Hello"</span>, <span class="number">5</span>, <span class="number">5</span>)
 <span class="keyword">end</span></pre>
 
 
@@ -87,7 +171,7 @@
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-08-01 20:55:11 </i>
+<i style="float:right;">Last updated 2016-08-03 15:51:58 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
