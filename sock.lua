@@ -742,7 +742,7 @@ end
 function Client:getMaxChannels()
     return self.maxChannels 
 end
---
+
 --- Set the maximum number of channels.
 -- @tparam number limit The maximum number of channels allowed. If it is 0,
 -- then the maximum number of channels available on the system will be used.
