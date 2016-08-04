@@ -73,6 +73,14 @@
 	<td class="summary">Disconnect from the server, if connected.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:disconnectLater">Client:disconnectLater(code)</a></td>
+	<td class="summary">Disconnect from the server, if connected.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:disconnectNow">Client:disconnectNow(code)</a></td>
+	<td class="summary">Disconnect from the server, if connected.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:emit">Client:emit(event, data)</a></td>
 	<td class="summary">Send a message to the server.</td>
 	</tr>
@@ -81,20 +89,36 @@
 	<td class="summary">Get the unique connection id, if connected.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:getIndex">Client:getIndex()</a></td>
+	<td class="summary">Get the index of the enet peer.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:getLastServiceTime">Client:getLastServiceTime()</a></td>
-	<td class="summary">Get the last time since network events were serviced.</td>
+	<td class="summary">Get the last time when network events were serviced.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getMaxChannels">Client:getMaxChannels()</a></td>
 	<td class="summary">Get the number of allocated channels.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Client:getState">Client:getState()</a></td>
-	<td class="summary">Get the current connection state, if connected.</td>
+	<td class="name" ><a href="#Client:getMessageTimeout">Client:getMessageTimeout()</a></td>
+	<td class="summary">Get the timeout for packets.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Client:getTimeout">Client:getTimeout()</a></td>
-	<td class="summary">Get the timeout for packets.</td>
+	<td class="name" ><a href="#Client:getPeerByIndex">Client:getPeerByIndex(index)</a></td>
+	<td class="summary">Get the enet_peer that has the given index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getRoundTripTime">Client:getRoundTripTime()</a></td>
+	<td class="summary">Return the round trip time (RTT, or ping) to the server, if connected.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getSocketAddress">Client:getSocketAddress()</a></td>
+	<td class="summary">Get the socket address of the host.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getState">Client:getState()</a></td>
+	<td class="summary">Get the current connection state, if connected.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData()</a></td>
@@ -145,6 +169,14 @@
 	<td class="summary">Set the default send mode for all future outgoing messages.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:setMessageTimeout">Client:setMessageTimeout(timeout)</a></td>
+	<td class="summary">Set the timeout to wait for packets.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setPingInterval">Client:setPingInterval(interval)</a></td>
+	<td class="summary">Set how frequently to ping the server.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:setSendChannel">Client:setSendChannel(channel)</a></td>
 	<td class="summary">Set the send channel for the next outgoing message.</td>
 	</tr>
@@ -153,8 +185,12 @@
 	<td class="summary">Set the send mode for the next outgoing message.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Client:setTimeout">Client:setTimeout(timeout)</a></td>
-	<td class="summary">Set the timeout to wait for packets.</td>
+	<td class="name" ><a href="#Client:setThrottle">Client:setThrottle(interval, acceleration, deceleration)</a></td>
+	<td class="summary">Change the probability at which unreliable packets should not be dropped.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setTimeout">Client:setTimeout(limit, minimum, maximum)</a></td>
+	<td class="summary">Set the parameters for attempting to reconnect if a timeout is detected.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:update">Client:update()</a></td>
@@ -177,8 +213,12 @@
 	<td class="summary">Gets the Client object that has the given connection id.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
+	<td class="summary">Get the Client object that has the given peer index.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
-	<td class="summary">Get the last time since network events were serviced.</td>
+	<td class="summary">Get the last time when network events were serviced.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></td>
@@ -189,8 +229,16 @@
 	<td class="summary">Get the number of allocated slots for peers.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Server:getTimeout">Server:getTimeout()</a></td>
+	<td class="name" ><a href="#Server:getMessageTimeout">Server:getMessageTimeout()</a></td>
 	<td class="summary">Get the timeout for packets.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></td>
+	<td class="summary">Get the enet_peer that has the given index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></td>
+	<td class="summary">Get the socket address of the host.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
@@ -241,16 +289,20 @@
 	<td class="summary">Set the default send mode for all future outgoing messages.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Server:setMaxChannels">Server:setMaxChannels(limit)</a></td>
+	<td class="summary">Set the maximum number of channels.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></td>
+	<td class="summary">Set the timeout to wait for packets.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
 	<td class="summary">Set the send channel for the next outgoing message.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
 	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setTimeout">Server:setTimeout(timeout)</a></td>
-	<td class="summary">Set the timeout to wait for packets.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:update">Server:update()</a></td>
@@ -324,7 +376,59 @@
     </dt>
     <dd>
     <p>
-    Disconnect from the server, if connected.
+    Disconnect from the server, if connected.  The client will disconnect the
+ next time that network messages are sent.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">code</span>
+            <span class="types">optional <span class="type">number</span></span>
+         A code to associate with this disconnect event.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:disconnectLater"></a>
+    <h2 class="function_name">Client:disconnectLater(code)</h2>
+    </dt>
+    <dd>
+    <p>
+    Disconnect from the server, if connected.  The client will disconnect after
+ sending all queued packets.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">code</span>
+            <span class="types">optional <span class="type">number</span></span>
+         A code to associate with this disconnect event.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:disconnectNow"></a>
+    <h2 class="function_name">Client:disconnectNow(code)</h2>
+    </dt>
+    <dd>
+    <p>
+    Disconnect from the server, if connected.  The client will disconnect immediately.
     </p>
 
 
@@ -397,12 +501,12 @@
 </div>
     <div class="function_def">
     <dt>
-    <a name = "Client:getLastServiceTime"></a>
-    <h2 class="function_name">Client:getLastServiceTime()</h2>
+    <a name = "Client:getIndex"></a>
+    <h2 class="function_name">Client:getIndex()</h2>
     </dt>
     <dd>
     <p>
-    Get the last time since network events were serviced.
+    Get the index of the enet peer.  All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure.
     </p>
 
 
@@ -411,7 +515,32 @@
     <ol>
         <li>
            <span class="types"><span class="type">number</span></span>
-        Seconds since the last time events were serviced.
+        The index of the peer.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getLastServiceTime"></a>
+    <h2 class="function_name">Client:getLastServiceTime()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the last time when network events were serviced.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Timestamp of the last time events were serviced.
         </li>
     </ol>
 
@@ -449,6 +578,116 @@
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:getMessageTimeout"></a>
+    <h2 class="function_name">Client:getMessageTimeout()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the timeout for packets.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Time to wait for incoming packets in milliseconds.
+ initial default is 0.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getPeerByIndex"></a>
+    <h2 class="function_name">Client:getPeerByIndex(index)</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the enet_peer that has the given index.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">enet_peer</span></span>
+        The underlying enet peer object.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getRoundTripTime"></a>
+    <h2 class="function_name">Client:getRoundTripTime()</h2>
+    </dt>
+    <dd>
+    <p>
+    Return the round trip time (RTT, or ping) to the server, if connected.
+ It can take a few seconds for the time to approach an accurate value.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The round trip time.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getSocketAddress"></a>
+    <h2 class="function_name">Client:getSocketAddress()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the socket address of the host.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+        A description of the socket address, in the format "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:getState"></a>
     <h2 class="function_name">Client:getState()</h2>
     </dt>
@@ -474,32 +713,6 @@
         <a href="index.html#CONNECTION_STATUSES">CONNECTION_STATUSES</a>
     </li>
     </ul>
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Client:getTimeout"></a>
-    <h2 class="function_name">Client:getTimeout()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the timeout for packets.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        Time to wait for incoming packets in milliseconds.
- initial default is 0.
-        </li>
-    </ol>
-
-
 
 
 </dd>
@@ -869,6 +1082,59 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:setMessageTimeout"></a>
+    <h2 class="function_name">Client:setMessageTimeout(timeout)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the timeout to wait for packets.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+            <span class="types"><span class="type">number</span></span>
+         Time to wait for incoming packets in milliseconds. The initial
+ default is 0.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:setPingInterval"></a>
+    <h2 class="function_name">Client:setPingInterval(interval)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set how frequently to ping the server.
+ The round trip time is updated each time a ping is sent. The initial
+ default is 500ms.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">interval</span>
+            <span class="types"><span class="type">number</span></span>
+         The interval, in milliseconds.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:setSendChannel"></a>
     <h2 class="function_name">Client:setSendChannel(channel)</h2>
     </dt>
@@ -930,21 +1196,61 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
-    <a name = "Client:setTimeout"></a>
-    <h2 class="function_name">Client:setTimeout(timeout)</h2>
+    <a name = "Client:setThrottle"></a>
+    <h2 class="function_name">Client:setThrottle(interval, acceleration, deceleration)</h2>
     </dt>
     <dd>
     <p>
-    Set the timeout to wait for packets.
+    Change the probability at which unreliable packets should not be dropped.
     </p>
 
 
     <h3>Parameters:</h3>
     <ul>
-        <li><span class="parameter">timeout</span>
+        <li><span class="parameter">interval</span>
             <span class="types"><span class="type">number</span></span>
-         Time to wait for incoming packets in milliseconds. The initial
- default is 0.
+         Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
+        </li>
+        <li><span class="parameter">acceleration</span>
+            <span class="types"><span class="type">number</span></span>
+         Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
+        </li>
+        <li><span class="parameter">deceleration</span>
+            <span class="types"><span class="type">number</span></span>
+         Rate at which to decrease the throttle probability as mean RTT increases.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:setTimeout"></a>
+    <h2 class="function_name">Client:setTimeout(limit, minimum, maximum)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the parameters for attempting to reconnect if a timeout is detected.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">limit</span>
+            <span class="types">optional <span class="type">number</span></span>
+         A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
+        </li>
+        <li><span class="parameter">minimum</span>
+            <span class="types">optional <span class="type">number</span></span>
+         Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
+        </li>
+        <li><span class="parameter">maximum</span>
+            <span class="types">optional <span class="type">number</span></span>
+         Fixed timeout in milliseconds for which any packet has to be acknowledged.
         </li>
     </ul>
 
@@ -1103,12 +1409,47 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Server:getClientByIndex"></a>
+    <h2 class="function_name">Server:getClientByIndex(index)</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the Client object that has the given peer index.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Server:getLastServiceTime"></a>
     <h2 class="function_name">Server:getLastServiceTime()</h2>
     </dt>
     <dd>
     <p>
-    Get the last time since network events were serviced.
+    Get the last time when network events were serviced.
     </p>
 
 
@@ -1117,7 +1458,7 @@ client:removeCallback(callback)</pre>
     <ol>
         <li>
            <span class="types"><span class="type">number</span></span>
-        Seconds since the last time events were serviced.
+        Timestamp of the last time events were serviced.
         </li>
     </ol>
 
@@ -1180,8 +1521,8 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
-    <a name = "Server:getTimeout"></a>
-    <h2 class="function_name">Server:getTimeout()</h2>
+    <a name = "Server:getMessageTimeout"></a>
+    <h2 class="function_name">Server:getMessageTimeout()</h2>
     </dt>
     <dd>
     <p>
@@ -1196,6 +1537,65 @@ client:removeCallback(callback)</pre>
            <span class="types"><span class="type">number</span></span>
         Time to wait for incoming packets in milliseconds.
  initial default is 0.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getPeerByIndex"></a>
+    <h2 class="function_name">Server:getPeerByIndex(index)</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the enet_peer that has the given index.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">enet_peer</span></span>
+        The underlying enet peer object.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getSocketAddress"></a>
+    <h2 class="function_name">Server:getSocketAddress()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the socket address of the host.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+        A description of the socket address, in the format
+ "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
         </li>
     </ol>
 
@@ -1569,6 +1969,58 @@ server:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Server:setMaxChannels"></a>
+    <h2 class="function_name">Server:setMaxChannels(limit)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the maximum number of channels.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">limit</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum number of channels allowed. If it is 0,
+ then the maximum number of channels available on the system will be used.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setMessageTimeout"></a>
+    <h2 class="function_name">Server:setMessageTimeout(timeout)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the timeout to wait for packets.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+            <span class="types"><span class="type">number</span></span>
+         Time to wait for incoming packets in milliseconds. The
+ initial default is 0.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Server:setSendChannel"></a>
     <h2 class="function_name">Server:setSendChannel(channel)</h2>
     </dt>
@@ -1624,32 +2076,6 @@ server:removeCallback(callback)</pre>
         <a href="index.html#SEND_MODES">SEND_MODES</a>
     </li>
     </ul>
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setTimeout"></a>
-    <h2 class="function_name">Server:setTimeout(timeout)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the timeout to wait for packets.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">timeout</span>
-            <span class="types"><span class="type">number</span></span>
-         Time to wait for incoming packets in milliseconds. The initial
- default is 0.
-        </li>
-    </ul>
-
-
-
 
 
 </dd>
@@ -1961,7 +2387,7 @@ server:removeCallback(callback)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-08-03 16:09:52 </i>
+<i style="float:right;">Last updated 2016-08-03 21:55:05 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

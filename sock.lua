@@ -215,6 +215,22 @@ function Server:getClientByConnectId(connectId)
     end
 end
 
+--- Get the Client object that has the given peer index.
+-- @treturn Client
+function Server:getClientByIndex(index)
+    for i, client in pairs(self.clients) do
+        if index == client:getIndex() then
+            return client
+        end
+    end
+end
+
+--- Get the enet_peer that has the given index.
+-- @treturn enet_peer The underlying enet peer object.
+function Server:getPeerByIndex(index)
+    return self.host:get_peer(index)
+end
+
 --- Set the send mode for the next outgoing message. 
 -- The mode will be reset after the next message is sent. The initial default 
 -- is "reliable".
@@ -271,7 +287,7 @@ end
 
 --- Check for network events and handle them.
 function Server:update()
-    local event = self.host:service(self.timeout)
+    local event = self.host:service(self.messageTimeout)
     
     while event do
         if event.type == "connect" then
@@ -435,8 +451,8 @@ function Server:setBandwidthLimit(incoming, outgoing)
     return self.host:bandwidth_limit(incoming, outgoing)
 end
 
---- Get the last time since network events were serviced.
--- @treturn number Seconds since the last time events were serviced.
+--- Get the last time when network events were serviced.
+-- @treturn number Timestamp of the last time events were serviced.
 function Server:getLastServiceTime()
     return self.host:service_time()
 end
@@ -455,19 +471,34 @@ function Server:getMaxChannels()
     return self.maxChannels 
 end
 
+--- Set the maximum number of channels.
+-- @tparam number limit The maximum number of channels allowed. If it is 0,
+-- then the maximum number of channels available on the system will be used.
+function Server:setMaxChannels(limit)
+    self.host:channel_limit(limit)
+end
+
 --- Set the timeout to wait for packets.
--- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
--- default is 0.
-function Server:setTimeout(timeout)
-    self.timeout = timeout
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The 
+-- initial default is 0.
+function Server:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
 end
 
 --- Get the timeout for packets.
 -- @treturn number Time to wait for incoming packets in milliseconds.
 -- initial default is 0.
-function Server:getTimeout()
-    return self.timeout
+function Server:getMessageTimeout()
+    return self.messageTimeout
 end
+
+--- Get the socket address of the host.
+-- @treturn string A description of the socket address, in the format 
+-- "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+function Server:getSocketAddress()
+    return self.host:get_socket_address()
+end
+
 
 --- Connects to servers.
 local Client = {}
@@ -538,20 +569,35 @@ function Client:connect()
     return true
 end
 
---- Disconnect from the server, if connected.
+--- Disconnect from the server, if connected. The client will disconnect the 
+-- next time that network messages are sent.
 -- @tparam ?number code A code to associate with this disconnect event.
 -- @todo Pass the code into the disconnect callback on the server
 function Client:disconnect(code)
     code = code or 0
+    self.connection:disconnect(code)
+end
+
+--- Disconnect from the server, if connected. The client will disconnect after
+-- sending all queued packets.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
+function Client:disconnectLater(code)
+    code = code or 0
     self.connection:disconnect_later(code)
-    if self.host then
-        self.host:flush()
-    end
+end
+
+--- Disconnect from the server, if connected. The client will disconnect immediately.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
+function Client:disconnectNow(code)
+    code = code or 0
+    self.connection:disconnect_now(code)
 end
 
 --- Check for network events and handle them.
 function Client:update()
-    local event = self.host:service(self.timeout)
+    local event = self.host:service(self.messageTimeout)
     
     while event do
         if event.type == "connect" then
@@ -683,8 +729,8 @@ function Client:setBandwidthLimit(incoming, outgoing)
     return self.host:bandwidth_limit(incoming, outgoing)
 end
 
---- Get the last time since network events were serviced.
--- @treturn number Seconds since the last time events were serviced.
+--- Get the last time when network events were serviced.
+-- @treturn number Timestamp of the last time events were serviced.
 function Client:getLastServiceTime()
     return self.host:service_time()
 end
@@ -696,19 +742,45 @@ end
 function Client:getMaxChannels()
     return self.maxChannels 
 end
+--
+--- Set the maximum number of channels.
+-- @tparam number limit The maximum number of channels allowed. If it is 0,
+-- then the maximum number of channels available on the system will be used.
+function Client:setMaxChannels(limit)
+    self.host:channel_limit(limit)
+end
 
 --- Set the timeout to wait for packets.
 -- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
 -- default is 0.
-function Client:setTimeout(timeout)
-    self.timeout = timeout
+function Client:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
 end
 
 --- Get the timeout for packets.
 -- @treturn number Time to wait for incoming packets in milliseconds.
 -- initial default is 0.
-function Client:getTimeout()
-    return self.timeout
+function Client:getMessageTimeout()
+    return self.messageTimeout
+end
+
+--- Return the round trip time (RTT, or ping) to the server, if connected.
+-- It can take a few seconds for the time to approach an accurate value.
+-- @treturn number The round trip time.
+function Client:getRoundTripTime()
+    if self.connection then
+        return self.connection:round_trip_time()
+    end
+end
+
+--- Set how frequently to ping the server.
+-- The round trip time is updated each time a ping is sent. The initial
+-- default is 500ms.
+-- @tparam number interval The interval, in milliseconds.
+function Client:setPingInterval(interval)
+    if self.connection then
+        self.connection:ping_interval(interval)
+    end
 end
 
 --- Get the unique connection id, if connected.
@@ -726,6 +798,52 @@ function Client:getState()
     if self.connection then
         return self.connection:state()
     end
+end
+
+--- Get the index of the enet peer. All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure. 
+-- @treturn number The index of the peer.
+function Client:getIndex()
+    if self.connection then
+        return self.connection:index()
+    end
+end
+
+--- Change the probability at which unreliable packets should not be dropped.
+-- @tparam number interval Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
+-- @tparam number acceleration Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
+-- @tparam number deceleration Rate at which to decrease the throttle probability as mean RTT increases.
+function Client:setThrottle(interval, acceleration, deceleration)
+    interval = interval or 5000
+    acceleration = acceleration or 2
+    deceleration = deceleration or 2
+    if self.connection then
+        self.connection:throttle_configure(interval, acceleration, deceleration)
+    end
+end
+
+--- Set the parameters for attempting to reconnect if a timeout is detected.
+-- @tparam ?number limit A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
+-- @tparam ?number minimum Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
+-- @tparam ?number maximum Fixed timeout in milliseconds for which any packet has to be acknowledged.
+function Client:setTimeout(limit, minimum, maximum)
+    limit = limit or 32
+    minimum = minimum or 5000
+    maximum = maximum or 30000
+    if self.connection then
+        self.connection:timeout(limit, minimum, maximum)
+    end
+end
+
+--- Get the socket address of the host.
+-- @treturn string A description of the socket address, in the format "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+function Client:getSocketAddress()
+    return self.host:get_socket_address()
+end
+
+--- Get the enet_peer that has the given index.
+-- @treturn enet_peer The underlying enet peer object.
+function Client:getPeerByIndex(index)
+    return self.host:get_peer(index)
 end
 
 --- Creates a new Server object.
@@ -770,7 +888,7 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
         port            = port,
         host            = nil,
         
-        timeout         = 0,
+        messageTimeout  = 0,
         maxChannels     = maxChannels,
         maxPeers        = maxPeers,
         sendMode        = "reliable",
@@ -832,7 +950,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         connection      = nil,
         connectId       = nil,
 
-        timeout         = 0,
+        messageTimeout  = 0,
         maxChannels     = maxChannels,
         sendMode        = "reliable",
         defaultSendMode = "reliable",
@@ -861,7 +979,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
     -- Second form: (enet peer)
     elseif type(serverOrAddress) == "userdata" then
         client.connection = serverOrAddress
-        client.connectId = client.server:connect_id()
+        client.connectId = client.connection:connect_id()
     end
 
     return client
