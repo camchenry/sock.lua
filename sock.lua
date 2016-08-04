@@ -54,7 +54,7 @@ end
 
 --- All of the possible connection statuses for a client connection.
 -- @see Client:getState
-local CONNECTION_STATUSES = {
+local CONNECTION_STATES = {
     "disconnected",             -- Disconnected from the server.
     "connecting",               -- In the process of connecting to the server.
     "acknowledging_connect",    -- 
@@ -793,7 +793,7 @@ end
 
 --- Get the current connection state, if connected.
 -- @treturn string The connection state.
--- @see CONNECTION_STATUSES
+-- @see CONNECTION_STATES
 function Client:getState()
     if self.connection then
         return self.connection:state()

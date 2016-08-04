@@ -545,16 +545,21 @@ ul.nowrap {
 }
 
 .section-header {
+    font-size: 1.35rem;
     border-bottom: 1px solid #ccc;
 }
 
 .function_def {
     border-top: 1px solid #ccc;
-    padding-top: 1rem;
+    padding-top: 0.5rem;
     padding-bottom: 1rem;
 }
 .function_def:first-child {
     border-top: none;
+}
+
+.function_def li {
+    padding-bottom: 4px;
 }
 
 .function_name {
