@@ -19,11 +19,21 @@ function love.load()
         local image = love.filesystem.newFileData("hello.png")
         server:emitToAll("image", image)
     end)
+
+    lastModified = 0
 end
 
 function love.update(dt)
     server:update()
     client:update()
+
+    if lastModified < love.filesystem.getLastModified("hello.png") then
+        -- Sleep for some milliseconds for the image to write to disk
+        love.timer.sleep(0.2)
+        lastModified = love.filesystem.getLastModified("hello.png")
+        local image = love.filesystem.newFileData("hello.png")
+        server:emitToAll("image", image)
+    end
 end
 
 function love.draw()
