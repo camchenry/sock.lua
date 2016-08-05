@@ -14,6 +14,7 @@ and uses bitser to make getting started with networking as easy as possible.
 
 - Fast enough to be used for a real-time games like FPSes and RTSes.
 - Event trigger system makes it easy to add behavior to network events.
+- Can send images and files over the network.
 - Uses bitser to minimize data usage and maximize speed.
 - Logs events, errors, and warnings that occur.
 
@@ -70,7 +71,9 @@ end
 function love.update(dt)
     client:update()
 end
+```
 
+```lua
 -- server.lua
 function love.load()
     -- Creating a server on any IP, port 22122
