@@ -299,9 +299,7 @@ function Server:update()
 
         elseif event.type == "receive" then
             local message = bitser.loads(event.data)
-            assert(event.peer)
             local eventClient = self:getClient(event.peer)
-            assert(eventClient)
             local event = message[1]
             local data = message[2]
 
@@ -340,7 +338,15 @@ end
 -- @param data The data to send.
 function Server:emitToAllBut(peer, event, data)
     local message = {event, data}
-    local serializedMessage = bitser.dumps(message)
+    local serializedMessage = nil
+
+    -- 'Data' = binary data class in Love
+    if type(data) == "userdata" and data.type and data:typeOf("Data") then
+        message[2] = data:getString()
+        serializedMessage = bitser.dumps(message)
+    else
+        serializedMessage = bitser.dumps(message)
+    end
 
     for i, p in pairs(self.peers) do
         if p ~= peer then
@@ -357,7 +363,15 @@ end
 -- @param data The data to send.
 function Server:emitToAll(event, data)
     local message = {event, data}
-    local serializedMessage = bitser.dumps(message)
+    local serializedMessage = nil
+
+    -- 'Data' = binary data class in Love
+    if type(data) == "userdata" and data.type and data:typeOf("Data") then
+        message[2] = data:getString()
+        serializedMessage = bitser.dumps(message)
+    else
+        serializedMessage = bitser.dumps(message)
+    end
     
     self.packetsSent = self.packetsSent + #self.peers
 
@@ -630,8 +644,9 @@ function Client:emit(event, data)
     local serializedMessage = nil
 
     -- 'Data' = binary data class in Love
-    if type(message.data) == "userdata" then
-        serializedMessage = message.data
+    if type(data) == "userdata" and data.type and data:typeOf("Data") then
+        message[2] = data:getString()
+        serializedMessage = bitser.dumps(message)
     else
         serializedMessage = bitser.dumps(message)
     end
