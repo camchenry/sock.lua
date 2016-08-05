@@ -23,4 +23,54 @@ a careful mix of interpolation and extrapolation to look good. But, that sort of
 
 # Example
 
-TODO
+```lua
+local sock = require "sock"
+
+function love.load()
+    -- Creating a new client on localhost:22122
+    client = sock.newClient("localhost", 22122)
+    
+    -- Creating a server on any IP, port 22122
+    server = sock.newServer("*", 22122)
+    
+    -- Called when someone connects to the server
+    server:on("connect", function(data, peer)
+        local msg = "Hello from the server!"
+        peer:emit("hello", msg)
+    end)
+
+    -- Called when a connection is made to the server
+    client:on("connect", function(data)
+        print("Client connected to the server.")
+    end)
+    
+    -- Called when the client disconnects from the server
+    client:on("disconnect", function(data)
+        print("Client disconnected from the server.")
+    end)
+
+    -- Custom callback, called whenever you send the event from the server
+    client:on("hello", function(msg)
+        print("The server replied: " .. msg)
+    end)
+
+    client:connect()
+
+    -- Sending a message
+    client:emit("hello", "Hello to the server!")
+    
+    --  You can send different types of data
+    client:emit("isShooting", true)
+    client:emit("bulletsLeft", 1)
+    client:emit("position", {
+        x = 465.3,
+        y = 50,
+    })
+end
+
+function love.update(dt)
+    server:update()
+    client:update()
+end
+
+```
