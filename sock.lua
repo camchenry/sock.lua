@@ -198,7 +198,7 @@ local Server_mt = {__index = Server}
 -- @treturn Client Object associated with the peer.
 function Server:getClient(peer)
     for i, client in pairs(self.clients) do
-        if peer == client.server then
+        if peer == client.connection then
             return client
         end
     end
@@ -299,12 +299,14 @@ function Server:update()
 
         elseif event.type == "receive" then
             local message = bitser.loads(event.data)
+            assert(event.peer)
             local eventClient = self:getClient(event.peer)
+            assert(eventClient)
             local event = message[1]
             local data = message[2]
 
             self:_activateTriggers(event, data, eventClient)
-            self:log(event.type, message.data)
+            self:log(event, data)
 
         elseif event.type == "disconnect" then
             -- remove from the active peer list
@@ -609,7 +611,7 @@ function Client:update()
             local data = message[2]
 
             self:_activateTriggers(event, data)
-            self:log(event.type, message.data)
+            self:log(event, data)
 
         elseif event.type == "disconnect" then
             self:_activateTriggers("disconnect", event.data)
