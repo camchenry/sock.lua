@@ -1,7 +1,6 @@
 project     = 'sock.lua'
 title       = 'sock.lua Documentation'
 description = 'sock.lua is a networking library for Lua/LÖVE games.'
-readme      = 'README.md'
 file        = 'sock.lua'
 
 examples    = {'examples'}
