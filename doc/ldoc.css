@@ -476,7 +476,7 @@ pre.example {
 }
 
 #main {
-    padding: 10px;
+    padding: 1.5rem;
 }
 
 #header {
@@ -493,8 +493,7 @@ pre.example {
 }
 
 #content {
-    margin-left: 220px;
-    width: 700px;
+
 }
 
 #about {
@@ -544,10 +543,20 @@ ul.nowrap {
     white-space:nowrap;
 }
 
+#content > section {
+    margin-top: 3rem;
+}
 .section-header {
-    font-size: 1.35rem;
+    font-size: 1.5rem;
     border-bottom: 1px solid #ccc;
 }
+.section-description {
+    font-size: 1.1rem;
+}
+.section-content {
+    padding-left: 1rem;
+}
+
 
 .function_def {
     border-top: 1px solid #ccc;

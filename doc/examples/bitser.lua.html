@@ -1,0 +1,484 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>sock.lua Documentation</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet">
+    <link rel="stylesheet" href="../ldoc.css">
+</head>
+<body>
+
+<div id="container">
+
+<!-- Header -->
+<header id="header">
+    <h1>sock.lua</h1>
+</header>
+
+<div id="main">
+
+
+<!-- Menu -->
+
+<div id="navigation">
+
+
+
+<h2>Examples</h2>
+<ul class="nowrap">
+<li><strong>bitser.lua</strong></li>
+<li><strong>bitser.lua</strong></li>
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+  <li><a href="../examples/main.lua.html">main.lua</a></li>
+  <li><a href="../examples/sock.lua.html">sock.lua</a></li>
+  <li><a href="../examples/sock.lua.html">sock.lua</a></li>
+</ul>
+<h2>Modules</h2>
+<ul class="nowrap">
+  <li><a href="../index.html">sock</a></li>
+</ul>
+
+</div>
+
+<div id="content">
+
+
+    <h2>bitser.lua</h2>
+<pre>
+<span class="comment">--[[
+Copyright (c) 2016, Robin Wellner
+
+Permission to use, copy, modify, and/or distribute this software for any
+purpose with or without fee is hereby granted, provided that the above
+copyright notice and this permission notice appear in all copies.
+
+THE SOFTWARE IS PROVIDED "AS IS" AND THE AUTHOR DISCLAIMS ALL WARRANTIES
+WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF
+MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR
+ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES
+WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN
+ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF
+OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.
+]]</span>
+
+<span class="keyword">local</span> floor = <span class="global">math</span>.floor
+<span class="keyword">local</span> <span class="global">pairs</span> = <span class="global">pairs</span>
+<span class="keyword">local</span> <span class="global">type</span> = <span class="global">type</span>
+<span class="keyword">local</span> insert = <span class="global">table</span>.insert
+<span class="keyword">local</span> <span class="global">getmetatable</span> = <span class="global">getmetatable</span>
+<span class="keyword">local</span> <span class="global">setmetatable</span> = <span class="global">setmetatable</span>
+
+<span class="keyword">local</span> ffi = <span class="global">require</span>(<span class="string">"ffi"</span>)
+<span class="keyword">local</span> buf_pos = <span class="number">0</span>
+<span class="keyword">local</span> buf_size = -<span class="number">1</span>
+<span class="keyword">local</span> buf = <span class="keyword">nil</span>
+<span class="keyword">local</span> writable_buf = <span class="keyword">nil</span>
+<span class="keyword">local</span> writable_buf_size = <span class="keyword">nil</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_prereserve(min_size)
+	<span class="keyword">if</span> buf_size &lt; min_size <span class="keyword">then</span>
+		buf_size = min_size
+		buf = ffi.new(<span class="string">"uint8_t[?]"</span>, buf_size)
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_clear()
+	buf_size = -<span class="number">1</span>
+	buf = <span class="keyword">nil</span>
+	writable_buf = <span class="keyword">nil</span>
+	writable_buf_size = <span class="keyword">nil</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_makeBuffer(size)
+	<span class="keyword">if</span> writable_buf <span class="keyword">then</span>
+		buf = writable_buf
+		buf_size = writable_buf_size
+		writable_buf = <span class="keyword">nil</span>
+		writable_buf_size = <span class="keyword">nil</span>
+	<span class="keyword">end</span>
+	buf_pos = <span class="number">0</span>
+	Buffer_prereserve(size)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_newReader(str)
+	Buffer_makeBuffer(#str)
+	ffi.copy(buf, str, #str)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_newDataReader(data, size)
+	writable_buf = buf
+	writable_buf_size = buf_size
+	buf_pos = <span class="number">0</span>
+	buf_size = size
+	buf = ffi.cast(<span class="string">"uint8_t*"</span>, data)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_reserve(additional_size)
+	<span class="keyword">while</span> buf_pos + additional_size &gt; buf_size <span class="keyword">do</span>
+		buf_size = buf_size * <span class="number">2</span>
+		<span class="keyword">local</span> oldbuf = buf
+		buf = ffi.new(<span class="string">"uint8_t[?]"</span>, buf_size)
+		ffi.copy(buf, oldbuf, buf_pos)
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_write_byte(x)
+	Buffer_reserve(<span class="number">1</span>)
+	buf[buf_pos] = x
+	buf_pos = buf_pos + <span class="number">1</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_write_string(s)
+	Buffer_reserve(#s)
+	ffi.copy(buf + buf_pos, s, #s)
+	buf_pos = buf_pos + #s
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_write_data(ct, len, ...)
+	Buffer_reserve(len)
+	ffi.copy(buf + buf_pos, ffi.new(ct, ...), len)
+	buf_pos = buf_pos + len
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_ensure(numbytes)
+	<span class="keyword">if</span> buf_pos + numbytes &gt; buf_size <span class="keyword">then</span>
+		error(<span class="string">"malformed serialized data"</span>)
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_read_byte()
+	Buffer_ensure(<span class="number">1</span>)
+	<span class="keyword">local</span> x = buf[buf_pos]
+	buf_pos = buf_pos + <span class="number">1</span>
+	<span class="keyword">return</span> x
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_read_string(len)
+	Buffer_ensure(len)
+	<span class="keyword">local</span> x = ffi.<span class="global">string</span>(buf + buf_pos, len)
+	buf_pos = buf_pos + len
+	<span class="keyword">return</span> x
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> Buffer_read_data(ct, len)
+	Buffer_ensure(len)
+	<span class="keyword">local</span> x = ffi.new(ct)
+	ffi.copy(x, buf + buf_pos, len)
+	buf_pos = buf_pos + len
+	<span class="keyword">return</span> x
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> resource_registry = {}
+<span class="keyword">local</span> resource_name_registry = {}
+<span class="keyword">local</span> class_registry = {}
+<span class="keyword">local</span> class_name_registry = {}
+<span class="keyword">local</span> classkey_registry = {}
+<span class="keyword">local</span> class_deserialize_registry = {}
+
+<span class="keyword">local</span> serialize_value
+
+<span class="keyword">local</span> <span class="keyword">function</span> write_number(value, _)
+	<span class="keyword">if</span> floor(value) == value <span class="keyword">and</span> value &gt;= -<span class="number">2147483648</span> <span class="keyword">and</span> value &lt;= <span class="number">2147483647</span> <span class="keyword">then</span>
+		<span class="keyword">if</span> value &gt;= -<span class="number">27</span> <span class="keyword">and</span> value &lt;= <span class="number">100</span> <span class="keyword">then</span>
+			<span class="comment">--small int
+</span>			Buffer_write_byte(value + <span class="number">27</span>)
+		<span class="keyword">elseif</span> value &gt;= -<span class="number">32768</span> <span class="keyword">and</span> value &lt;= <span class="number">32767</span> <span class="keyword">then</span>
+			<span class="comment">--short int
+</span>			Buffer_write_byte(<span class="number">250</span>)
+			Buffer_write_data(<span class="string">"int16_t[1]"</span>, <span class="number">2</span>, value)
+		<span class="keyword">else</span>
+			<span class="comment">--long int
+</span>			Buffer_write_byte(<span class="number">245</span>)
+			Buffer_write_data(<span class="string">"int32_t[1]"</span>, <span class="number">4</span>, value)
+		<span class="keyword">end</span>
+	<span class="keyword">else</span>
+		<span class="comment">--double
+</span>		Buffer_write_byte(<span class="number">246</span>)
+		Buffer_write_data(<span class="string">"double[1]"</span>, <span class="number">8</span>, value)
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> write_string(value, seen)
+	<span class="keyword">if</span> #value &lt; <span class="number">32</span> <span class="keyword">then</span>
+		<span class="comment">--short string
+</span>		Buffer_write_byte(<span class="number">192</span> + #value)
+	<span class="keyword">else</span>
+		<span class="comment">--long string
+</span>		Buffer_write_byte(<span class="number">244</span>)
+		write_number(#value, seen)
+	<span class="keyword">end</span>
+	Buffer_write_string(value)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> write_nil(_, _)
+	Buffer_write_byte(<span class="number">247</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> write_boolean(value, _)
+	Buffer_write_byte(value <span class="keyword">and</span> <span class="number">249</span> <span class="keyword">or</span> <span class="number">248</span>)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> write_table(value, seen)
+	<span class="keyword">local</span> classkey
+	<span class="keyword">local</span> class = (class_name_registry[value.class] <span class="comment">-- MiddleClass
+</span>		<span class="keyword">or</span> class_name_registry[value.__baseclass] <span class="comment">-- SECL
+</span>		<span class="keyword">or</span> class_name_registry[<span class="global">getmetatable</span>(value)] <span class="comment">-- hump.class
+</span>		<span class="keyword">or</span> class_name_registry[value.__class__]) <span class="comment">-- Slither
+</span>	<span class="keyword">if</span> class <span class="keyword">then</span>
+		classkey = classkey_registry[class]
+		Buffer_write_byte(<span class="number">242</span>)
+		write_string(class)
+	<span class="keyword">else</span>
+		Buffer_write_byte(<span class="number">240</span>)
+	<span class="keyword">end</span>
+	<span class="keyword">local</span> len = #value
+	write_number(len, seen)
+	<span class="keyword">for</span> i = <span class="number">1</span>, len <span class="keyword">do</span>
+		serialize_value(value[i], seen)
+	<span class="keyword">end</span>
+	<span class="keyword">local</span> klen = <span class="number">0</span>
+	<span class="keyword">for</span> k <span class="keyword">in</span> <span class="global">pairs</span>(value) <span class="keyword">do</span>
+		<span class="keyword">if</span> (<span class="global">type</span>(k) ~= <span class="string">'number'</span> <span class="keyword">or</span> floor(k) ~= k <span class="keyword">or</span> k &gt; len <span class="keyword">or</span> k &lt; <span class="number">1</span>) <span class="keyword">and</span> k ~= classkey <span class="keyword">then</span>
+			klen = klen + <span class="number">1</span>
+		<span class="keyword">end</span>
+	<span class="keyword">end</span>
+	write_number(klen, seen)
+	<span class="keyword">for</span> k, v <span class="keyword">in</span> <span class="global">pairs</span>(value) <span class="keyword">do</span>
+		<span class="keyword">if</span> (<span class="global">type</span>(k) ~= <span class="string">'number'</span> <span class="keyword">or</span> floor(k) ~= k <span class="keyword">or</span> k &gt; len <span class="keyword">or</span> k &lt; <span class="number">1</span>) <span class="keyword">and</span> k ~= classkey <span class="keyword">then</span>
+			serialize_value(k, seen)
+			serialize_value(v, seen)
+		<span class="keyword">end</span>
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> types = {number = write_number, <span class="global">string</span> = write_string, <span class="global">table</span> = write_table, boolean = write_boolean, [<span class="string">"nil"</span>] = write_nil}
+
+serialize_value = <span class="keyword">function</span>(value, seen)
+	<span class="keyword">if</span> seen[value] <span class="keyword">then</span>
+		<span class="keyword">local</span> ref = seen[value]
+		<span class="keyword">if</span> ref &lt; <span class="number">64</span> <span class="keyword">then</span>
+			<span class="comment">--small reference
+</span>			Buffer_write_byte(<span class="number">128</span> + ref)
+		<span class="keyword">else</span>
+			<span class="comment">--long reference
+</span>			Buffer_write_byte(<span class="number">243</span>)
+			write_number(ref, seen)
+		<span class="keyword">end</span>
+		<span class="keyword">return</span>
+	<span class="keyword">end</span>
+	<span class="keyword">local</span> t = <span class="global">type</span>(value)
+	<span class="keyword">if</span> t ~= <span class="string">'number'</span> <span class="keyword">and</span> t ~= <span class="string">'boolean'</span> <span class="keyword">and</span> t ~= <span class="string">'nil'</span> <span class="keyword">then</span>
+		seen[value] = seen.len
+		seen.len = seen.len + <span class="number">1</span>
+	<span class="keyword">end</span>
+	<span class="keyword">if</span> resource_name_registry[value] <span class="keyword">then</span>
+		<span class="keyword">local</span> name = resource_name_registry[value]
+		<span class="keyword">if</span> #name &lt; <span class="number">16</span> <span class="keyword">then</span>
+			<span class="comment">--small resource
+</span>			Buffer_write_byte(<span class="number">224</span> + #name)
+			Buffer_write_string(name)
+		<span class="keyword">else</span>
+			<span class="comment">--long resource
+</span>			Buffer_write_byte(<span class="number">241</span>)
+			write_string(name, seen)
+		<span class="keyword">end</span>
+		<span class="keyword">return</span>
+	<span class="keyword">end</span>
+	(types[t] <span class="keyword">or</span>
+		error(<span class="string">"cannot serialize type "</span> .. t)
+		)(value, seen)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> serialize(value)
+	Buffer_makeBuffer(<span class="number">4096</span>)
+	<span class="keyword">local</span> seen = {len = <span class="number">0</span>}
+	serialize_value(value, seen)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> add_to_seen(value, seen)
+	insert(seen, value)
+	<span class="keyword">return</span> value
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> reserve_seen(seen)
+	insert(seen, <span class="number">42</span>)
+	<span class="keyword">return</span> #seen
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> deserialize_value(seen)
+	<span class="keyword">local</span> t = Buffer_read_byte()
+	<span class="keyword">if</span> t &lt; <span class="number">128</span> <span class="keyword">then</span>
+		<span class="comment">--small int
+</span>		<span class="keyword">return</span> t - <span class="number">27</span>
+	<span class="keyword">elseif</span> t &lt; <span class="number">192</span> <span class="keyword">then</span>
+		<span class="comment">--small reference
+</span>		<span class="keyword">return</span> seen[t - <span class="number">127</span>]
+	<span class="keyword">elseif</span> t &lt; <span class="number">224</span> <span class="keyword">then</span>
+		<span class="comment">--small string
+</span>		<span class="keyword">return</span> add_to_seen(Buffer_read_string(t - <span class="number">192</span>), seen)
+	<span class="keyword">elseif</span> t &lt; <span class="number">240</span> <span class="keyword">then</span>
+		<span class="comment">--small resource
+</span>		<span class="keyword">return</span> add_to_seen(resource_registry[Buffer_read_string(t - <span class="number">224</span>)], seen)
+	<span class="keyword">elseif</span> t == <span class="number">240</span> <span class="keyword">then</span>
+		<span class="comment">--table
+</span>		<span class="keyword">local</span> v = add_to_seen({}, seen)
+		<span class="keyword">local</span> len = deserialize_value(seen)
+		<span class="keyword">for</span> i = <span class="number">1</span>, len <span class="keyword">do</span>
+			v[i] = deserialize_value(seen)
+		<span class="keyword">end</span>
+		len = deserialize_value(seen)
+		<span class="keyword">for</span> _ = <span class="number">1</span>, len <span class="keyword">do</span>
+			<span class="keyword">local</span> key = deserialize_value(seen)
+			v[key] = deserialize_value(seen)
+		<span class="keyword">end</span>
+		<span class="keyword">return</span> v
+	<span class="keyword">elseif</span> t == <span class="number">241</span> <span class="keyword">then</span>
+		<span class="comment">--long resource
+</span>		<span class="keyword">local</span> idx = reserve_seen(seen)
+		<span class="keyword">local</span> value = resource_registry[deserialize_value(seen)]
+		seen[idx] = value
+		<span class="keyword">return</span> value
+	<span class="keyword">elseif</span> t == <span class="number">242</span> <span class="keyword">then</span>
+		<span class="comment">--instance
+</span>		<span class="keyword">local</span> instance = add_to_seen({}, seen)
+		<span class="keyword">local</span> classname = deserialize_value(seen)
+		<span class="keyword">local</span> class = class_registry[classname]
+		<span class="keyword">local</span> classkey = classkey_registry[classname]
+		<span class="keyword">local</span> deserializer = class_deserialize_registry[classname]
+		<span class="keyword">local</span> len = deserialize_value(seen)
+		<span class="keyword">for</span> i = <span class="number">1</span>, len <span class="keyword">do</span>
+			instance[i] = deserialize_value(seen)
+		<span class="keyword">end</span>
+		len = deserialize_value(seen)
+		<span class="keyword">for</span> _ = <span class="number">1</span>, len <span class="keyword">do</span>
+			<span class="keyword">local</span> key = deserialize_value(seen)
+			instance[key] = deserialize_value(seen)
+		<span class="keyword">end</span>
+		<span class="keyword">if</span> classkey <span class="keyword">then</span>
+			instance[classkey] = class
+		<span class="keyword">end</span>
+		<span class="keyword">return</span> deserializer(instance, class)
+	<span class="keyword">elseif</span> t == <span class="number">243</span> <span class="keyword">then</span>
+		<span class="comment">--reference
+</span>		<span class="keyword">return</span> seen[deserialize_value(seen) + <span class="number">1</span>]
+	<span class="keyword">elseif</span> t == <span class="number">244</span> <span class="keyword">then</span>
+		<span class="comment">--long string
+</span>		<span class="keyword">return</span> add_to_seen(Buffer_read_string(deserialize_value(seen)), seen)
+	<span class="keyword">elseif</span> t == <span class="number">245</span> <span class="keyword">then</span>
+		<span class="comment">--long int
+</span>		<span class="keyword">return</span> Buffer_read_data(<span class="string">"int32_t[1]"</span>, <span class="number">4</span>)[<span class="number">0</span>]
+	<span class="keyword">elseif</span> t == <span class="number">246</span> <span class="keyword">then</span>
+		<span class="comment">--double
+</span>		<span class="keyword">return</span> Buffer_read_data(<span class="string">"double[1]"</span>, <span class="number">8</span>)[<span class="number">0</span>]
+	<span class="keyword">elseif</span> t == <span class="number">247</span> <span class="keyword">then</span>
+		<span class="comment">--nil
+</span>		<span class="keyword">return</span> <span class="keyword">nil</span>
+	<span class="keyword">elseif</span> t == <span class="number">248</span> <span class="keyword">then</span>
+		<span class="comment">--false
+</span>		<span class="keyword">return</span> <span class="keyword">false</span>
+	<span class="keyword">elseif</span> t == <span class="number">249</span> <span class="keyword">then</span>
+		<span class="comment">--true
+</span>		<span class="keyword">return</span> <span class="keyword">true</span>
+	<span class="keyword">elseif</span> t == <span class="number">250</span> <span class="keyword">then</span>
+		<span class="comment">--short int
+</span>		<span class="keyword">return</span> Buffer_read_data(<span class="string">"int16_t[1]"</span>, <span class="number">2</span>)[<span class="number">0</span>]
+	<span class="keyword">else</span>
+		error(<span class="string">"unsupported serialized type "</span> .. t)
+	<span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> deserialize_MiddleClass(instance, class)
+	<span class="keyword">return</span> <span class="global">setmetatable</span>(instance, class.__instanceDict)
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> deserialize_SECL(instance, class)
+	<span class="keyword">return</span> <span class="global">setmetatable</span>(instance, <span class="global">getmetatable</span>(class))
+<span class="keyword">end</span>
+
+<span class="keyword">local</span> deserialize_humpclass = <span class="global">setmetatable</span>
+
+<span class="keyword">local</span> <span class="keyword">function</span> deserialize_Slither(instance, class)
+	<span class="keyword">return</span> <span class="global">getmetatable</span>(class).allocate(instance)
+<span class="keyword">end</span>
+
+<span class="keyword">return</span> {dumps = <span class="keyword">function</span>(value)
+	serialize(value)
+	<span class="keyword">return</span> ffi.<span class="global">string</span>(buf, buf_pos)
+<span class="keyword">end</span>, dumpLoveFile = <span class="keyword">function</span>(fname, value)
+	serialize(value)
+	love.filesystem.write(fname, ffi.<span class="global">string</span>(buf, buf_pos))
+<span class="keyword">end</span>, loadLoveFile = <span class="keyword">function</span>(fname)
+	<span class="keyword">local</span> serializedData = love.filesystem.newFileData(fname)
+	Buffer_newDataReader(serializedData:getPointer(), serializedData:getSize())
+	<span class="keyword">return</span> deserialize_value({})
+<span class="keyword">end</span>, loadData = <span class="keyword">function</span>(data, size)
+	Buffer_newDataReader(data, size)
+	<span class="keyword">return</span> deserialize_value({})
+<span class="keyword">end</span>, loads = <span class="keyword">function</span>(str)
+	Buffer_newReader(str)
+	<span class="keyword">return</span> deserialize_value({})
+<span class="keyword">end</span>, register = <span class="keyword">function</span>(name, resource)
+	<span class="global">assert</span>(<span class="keyword">not</span> resource_registry[name], name .. <span class="string">" already registered"</span>)
+	resource_registry[name] = resource
+	resource_name_registry[resource] = name
+	<span class="keyword">return</span> resource
+<span class="keyword">end</span>, unregister = <span class="keyword">function</span>(name)
+	resource_name_registry[resource_registry[name]] = <span class="keyword">nil</span>
+	resource_registry[name] = <span class="keyword">nil</span>
+<span class="keyword">end</span>, registerClass = <span class="keyword">function</span>(name, class, classkey, deserializer)
+	<span class="keyword">if</span> <span class="keyword">not</span> class <span class="keyword">then</span>
+		class = name
+		name = class.__name__ <span class="keyword">or</span> class.name
+	<span class="keyword">end</span>
+	<span class="keyword">if</span> <span class="keyword">not</span> classkey <span class="keyword">then</span>
+		<span class="keyword">if</span> class.__instanceDict <span class="keyword">then</span>
+			<span class="comment">-- assume MiddleClass
+</span>			classkey = <span class="string">'class'</span>
+		<span class="keyword">elseif</span> class.__baseclass <span class="keyword">then</span>
+			<span class="comment">-- assume SECL
+</span>			classkey = <span class="string">'__baseclass'</span>
+		<span class="keyword">end</span>
+		<span class="comment">-- assume hump.class, Slither, or something else that doesn't store the
+</span>		<span class="comment">-- class directly on the instance
+</span>	<span class="keyword">end</span>
+	<span class="keyword">if</span> <span class="keyword">not</span> deserializer <span class="keyword">then</span>
+		<span class="keyword">if</span> class.__instanceDict <span class="keyword">then</span>
+			<span class="comment">-- assume MiddleClass
+</span>			deserializer = deserialize_MiddleClass
+		<span class="keyword">elseif</span> class.__baseclass <span class="keyword">then</span>
+			<span class="comment">-- assume SECL
+</span>			deserializer = deserialize_SECL
+		<span class="keyword">elseif</span> class.__index == class <span class="keyword">then</span>
+			<span class="comment">-- assume hump.class
+</span>			deserializer = deserialize_humpclass
+		<span class="keyword">elseif</span> class.__name__ <span class="keyword">then</span>
+			<span class="comment">-- assume Slither
+</span>			deserializer = deserialize_Slither
+		<span class="keyword">else</span>
+			error(<span class="string">"no deserializer given for unsupported class library"</span>)
+		<span class="keyword">end</span>
+	<span class="keyword">end</span>
+	class_registry[name] = class
+	classkey_registry[name] = classkey
+	class_deserialize_registry[name] = deserializer
+	class_name_registry[class] = name
+	<span class="keyword">return</span> class
+<span class="keyword">end</span>, unregisterClass = <span class="keyword">function</span>(name)
+	class_name_registry[class_registry[name]] = <span class="keyword">nil</span>
+	classkey_registry[name] = <span class="keyword">nil</span>
+	class_deserialize_registry[name] = <span class="keyword">nil</span>
+	class_registry[name] = <span class="keyword">nil</span>
+<span class="keyword">end</span>, reserveBuffer = Buffer_prereserve, clearBuffer = Buffer_clear}</pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2016-08-06 17:29:55 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>

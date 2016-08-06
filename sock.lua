@@ -1,11 +1,13 @@
 
---- A networking library for Lua games
+--- A Lua networking library for LÖVE games.
+-- * [Source code](https://github.com/camchenry/sock.lua)
+-- * [Examples](https://github.com/camchenry/sock.lua/tree/master/examples)
 -- @module sock
--- @usage local sock = require "sock"
+-- @usage sock = require "sock"
 
 local sock = {
     _VERSION     = 'sock.lua v0.1.0',
-    _DESCRIPTION = 'A networking library for Lua games',
+    _DESCRIPTION = 'A Lua networking library for LÖVE games',
     _URL         = 'https://github.com/camchenry/sock.lua',
     _LICENSE     = [[
         MIT License
@@ -54,7 +56,7 @@ end
 
 --- All of the possible connection statuses for a client connection.
 -- @see Client:getState
-local CONNECTION_STATES = {
+sock.CONNECTION_STATES = {
     "disconnected",             -- Disconnected from the server.
     "connecting",               -- In the process of connecting to the server.
     "acknowledging_connect",    -- 
@@ -69,14 +71,14 @@ local CONNECTION_STATES = {
 }
 
 --- Valid modes for sending messages.
-local SEND_MODES = {
+sock.SEND_MODES = {
     "reliable",     -- Message is guaranteed to arrive, and arrive in the order in which it is sent.
     "unsequenced",  -- Message has no guarantee on the order that it arrives.
     "unreliable",   -- Message is not guaranteed to arrive.
 }
 
 local function isValidSendMode(mode)
-    for i, validMode in pairs(SEND_MODES) do
+    for i, validMode in pairs(sock.SEND_MODES) do
         if mode == validMode then
             return true
         end
@@ -190,6 +192,7 @@ function Listener:trigger(event, data, client)
 end
 
 --- Manages all clients and receives network events.
+-- @type Server
 local Server = {}
 local Server_mt = {__index = Server}
 
@@ -394,7 +397,7 @@ end
 
 --- Set the data format for an event.
 -- @tparam string event The event to set the data format for. 
--- @tparam table format The data format.
+-- @tparam {string,...} format The data format.
 function Server:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
@@ -517,6 +520,7 @@ end
 
 
 --- Connects to servers.
+-- @type Client
 local Client = {}
 local Client_mt = {__index = Client}
 
@@ -672,7 +676,7 @@ end
 
 --- Set the data format for an event.
 -- @tparam string event The event to set the data format for. 
--- @tparam table format The data format.
+-- @tparam {string,...} format The data format.
 function Client:setDataFormat(event, format)
     return self.listener:setDataFormat(event, format)
 end
@@ -872,6 +876,7 @@ end
 -- @tparam ?number outBandwidth Maximum outgoing bandwidth (default: 0)
 -- @return A new Server object.
 -- @see Server
+-- @within sock
 -- @usage 
 --local sock = require "sock"
 --
@@ -938,10 +943,11 @@ end
 
 --- Creates a new Client instance.
 -- @tparam ?string/peer serverOrAddress Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
--- @tparam ?number port port number of the server to connect to. (default: 22122)
--- @tparam ?number maxChannels maximum channels available to send and receive data. (default: 1)
+-- @tparam ?number port Port number of the server to connect to. (default: 22122)
+-- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
 -- @return A new Client object.
 -- @see Client
+-- @within sock
 -- @usage
 --local sock = require "sock"
 --

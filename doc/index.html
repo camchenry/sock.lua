@@ -20,46 +20,160 @@
 
 <!-- Menu -->
 
-<div id="navigation">
-
-
-
-<h2>Modules</h2>
-<ul class="nowrap">
-<li><strong>sock</strong></li>
-</ul>
-<h2>Examples</h2>
-<ul class="nowrap">
-  <li><a href="examples/main.lua.html">main.lua</a></li>
-  <li><a href="examples/main.lua.html">main.lua</a></li>
-  <li><a href="examples/main.lua.html">main.lua</a></li>
-  <li><a href="examples/main.lua.html">main.lua</a></li>
-</ul>
-
-</div>
-
 <div id="content">
 
 
 <h1>Module <code>sock</code></h1>
-<p>A networking library for Lua games</p>
+<p>A Lua networking library for LÖVE games.</p>
 <p>
 
+<ul>
+    <li><a href="https://github.com/camchenry/sock.lua">Source code</a></li>
+    <li><a href="https://github.com/camchenry/sock.lua/tree/master/examples">Examples</a></li>
+</ul>
 </p>
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">local sock = require &quot;sock&quot;</pre>
+        <pre class="example">sock = require &quot;sock&quot;</pre>
     </ul>
 
 
 <div id="contents">
 <h2>Table of Contents</h2>
 <ul>
-<li><a href="#Functions">Functions</a></li>
 <li><a href="#Tables">Tables</a></li>
+<li><a href="#Class_Server">Class Server </a></li>
+<li><a href="#Class_Client">Class Client </a></li>
+<li><a href="#sock">sock</a></li>
 </ul>
 </div>
-<h2><a href="#Functions">Functions</a></h2>
+<h2><a href="#Tables">Tables</a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" ><a href="#CONNECTION_STATES">CONNECTION_STATES</a></td>
+	<td class="summary">All of the possible connection statuses for a client connection.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#SEND_MODES">SEND_MODES</a></td>
+	<td class="summary">Valid modes for sending messages.</td>
+	</tr>
+</table>
+<h2><a href="#Class_Server">Class Server </a></h2>
+<table class="function_list">
+	<tr>
+	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(event, data)</a></td>
+	<td class="summary">Send a message to all peers.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(peer, event, data)</a></td>
+	<td class="summary">Send a message to all peers, except one.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></td>
+	<td class="summary">Gets the Client object associated with an enet peer.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClientByConnectId">Server:getClientByConnectId(connectId)</a></td>
+	<td class="summary">Gets the Client object that has the given connection id.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
+	<td class="summary">Get the Client object that has the given peer index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
+	<td class="summary">Get the last time when network events were serviced.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></td>
+	<td class="summary">Get the number of allocated channels.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getMaxPeers">Server:getMaxPeers()</a></td>
+	<td class="summary">Get the number of allocated slots for peers.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getMessageTimeout">Server:getMessageTimeout()</a></td>
+	<td class="summary">Get the timeout for packets.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></td>
+	<td class="summary">Get the enet_peer that has the given index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></td>
+	<td class="summary">Get the socket address of the host.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
+	<td class="summary">Get the total received data since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalReceivedPackets">Server:getTotalReceivedPackets()</a></td>
+	<td class="summary">Get the total number of packets (messages) received since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalSentData">Server:getTotalSentData()</a></td>
+	<td class="summary">Get the total sent data since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getTotalSentPackets">Server:getTotalSentPackets()</a></td>
+	<td class="summary">Get the total number of packets (messages) sent since the server was created.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:log">Server:log(event, data)</a></td>
+	<td class="summary">Log an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:on">Server:on(event, callback)</a></td>
+	<td class="summary">Add a callback to an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:removeCallback">Server:removeCallback(callback)</a></td>
+	<td class="summary">Remove a specific callback for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:resetSendSettings">Server:resetSendSettings()</a></td>
+	<td class="summary">Reset all send options to their default values.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></td>
+	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDataFormat">Server:setDataFormat(event, format)</a></td>
+	<td class="summary">Set the data format for an event.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></td>
+	<td class="summary">Set the default send channel for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode(mode)</a></td>
+	<td class="summary">Set the default send mode for all future outgoing messages.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setMaxChannels">Server:setMaxChannels(limit)</a></td>
+	<td class="summary">Set the maximum number of channels.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></td>
+	<td class="summary">Set the timeout to wait for packets.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
+	<td class="summary">Set the send channel for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
+	<td class="summary">Set the send mode for the next outgoing message.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:update">Server:update()</a></td>
+	<td class="summary">Check for network events and handle them.</td>
+	</tr>
+</table>
+<h2><a href="#Class_Client">Class Client </a></h2>
 <table class="function_list">
 	<tr>
 	<td class="name" ><a href="#Client:connect">Client:connect()</a></td>
@@ -197,118 +311,9 @@
 	<td class="name" ><a href="#Client:update">Client:update()</a></td>
 	<td class="summary">Check for network events and handle them.</td>
 	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(event, data)</a></td>
-	<td class="summary">Send a message to all peers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(peer, event, data)</a></td>
-	<td class="summary">Send a message to all peers, except one.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></td>
-	<td class="summary">Gets the Client object associated with an enet peer.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClientByConnectId">Server:getClientByConnectId(connectId)</a></td>
-	<td class="summary">Gets the Client object that has the given connection id.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
-	<td class="summary">Get the Client object that has the given peer index.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
-	<td class="summary">Get the last time when network events were serviced.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></td>
-	<td class="summary">Get the number of allocated channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMaxPeers">Server:getMaxPeers()</a></td>
-	<td class="summary">Get the number of allocated slots for peers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMessageTimeout">Server:getMessageTimeout()</a></td>
-	<td class="summary">Get the timeout for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></td>
-	<td class="summary">Get the enet_peer that has the given index.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></td>
-	<td class="summary">Get the socket address of the host.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
-	<td class="summary">Get the total received data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalReceivedPackets">Server:getTotalReceivedPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) received since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalSentData">Server:getTotalSentData()</a></td>
-	<td class="summary">Get the total sent data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalSentPackets">Server:getTotalSentPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) sent since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:log">Server:log(event, data)</a></td>
-	<td class="summary">Log an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:on">Server:on(event, callback)</a></td>
-	<td class="summary">Add a callback to an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:removeCallback">Server:removeCallback(callback)</a></td>
-	<td class="summary">Remove a specific callback for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:resetSendSettings">Server:resetSendSettings()</a></td>
-	<td class="summary">Reset all send options to their default values.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></td>
-	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setDataFormat">Server:setDataFormat(event, format)</a></td>
-	<td class="summary">Set the data format for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></td>
-	<td class="summary">Set the default send channel for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode(mode)</a></td>
-	<td class="summary">Set the default send mode for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setMaxChannels">Server:setMaxChannels(limit)</a></td>
-	<td class="summary">Set the maximum number of channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></td>
-	<td class="summary">Set the timeout to wait for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
-	<td class="summary">Set the send channel for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
-	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:update">Server:update()</a></td>
-	<td class="summary">Check for network events and handle them.</td>
-	</tr>
+</table>
+<h2><a href="#sock">sock</a></h2>
+<table class="function_list">
 	<tr>
 	<td class="name" ><a href="#newClient">newClient(serverOrAddress, port, maxChannels)</a></td>
 	<td class="summary">Creates a new Client instance.</td>
@@ -318,32 +323,956 @@
 	<td class="summary">Creates a new Server object.</td>
 	</tr>
 </table>
-<h2><a href="#Tables">Tables</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#CONNECTION_STATES">CONNECTION_STATES</a></td>
-	<td class="summary">All of the possible connection statuses for a client connection.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client">Client</a></td>
-	<td class="summary">Connects to servers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#SEND_MODES">SEND_MODES</a></td>
-	<td class="summary">Valid modes for sending messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server">Server</a></td>
-	<td class="summary">Manages all clients and receives network events.</td>
-	</tr>
-</table>
-
-<br>
-<br>
 
 
-    <h2 class="section-header "><a name="Functions"></a>Functions</h2>
+<section id="Tables">
+    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+    <div class="section-content">
 
+    <dl class="function">
+    <div class="function_def">
+    <dt>
+    <a name = "CONNECTION_STATES"></a>
+    <h2 class="function_name">CONNECTION_STATES</h2>
+    </dt>
+    <dd>
+    <p>
+    All of the possible connection statuses for a client connection.
+    </p>
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">disconnected</span>
+        Disconnected from the server.
+        </li>
+        <li><span class="parameter">connecting</span>
+        In the process of connecting to the server.
+        </li>
+        <li><span class="parameter">acknowledging_connect</span>
+
+
+
+        </li>
+        <li><span class="parameter">connection_pending</span>
+
+
+
+        </li>
+        <li><span class="parameter">connection_succeeded</span>
+
+
+
+        </li>
+        <li><span class="parameter">connected</span>
+        Successfully connected to the server.
+        </li>
+        <li><span class="parameter">disconnect_later</span>
+        Disconnecting, but only after sending all queued packets.
+        </li>
+        <li><span class="parameter">disconnecting</span>
+        In the process of disconnecting from the server.
+        </li>
+        <li><span class="parameter">acknowledging_disconnect</span>
+
+
+
+        </li>
+        <li><span class="parameter">zombie</span>
+
+
+
+        </li>
+        <li><span class="parameter">unknown</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#Client:getState">Client:getState</a>
+    </li>
+    </ul>
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "SEND_MODES"></a>
+    <h2 class="function_name">SEND_MODES</h2>
+    </dt>
+    <dd>
+    <p>
+    Valid modes for sending messages.
+    </p>
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">reliable</span>
+        Message is guaranteed to arrive, and arrive in the order in which it is sent.
+        </li>
+        <li><span class="parameter">unsequenced</span>
+        Message has no guarantee on the order that it arrives.
+        </li>
+        <li><span class="parameter">unreliable</span>
+        Message is not guaranteed to arrive.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+</dl>
+</div>
+</section>
+<section id="Server">
+    <h2 class="section-header has-description"><a name="Class_Server"></a>Class Server </h2>
+    <div class="section-content">
+
+          <div class="section-description">
+          Manages all clients and receives network events.
+          </div>
+    <dl class="function">
+    <div class="function_def">
+    <dt>
+    <a name = "Server:emitToAll"></a>
+    <h2 class="function_name">Server:emitToAll(event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to all peers.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:emitToAllBut"></a>
+    <h2 class="function_name">Server:emitToAllBut(peer, event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to all peers, except one.
+ Useful for when the client does something locally, but other clients
+ need to be updated at the same time. This way avoids duplicating objects by
+ never sending its own event to itself in the first place.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">peer</span>
+            <span class="types"><span class="type">enet_peer</span></span>
+         The peer to not receive the message.
+        </li>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getClient"></a>
+    <h2 class="function_name">Server:getClient(peer)</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets the Client object associated with an enet peer.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">peer</span>
+            <span class="types"><span class="type">peer</span></span>
+         An enet peer.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+        Object associated with the peer.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getClientByConnectId"></a>
+    <h2 class="function_name">Server:getClientByConnectId(connectId)</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets the Client object that has the given connection id.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">connectId</span>
+            <span class="types"><span class="type">number</span></span>
+         The unique client connection id.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getClientByIndex"></a>
+    <h2 class="function_name">Server:getClientByIndex(index)</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the Client object that has the given peer index.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getLastServiceTime"></a>
+    <h2 class="function_name">Server:getLastServiceTime()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the last time when network events were serviced.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Timestamp of the last time events were serviced.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getMaxChannels"></a>
+    <h2 class="function_name">Server:getMaxChannels()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the number of allocated channels.
+ Channels are zero-indexed, e.g. 16 channels allocated means that the
+ maximum channel that can be used is 15.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Number of allocated channels.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getMaxPeers"></a>
+    <h2 class="function_name">Server:getMaxPeers()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the number of allocated slots for peers.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Number of allocated slots.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getMessageTimeout"></a>
+    <h2 class="function_name">Server:getMessageTimeout()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the timeout for packets.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        Time to wait for incoming packets in milliseconds.
+ initial default is 0.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getPeerByIndex"></a>
+    <h2 class="function_name">Server:getPeerByIndex(index)</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the enet_peer that has the given index.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">index</span>
+
+
+
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">enet_peer</span></span>
+        The underlying enet peer object.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getSocketAddress"></a>
+    <h2 class="function_name">Server:getSocketAddress()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the socket address of the host.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+        A description of the socket address, in the format
+ "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getTotalReceivedData"></a>
+    <h2 class="function_name">Server:getTotalReceivedData()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the total received data since the server was created.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The total received data in bytes.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getTotalReceivedPackets"></a>
+    <h2 class="function_name">Server:getTotalReceivedPackets()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the total number of packets (messages) received since the server was created.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The total number of received packets.
+        </li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#Server:getTotalSentPackets">Server:getTotalSentPackets</a>
+    </li>
+    </ul>
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getTotalSentData"></a>
+    <h2 class="function_name">Server:getTotalSentData()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the total sent data since the server was created.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The total sent data in bytes.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getTotalSentPackets"></a>
+    <h2 class="function_name">Server:getTotalSentPackets()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the total number of packets (messages) sent since the server was created.
+ Everytime a message is sent or received, the corresponding figure is incremented.
+ Therefore, this is not necessarily an accurate indicator of how many packets were actually
+ exchanged over the network.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The total number of sent packets.
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:log"></a>
+    <h2 class="function_name">Server:log(event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Log an event.
+ Alias for Server.logger:log.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The type of event that happened.
+        </li>
+        <li><span class="parameter">data</span>
+            <span class="types"><span class="type">string</span></span>
+         The message to log.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+<span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
+    server:log(<span class="string">"error"</span>, <span class="string">"Something bad happened!"</span>)
+<span class="keyword">end</span></pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:on"></a>
+    <h2 class="function_name">Server:on(event, callback)</h2>
+    </dt>
+    <dd>
+    <p>
+    Add a callback to an event.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event that will trigger the callback.
+        </li>
+        <li><span class="parameter">callback</span>
+            <span class="types"><span class="type">function</span></span>
+         The callback to be triggered.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">function</span></span>
+        The callback that was passed in.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, client)
+    <span class="global">print</span>(<span class="string">"Client connected!"</span>)
+<span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:removeCallback"></a>
+    <h2 class="function_name">Server:removeCallback(callback)</h2>
+    </dt>
+    <dd>
+    <p>
+    Remove a specific callback for an event.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">callback</span>
+            <span class="types"><span class="type">function</span></span>
+         The callback to remove.
+        </li>
+    </ul>
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether or not the callback was removed.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">
+<span class="keyword">local</span> callback = server:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
+    <span class="global">print</span>(message)
+<span class="keyword">end</span>)
+server:removeCallback(callback)</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:resetSendSettings"></a>
+    <h2 class="function_name">Server:resetSendSettings()</h2>
+    </dt>
+    <dd>
+    <p>
+    Reset all send options to their default values.
+    </p>
+
+
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setBandwidthLimit"></a>
+    <h2 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the incoming and outgoing bandwidth limits.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">incoming</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum incoming bandwidth in bytes.
+        </li>
+        <li><span class="parameter">outgoing</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum outgoing bandwidth in bytes.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setDataFormat"></a>
+    <h2 class="function_name">Server:setDataFormat(event, format)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the data format for an event.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to set the data format for.
+        </li>
+        <li><span class="parameter">format</span>
+            <span class="types"><span class="type">{string,...}</span></span>
+         The data format.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setDefaultSendChannel"></a>
+    <h2 class="function_name">Server:setDefaultSendChannel(channel)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the default send channel for all future outgoing messages.
+ The initial default is 0.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         Channel to send data on.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setDefaultSendMode"></a>
+    <h2 class="function_name">Server:setDefaultSendMode(mode)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the default send mode for all future outgoing messages. <br/>
+ The initial default is "reliable".
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">string</span></span>
+         A valid send mode.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setMaxChannels"></a>
+    <h2 class="function_name">Server:setMaxChannels(limit)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the maximum number of channels.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">limit</span>
+            <span class="types"><span class="type">number</span></span>
+         The maximum number of channels allowed. If it is 0,
+ then the maximum number of channels available on the system will be used.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setMessageTimeout"></a>
+    <h2 class="function_name">Server:setMessageTimeout(timeout)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the timeout to wait for packets.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">timeout</span>
+            <span class="types"><span class="type">number</span></span>
+         Time to wait for incoming packets in milliseconds. The
+ initial default is 0.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setSendChannel"></a>
+    <h2 class="function_name">Server:setSendChannel(channel)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the send channel for the next outgoing message. <br/>
+ The channel will be reset after the next message. Channels are zero-indexed
+ and cannot exceed the maximum number of channels allocated. The initial
+ default is 0.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">channel</span>
+            <span class="types"><span class="type">number</span></span>
+         Channel to send data on.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:setSendMode"></a>
+    <h2 class="function_name">Server:setSendMode(mode)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the send mode for the next outgoing message. <br/>
+ The mode will be reset after the next message is sent. The initial default
+ is "reliable".
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">mode</span>
+            <span class="types"><span class="type">string</span></span>
+         A valid send mode.
+        </li>
+    </ul>
+
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:update"></a>
+    <h2 class="function_name">Server:update()</h2>
+    </dt>
+    <dd>
+    <p>
+    Check for network events and handle them.
+    </p>
+
+
+
+
+
+
+
+</dd>
+</div>
+</dl>
+</div>
+</section>
+<section id="Client">
+    <h2 class="section-header has-description"><a name="Class_Client"></a>Class Client </h2>
+    <div class="section-content">
+
+          <div class="section-description">
+          Connects to servers.
+          </div>
     <dl class="function">
     <div class="function_def">
     <dt>
@@ -1012,7 +1941,7 @@ client:removeCallback(callback)</pre>
          The event to set the data format for.
         </li>
         <li><span class="parameter">format</span>
-            <span class="types"><span class="type">table</span></span>
+            <span class="types"><span class="type">{string,...}</span></span>
          The data format.
         </li>
     </ul>
@@ -1305,826 +2234,14 @@ client:removeCallback(callback)</pre>
 
 </dd>
 </div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:emitToAll"></a>
-    <h2 class="function_name">Server:emitToAll(event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Send a message to all peers.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
+</dl>
 </div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:emitToAllBut"></a>
-    <h2 class="function_name">Server:emitToAllBut(peer, event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Send a message to all peers, except one.
- Useful for when the client does something locally, but other clients
- need to be updated at the same time. This way avoids duplicating objects by
- never sending its own event to itself in the first place.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">peer</span>
-            <span class="types"><span class="type">enet_peer</span></span>
-         The peer to not receive the message.
-        </li>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getClient"></a>
-    <h2 class="function_name">Server:getClient(peer)</h2>
-    </dt>
-    <dd>
-    <p>
-    Gets the Client object associated with an enet peer.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">peer</span>
-            <span class="types"><span class="type">peer</span></span>
-         An enet peer.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-        Object associated with the peer.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getClientByConnectId"></a>
-    <h2 class="function_name">Server:getClientByConnectId(connectId)</h2>
-    </dt>
-    <dd>
-    <p>
-    Gets the Client object that has the given connection id.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">connectId</span>
-            <span class="types"><span class="type">number</span></span>
-         The unique client connection id.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-
-
-
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getClientByIndex"></a>
-    <h2 class="function_name">Server:getClientByIndex(index)</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the Client object that has the given peer index.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">index</span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-
-
-
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getLastServiceTime"></a>
-    <h2 class="function_name">Server:getLastServiceTime()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the last time when network events were serviced.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        Timestamp of the last time events were serviced.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getMaxChannels"></a>
-    <h2 class="function_name">Server:getMaxChannels()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the number of allocated channels.
- Channels are zero-indexed, e.g. 16 channels allocated means that the
- maximum channel that can be used is 15.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        Number of allocated channels.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getMaxPeers"></a>
-    <h2 class="function_name">Server:getMaxPeers()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the number of allocated slots for peers.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        Number of allocated slots.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getMessageTimeout"></a>
-    <h2 class="function_name">Server:getMessageTimeout()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the timeout for packets.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        Time to wait for incoming packets in milliseconds.
- initial default is 0.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getPeerByIndex"></a>
-    <h2 class="function_name">Server:getPeerByIndex(index)</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the enet_peer that has the given index.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">index</span>
-
-
-
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">enet_peer</span></span>
-        The underlying enet peer object.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getSocketAddress"></a>
-    <h2 class="function_name">Server:getSocketAddress()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the socket address of the host.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">string</span></span>
-        A description of the socket address, in the format
- "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalReceivedData"></a>
-    <h2 class="function_name">Server:getTotalReceivedData()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the total received data since the server was created.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        The total received data in bytes.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalReceivedPackets"></a>
-    <h2 class="function_name">Server:getTotalReceivedPackets()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the total number of packets (messages) received since the server was created.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        The total number of received packets.
-        </li>
-    </ol>
-
-
-    <h3>See also:</h3>
-    <ul class="see-items">
-    <li>
-        <a href="index.html#Server:getTotalSentPackets">Server:getTotalSentPackets</a>
-    </li>
-    </ul>
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalSentData"></a>
-    <h2 class="function_name">Server:getTotalSentData()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the total sent data since the server was created.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        The total sent data in bytes.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalSentPackets"></a>
-    <h2 class="function_name">Server:getTotalSentPackets()</h2>
-    </dt>
-    <dd>
-    <p>
-    Get the total number of packets (messages) sent since the server was created.
- Everytime a message is sent or received, the corresponding figure is incremented.
- Therefore, this is not necessarily an accurate indicator of how many packets were actually
- exchanged over the network.
-    </p>
-
-
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">number</span></span>
-        The total number of sent packets.
-        </li>
-    </ol>
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:log"></a>
-    <h2 class="function_name">Server:log(event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Log an event.
- Alias for Server.logger:log.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The type of event that happened.
-        </li>
-        <li><span class="parameter">data</span>
-            <span class="types"><span class="type">string</span></span>
-         The message to log.
-        </li>
-    </ul>
-
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
-<span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
-    server:log(<span class="string">"error"</span>, <span class="string">"Something bad happened!"</span>)
-<span class="keyword">end</span></pre>
-    </ul>
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:on"></a>
-    <h2 class="function_name">Server:on(event, callback)</h2>
-    </dt>
-    <dd>
-    <p>
-    Add a callback to an event.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event that will trigger the callback.
-        </li>
-        <li><span class="parameter">callback</span>
-            <span class="types"><span class="type">function</span></span>
-         The callback to be triggered.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">function</span></span>
-        The callback that was passed in.
-        </li>
-    </ol>
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
-server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, client)
-    <span class="global">print</span>(<span class="string">"Client connected!"</span>)
-<span class="keyword">end</span>)</pre>
-    </ul>
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:removeCallback"></a>
-    <h2 class="function_name">Server:removeCallback(callback)</h2>
-    </dt>
-    <dd>
-    <p>
-    Remove a specific callback for an event.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">callback</span>
-            <span class="types"><span class="type">function</span></span>
-         The callback to remove.
-        </li>
-    </ul>
-
-    <h3>Returns:</h3>
-    <ol>
-        <li>
-           <span class="types"><span class="type">boolean</span></span>
-        Whether or not the callback was removed.
-        </li>
-    </ol>
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">
-<span class="keyword">local</span> callback = server:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
-    <span class="global">print</span>(message)
-<span class="keyword">end</span>)
-server:removeCallback(callback)</pre>
-    </ul>
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:resetSendSettings"></a>
-    <h2 class="function_name">Server:resetSendSettings()</h2>
-    </dt>
-    <dd>
-    <p>
-    Reset all send options to their default values.
-    </p>
-
-
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setBandwidthLimit"></a>
-    <h2 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the incoming and outgoing bandwidth limits.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">incoming</span>
-            <span class="types"><span class="type">number</span></span>
-         The maximum incoming bandwidth in bytes.
-        </li>
-        <li><span class="parameter">outgoing</span>
-            <span class="types"><span class="type">number</span></span>
-         The maximum outgoing bandwidth in bytes.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setDataFormat"></a>
-    <h2 class="function_name">Server:setDataFormat(event, format)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the data format for an event.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to set the data format for.
-        </li>
-        <li><span class="parameter">format</span>
-            <span class="types"><span class="type">table</span></span>
-         The data format.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setDefaultSendChannel"></a>
-    <h2 class="function_name">Server:setDefaultSendChannel(channel)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the default send channel for all future outgoing messages.
- The initial default is 0.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
-            <span class="types"><span class="type">number</span></span>
-         Channel to send data on.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setDefaultSendMode"></a>
-    <h2 class="function_name">Server:setDefaultSendMode(mode)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the default send mode for all future outgoing messages. <br/>
- The initial default is "reliable".
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">string</span></span>
-         A valid send mode.
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul class="see-items">
-    <li>
-        <a href="index.html#SEND_MODES">SEND_MODES</a>
-    </li>
-    </ul>
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setMaxChannels"></a>
-    <h2 class="function_name">Server:setMaxChannels(limit)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the maximum number of channels.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">limit</span>
-            <span class="types"><span class="type">number</span></span>
-         The maximum number of channels allowed. If it is 0,
- then the maximum number of channels available on the system will be used.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setMessageTimeout"></a>
-    <h2 class="function_name">Server:setMessageTimeout(timeout)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the timeout to wait for packets.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">timeout</span>
-            <span class="types"><span class="type">number</span></span>
-         Time to wait for incoming packets in milliseconds. The
- initial default is 0.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setSendChannel"></a>
-    <h2 class="function_name">Server:setSendChannel(channel)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the send channel for the next outgoing message. <br/>
- The channel will be reset after the next message. Channels are zero-indexed
- and cannot exceed the maximum number of channels allocated. The initial
- default is 0.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
-            <span class="types"><span class="type">number</span></span>
-         Channel to send data on.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:setSendMode"></a>
-    <h2 class="function_name">Server:setSendMode(mode)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the send mode for the next outgoing message. <br/>
- The mode will be reset after the next message is sent. The initial default
- is "reliable".
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
-            <span class="types"><span class="type">string</span></span>
-         A valid send mode.
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul class="see-items">
-    <li>
-        <a href="index.html#SEND_MODES">SEND_MODES</a>
-    </li>
-    </ul>
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:update"></a>
-    <h2 class="function_name">Server:update()</h2>
-    </dt>
-    <dd>
-    <p>
-    Check for network events and handle them.
-    </p>
-
-
-
-
-
-
-
-</dd>
-</div>
+</section>
+<section id="sock">
+    <h2 class="section-header "><a name="sock"></a>sock</h2>
+    <div class="section-content">
+
+    <dl class="function">
     <div class="function_def">
     <dt>
     <a name = "newClient"></a>
@@ -2144,11 +2261,11 @@ server:removeCallback(callback)</pre>
         </li>
         <li><span class="parameter">port</span>
             <span class="types">optional <span class="type">number</span></span>
-         port number of the server to connect to. (default: 22122)
+         Port number of the server to connect to. (default: 22122)
         </li>
         <li><span class="parameter">maxChannels</span>
             <span class="types">optional <span class="type">number</span></span>
-         maximum channels available to send and receive data. (default: 1)
+         Maximum channels available to send and receive data. (default: 1)
         </li>
     </ul>
 
@@ -2266,155 +2383,15 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
 </dl>
-    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
-
-    <dl class="function">
-    <div class="function_def">
-    <dt>
-    <a name = "CONNECTION_STATES"></a>
-    <h2 class="function_name">CONNECTION_STATES</h2>
-    </dt>
-    <dd>
-    <p>
-    All of the possible connection statuses for a client connection.
-    </p>
-
-
-    <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">disconnected</span>
-        Disconnected from the server.
-        </li>
-        <li><span class="parameter">connecting</span>
-        In the process of connecting to the server.
-        </li>
-        <li><span class="parameter">acknowledging_connect</span>
-
-
-
-        </li>
-        <li><span class="parameter">connection_pending</span>
-
-
-
-        </li>
-        <li><span class="parameter">connection_succeeded</span>
-
-
-
-        </li>
-        <li><span class="parameter">connected</span>
-        Successfully connected to the server.
-        </li>
-        <li><span class="parameter">disconnect_later</span>
-        Disconnecting, but only after sending all queued packets.
-        </li>
-        <li><span class="parameter">disconnecting</span>
-        In the process of disconnecting from the server.
-        </li>
-        <li><span class="parameter">acknowledging_disconnect</span>
-
-
-
-        </li>
-        <li><span class="parameter">zombie</span>
-
-
-
-        </li>
-        <li><span class="parameter">unknown</span>
-
-
-
-        </li>
-    </ul>
-
-
-
-    <h3>See also:</h3>
-    <ul class="see-items">
-    <li>
-        <a href="index.html#Client:getState">Client:getState</a>
-    </li>
-    </ul>
-
-
-</dd>
 </div>
-    <div class="function_def">
-    <dt>
-    <a name = "Client"></a>
-    <h2 class="function_name">Client</h2>
-    </dt>
-    <dd>
-    <p>
-    Connects to servers.
-    </p>
-
-
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "SEND_MODES"></a>
-    <h2 class="function_name">SEND_MODES</h2>
-    </dt>
-    <dd>
-    <p>
-    Valid modes for sending messages.
-    </p>
-
-
-    <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">reliable</span>
-        Message is guaranteed to arrive, and arrive in the order in which it is sent.
-        </li>
-        <li><span class="parameter">unsequenced</span>
-        Message has no guarantee on the order that it arrives.
-        </li>
-        <li><span class="parameter">unreliable</span>
-        Message is not guaranteed to arrive.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server"></a>
-    <h2 class="function_name">Server</h2>
-    </dt>
-    <dd>
-    <p>
-    Manages all clients and receives network events.
-    </p>
-
-
-
-
-
-
-
-</dd>
-</div>
-</dl>
+</section>
 
 
 </div> <!-- id="content" -->
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-08-05 10:49:11 </i>
+<i style="float:right;">Last updated 2016-08-06 18:50:56 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
