@@ -1,103 +1,121 @@
--- libraries
 sock = require "sock"
+
+-- Utility functions
+function isColliding(this, other)
+    return  this.x < other.x + other.w and
+            this.y < other.y + other.h and
+            this.x + this.w > other.x and
+            this.y + this.h > other.y
+end
 
 function love.load()
     -- how often an update is sent out
-    tickRate = 1/30
+    tickRate = 1/60
     tick = 0
 
     server = sock.newServer("*", 22122, 2)
 
-    server:on("connect", function(data, peer)
+    -- Players are being indexed by peer index here, definitely not a good idea
+    -- for a larger game, but it's good enough for this application.
+    server:on("connect", function(data, client)
         -- tell the peer what their index is
-        peer:emit("playerNum", peer.server:index())
+        client:emit("playerNum", client:getIndex())
     end)
 
     -- receive info on where a player is located
-    server:on("mouseY", function(data, peer)
-        local mouseY = data
-        local index = peer.server:index()
-
-        players[index].y = mouseY
+    server:on("mouseY", function(y, client)
+        local index = client:getIndex()
+        players[index].y = y
     end)
 
 
-    local xMargin = 50
+    function newPlayer(x, y)
+        return {
+            x = x,
+            y = y,
+            w = 20,
+            h = 100,
+        }
+    end
 
-    playerSize = {
-        w = 20,
-        h = 100
-    }
+    function newBall(x, y)
+        return {
+            x = x,
+            y = y,
+            vx = 150,
+            vy = 150,
+            w = 15,
+            h = 15,
+        }
+    end
 
-    ballSize = {
-        w = 15,
-        h = 15
-    }
+    local marginX = 50
 
     players = {
-        {x = xMargin,
-         y = love.graphics.getHeight()/2
-        },
-
-        {x = love.graphics.getWidth() - xMargin,
-         y = love.graphics.getHeight()/2
-        }
+        newPlayer(marginX, love.graphics.getHeight()/2),
+        newPlayer(love.graphics.getWidth() - marginX, love.graphics.getHeight()/2)
     }
 
-    ball = {
-        x = love.graphics.getWidth()/2,
-        y = love.graphics.getHeight()/2,
-        vx = 150,
-        vy = 150
-    }
+    scores = {0, 0}
+
+    ball = newBall(love.graphics.getWidth()/2, love.graphics.getHeight()/2)
 end
 
 function love.update(dt)
     server:update()
 
-    ball.x = ball.x + ball.vx * dt
-    ball.y = ball.y + ball.vy * dt
+    -- wait until 2 players connect to start playing
+    local enoughPlayers = #server.clients >= 2
+    if not enoughPlayers then return end
 
-    for k, player in pairs(players) do
-        if ball.x < player.x + playerSize.w and
-            ball.x + ballSize.w > player.x and
-            ball.y < player.y + playerSize.h and
-            ball.y + ballSize.h > player.y then
-
+    for i, player in pairs(players) do
+        -- This is a naive solution, if the ball is inside the paddle it might bug out
+        -- But hey, it's low stakes pong
+        if isColliding(ball, player) then
             ball.vx = ball.vx * -1
             ball.vy = ball.vy * -1
         end
     end
 
-    if ball.x < 0 then
+    -- Left/Right bounds
+    if ball.x < 0 or ball.x > love.graphics.getWidth() then
+        if ball.x < 0 then
+            scores[2] = scores[2] + 1
+        else
+            scores[1] = scores[1] + 1
+        end
+
+        server:emitToAll("scores", scores)
+
         ball.x = love.graphics.getWidth()/2
         ball.y = love.graphics.getHeight()/2
-    end
-
-    if ball.x > love.graphics.getWidth() then
-        ball.x = love.graphics.getWidth()/2
-        ball.y = love.graphics.getHeight()/2
-    end
-
-    if ball.y < 0 then
-        ball.y = 0
+        ball.vx = ball.vx * -1
         ball.vy = ball.vy * -1
     end
-
-    if ball.y > love.graphics.getHeight() then
-        ball.y = love.graphics.getHeight()
+    
+    -- Top/Bottom bounds
+    if ball.y < 0 or ball.y > love.graphics.getHeight() - ball.h then
         ball.vy = ball.vy * -1
+
+        if ball.y < 0 then
+            ball.y = 0
+        end
+
+        if ball.y > love.graphics.getHeight() - ball.h then
+            ball.y = love.graphics.getHeight() - ball.h
+        end
     end
+
+    ball.x = ball.x + ball.vx * dt
+    ball.y = ball.y + ball.vy * dt
 
     tick = tick + dt
 
     if tick >= tickRate then
         tick = 0
 
-        print(server:getLastServiceTime())
-
-        for k, player in pairs(players) do
-            server:emitToAll("playerState", {index = k, player = player})
+        for i, player in pairs(players) do
+            server:emitToAll("playerState", {index = i, player = player})
         end
 
         server:emitToAll("ballState", ball)
@@ -105,13 +123,11 @@ function love.update(dt)
 end
 
 function love.draw()
-    for k, player in pairs(players) do
-        local w, h = playerSize.w, playerSize.h
-        love.graphics.rectangle('fill', player.x - w/2, player.y - h/2, w, h)
+    for i, player in pairs(players) do
+        love.graphics.rectangle('fill', player.x, player.y, player.w, player.h)
     end
 
-    local w, h = ballSize.w, ballSize.h
-    love.graphics.rectangle('fill', ball.x - w/2, ball.y - h/2, w, h)
-
-    love.graphics.print("Hello", 5, 5)
+    love.graphics.rectangle('fill', ball.x, ball.y, ball.w, ball.h)
+    local score = ("%d - %d"):format(scores[1], scores[2])
+    love.graphics.print(score, 5, 5)
 end
