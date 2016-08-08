@@ -239,6 +239,9 @@ end
 -- is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
+-- @usage
+--server:setSendMode("unreliable")
+--server:emitToAll("playerState", {...})
 function Server:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -266,6 +269,9 @@ end
 -- and cannot exceed the maximum number of channels allocated. The initial 
 -- default is 0.
 -- @tparam number channel Channel to send data on.
+-- @usage
+--server:setSendChannel(2) -- the third channel
+--server:emit("important", "The message")
 function Server:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -331,15 +337,14 @@ function Server:update()
     end
 end
 
---- Send a message to all peers, except one.
+--- Send a message to all clients, except one.
 -- Useful for when the client does something locally, but other clients
 -- need to be updated at the same time. This way avoids duplicating objects by
 -- never sending its own event to itself in the first place.
--- @todo This function is bugged (I think.) It should accept clients, not peers.
--- @tparam enet_peer peer The peer to not receive the message.
+-- @tparam Client client The client to not receive the message.
 -- @tparam string event The event to trigger with this message. 
 -- @param data The data to send.
-function Server:emitToAllBut(peer, event, data)
+function Server:emitToAllBut(client, event, data)
     local message = {event, data}
     local serializedMessage = nil
 
@@ -352,7 +357,7 @@ function Server:emitToAllBut(peer, event, data)
     end
 
     for i, p in pairs(self.peers) do
-        if p ~= peer then
+        if p ~= client.connection then
             self.packetsSent = self.packetsSent + 1
             p:send(serializedMessage, self.sendChannel, self.sendMode)
         end
@@ -361,9 +366,11 @@ function Server:emitToAllBut(peer, event, data)
     self:resetSendSettings()
 end
 
---- Send a message to all peers.
+--- Send a message to all clients.
 -- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
+--@usage
+--server:emitToAll("gameStarting", true)
 function Server:emitToAll(event, data)
     local message = {event, data}
     local serializedMessage = nil
@@ -529,6 +536,9 @@ local Client_mt = {__index = Client}
 -- is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
+-- @usage
+--client:setSendMode("unreliable")
+--client:emit("position", {...})
 function Client:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -556,6 +566,9 @@ end
 -- and cannot exceed the maximum number of channels allocated. The initial 
 -- default is 0.
 -- @tparam number channel Channel to send data on.
+-- @usage
+--client:setSendChannel(2) -- the third channel
+--client:emit("important", "The message")
 function Client:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
