@@ -307,7 +307,7 @@ function Server:update()
             self:log(event.type, tostring(event.peer) .. " connected")
 
         elseif event.type == "receive" then
-            local message = bitser.loads(event.data)
+            local message = self.deserialize(event.data)
             local eventClient = self:getClient(event.peer)
             local event = message[1]
             local data = message[2]
@@ -351,9 +351,9 @@ function Server:emitToAllBut(client, event, data)
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
         message[2] = data:getString()
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     else
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     end
 
     for i, p in pairs(self.peers) do
@@ -378,9 +378,9 @@ function Server:emitToAll(event, data)
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
         message[2] = data:getString()
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     else
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     end
     
     self.packetsSent = self.packetsSent + #self.peers
@@ -557,6 +557,12 @@ function Server:getClients()
     return self.clients
 end
 
+function Server:setSerialization(serialize, deserialize)
+    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
+    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
+    self.serialize = serialize
+    self.deserialize = deserialize
+end
 
 
 --- Connects to servers.
@@ -670,7 +676,7 @@ function Client:update()
             self:_activateTriggers("connect", event.data)
             self:log(event.type, "Connected to " .. tostring(self.connection))
         elseif event.type == "receive" then
-            local message = bitser.loads(event.data)
+            local message = self.deserialize(event.data)
             local event = message[1]
             local data = message[2]
 
@@ -696,9 +702,9 @@ function Client:emit(event, data)
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
         message[2] = data:getString()
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     else
-        serializedMessage = bitser.dumps(message)
+        serializedMessage = self.serialize(message)
     end
 
     self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
@@ -939,6 +945,13 @@ function Client:getPort()
     return self.port
 end
 
+function Client:setSerialization(serialize, deserialize)
+    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
+    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
+    self.serialize = serialize
+    self.deserialize = deserialize
+end
+
 --- Creates a new Server object.
 -- @tparam ?string address Hostname or IP address to bind to. (default: "localhost")
 -- @tparam ?number port Port to listen to for data. (default: 22122) 
@@ -995,6 +1008,8 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
 
         listener        = newListener(),
         logger          = newLogger("SERVER"),
+        serialize       = nil,
+        deserialize     = nil,
 
         packetsSent     = 0,
         packetsReceived = 0,
@@ -1009,6 +1024,16 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
     end
 
     server:setBandwidthLimit(inBandwidth, outBandwidth)
+
+    local serialize = function(msg)
+        return bitser.dumps(msg) 
+    end
+
+    local deserialize = function(data)
+        return bitser.loads(data)
+    end
+
+    server:setSerialization(serialize, deserialize)
 
     return server
 end
@@ -1076,6 +1101,16 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         client.connection = serverOrAddress
         client.connectId = client.connection:connect_id()
     end
+
+    local serialize = function(msg)
+        return bitser.dumps(msg) 
+    end
+
+    local deserialize = function(data)
+        return bitser.loads(data)
+    end
+
+    client:setSerialization(serialize, deserialize)
 
     return client
 end
