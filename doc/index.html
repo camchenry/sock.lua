@@ -69,6 +69,10 @@
 	<td class="summary">Send a message to all clients, except one.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Server:getAddress">Server:getAddress()</a></td>
+	<td class="summary">Get the IP address or hostname that the server was created with.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></td>
 	<td class="summary">Gets the Client object associated with an enet peer.</td>
 	</tr>
@@ -79,6 +83,14 @@
 	<tr>
 	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
 	<td class="summary">Get the Client object that has the given peer index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClients">Server:getClients()</a></td>
+	<td class="summary">Get the table of Clients actively connected to the server.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getDefaultSendMode">Server:getDefaultSendMode()</a></td>
+	<td class="summary">Get the default send mode.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
@@ -99,6 +111,14 @@
 	<tr>
 	<td class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></td>
 	<td class="summary">Get the enet_peer that has the given index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getPort">Server:getPort()</a></td>
+	<td class="summary">Get the port that the server is hosted on.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getSendMode">Server:getSendMode()</a></td>
+	<td class="summary">Get the current send mode.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></td>
@@ -196,8 +216,16 @@
 	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:getAddress">Client:getAddress()</a></td>
+	<td class="summary">Get the IP address or hostname that the client was created with.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:getConnectId">Client:getConnectId()</a></td>
 	<td class="summary">Get the unique connection id, if connected.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getDefaultSendMode">Client:getDefaultSendMode()</a></td>
+	<td class="summary">Get the default send mode.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getIndex">Client:getIndex()</a></td>
@@ -220,8 +248,16 @@
 	<td class="summary">Get the enet_peer that has the given index.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:getPort">Client:getPort()</a></td>
+	<td class="summary">Get the port that the client is connecting to.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:getRoundTripTime">Client:getRoundTripTime()</a></td>
 	<td class="summary">Return the round trip time (RTT, or ping) to the server, if connected.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:getSendMode">Client:getSendMode()</a></td>
+	<td class="summary">Get the current send mode.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getSocketAddress">Client:getSocketAddress()</a></td>
@@ -512,6 +548,33 @@
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Server:getAddress"></a>
+    <h2 class="function_name">Server:getAddress()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the IP address or hostname that the server was created with.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Server:getClient"></a>
     <h2 class="function_name">Server:getClient(peer)</h2>
     </dt>
@@ -607,6 +670,63 @@
     </ol>
 
 
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getClients"></a>
+    <h2 class="function_name">Server:getClients()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the table of Clients actively connected to the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+        {Client,...}
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getDefaultSendMode"></a>
+    <h2 class="function_name">Server:getDefaultSendMode()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the default send mode.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
 
 
 </dd>
@@ -743,6 +863,66 @@
     </ol>
 
 
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getPort"></a>
+    <h2 class="function_name">Server:getPort()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the port that the server is hosted on.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getSendMode"></a>
+    <h2 class="function_name">Server:getSendMode()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the current send mode.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
 
 
 </dd>
@@ -1422,6 +1602,33 @@ server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:getAddress"></a>
+    <h2 class="function_name">Client:getAddress()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the IP address or hostname that the client was created with.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:getConnectId"></a>
     <h2 class="function_name">Client:getConnectId()</h2>
     </dt>
@@ -1441,6 +1648,39 @@ server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
     </ol>
 
 
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getDefaultSendMode"></a>
+    <h2 class="function_name">Client:getDefaultSendMode()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the default send mode.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
 
 
 </dd>
@@ -1583,6 +1823,33 @@ server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:getPort"></a>
+    <h2 class="function_name">Client:getPort()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the port that the client is connecting to.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:getRoundTripTime"></a>
     <h2 class="function_name">Client:getRoundTripTime()</h2>
     </dt>
@@ -1603,6 +1870,39 @@ server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
     </ol>
 
 
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:getSendMode"></a>
+    <h2 class="function_name">Client:getSendMode()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the current send mode.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">string</span></span>
+
+
+
+        </li>
+    </ol>
+
+
+    <h3>See also:</h3>
+    <ul class="see-items">
+    <li>
+        <a href="index.html#SEND_MODES">SEND_MODES</a>
+    </li>
+    </ul>
 
 
 </dd>
@@ -2419,7 +2719,7 @@ client:emit(<span class="string">"position"</span>, {...})</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-08-07 21:32:50 </i>
+<i style="float:right;">Last updated 2016-08-08 23:19:06 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

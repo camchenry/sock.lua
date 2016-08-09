@@ -525,6 +525,39 @@ function Server:getSocketAddress()
     return self.host:get_socket_address()
 end
 
+--- Get the current send mode.
+-- @treturn string
+-- @see SEND_MODES
+function Server:getSendMode()
+    return self.sendMode
+end
+
+--- Get the default send mode.
+-- @treturn string
+-- @see SEND_MODES
+function Server:getDefaultSendMode()
+    return self.defaultSendMode
+end
+
+--- Get the IP address or hostname that the server was created with.
+-- @treturn string
+function Server:getAddress()
+    return self.address
+end
+
+--- Get the port that the server is hosted on.
+-- @treturn number
+function Server:getPort()
+    return self.port
+end
+
+--- Get the table of Clients actively connected to the server.
+-- @return {Client,...}
+function Server:getClients()
+    return self.clients
+end
+
+
 
 --- Connects to servers.
 -- @type Client
@@ -878,6 +911,32 @@ end
 -- @treturn enet_peer The underlying enet peer object.
 function Client:getPeerByIndex(index)
     return self.host:get_peer(index)
+end
+
+--- Get the current send mode.
+-- @treturn string
+-- @see SEND_MODES
+function Client:getSendMode()
+    return self.sendMode
+end
+
+--- Get the default send mode.
+-- @treturn string
+-- @see SEND_MODES
+function Client:getDefaultSendMode()
+    return self.defaultSendMode
+end
+
+--- Get the IP address or hostname that the client was created with.
+-- @treturn string
+function Client:getAddress()
+    return self.address
+end
+
+--- Get the port that the client is connecting to.
+-- @treturn number
+function Client:getPort()
+    return self.port
 end
 
 --- Creates a new Server object.
