@@ -631,14 +631,11 @@ function Client:resetSendSettings()
 end
 
 --- Connect to the chosen server.
--- @treturn boolean Status indicating whether or not the connection was successful.
--- @todo Actually return the status.
+-- Connection will not actually occur until the next time `Client:update` is called.
 function Client:connect()
     -- number of channels for the client and server must match
     self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
     self.connectId = self.connection:connect_id()
-
-    return true
 end
 
 --- Disconnect from the server, if connected. The client will disconnect the 
