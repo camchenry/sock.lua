@@ -333,7 +333,7 @@ function Server:update()
         
         end
 
-        event = self.host:service()
+        event = self.host:service(self.messageTimeout)
     end
 end
 
@@ -688,7 +688,7 @@ function Client:update()
             self:log(event.type, "Disconnected from " .. tostring(self.connection))
         end
 
-        event = self.host:service()
+        event = self.host:service(self.messageTimeout)
     end
 end
 
