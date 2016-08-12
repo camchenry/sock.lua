@@ -1076,6 +1076,8 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
         listener        = newListener(),
         logger          = newLogger("CLIENT"),
+        serialize       = nil,
+        deserialize     = nil,
 
         packetsReceived = 0,
         packetsSent     = 0,

@@ -301,6 +301,7 @@ function Server:update()
     while event do
         if event.type == "connect" then
             local eventClient = sock.newClient(event.peer)
+            eventClient:setSerialization(self.serialize, self.deserialize)
             table.insert(self.peers, event.peer)
             table.insert(self.clients, eventClient)
             self:_activateTriggers("connect", event.data, eventClient)
@@ -1076,6 +1077,8 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
         listener        = newListener(),
         logger          = newLogger("CLIENT"),
+        serialize       = nil,
+        deserialize     = nil,
 
         packetsReceived = 0,
         packetsSent     = 0,
