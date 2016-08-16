@@ -1,3 +1,4 @@
+package.path = package.path .. ";../../?.lua"
 sock = require "sock"
 binser = require "binser"
 

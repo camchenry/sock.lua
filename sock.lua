@@ -34,10 +34,7 @@ local sock = {
     ]]
 }
 
-local currentFolder = (...):match("(.-)[^%.]+$")
 require "enet"
--- bitser is expected to be in the same directory as sock.lua
-local bitser = require(currentFolder .. "bitser")
 
 -- links variables to keys based on their order
 -- note that it only works for boolean and number values, not strings
@@ -296,11 +293,17 @@ end
 
 --- Check for network events and handle them.
 function Server:update()
+    if not self.deserialize then
+        self:log("error", "Can't deserialize message: deserialize was not set") 
+        error("Can't deserialize message: deserialize was not set") 
+    end
+
     local event = self.host:service(self.messageTimeout)
     
     while event do
         if event.type == "connect" then
             local eventClient = sock.newClient(event.peer)
+            eventClient:setSerialization(self.serialize, self.deserialize)
             table.insert(self.peers, event.peer)
             table.insert(self.clients, eventClient)
             self:_activateTriggers("connect", event.data, eventClient)
@@ -347,6 +350,11 @@ end
 function Server:emitToAllBut(client, event, data)
     local message = {event, data}
     local serializedMessage = nil
+    
+    if not self.serialize then
+        self:log("error", "Can't serialize message: serialize was not set") 
+        error("Can't serialize message: serialize was not set") 
+    end
 
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
@@ -374,6 +382,11 @@ end
 function Server:emitToAll(event, data)
     local message = {event, data}
     local serializedMessage = nil
+    
+    if not self.serialize then
+        self:log("error", "Can't serialize message: serialize was not set") 
+        error("Can't serialize message: serialize was not set") 
+    end
 
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
@@ -666,6 +679,11 @@ end
 
 --- Check for network events and handle them.
 function Client:update()
+    if not self.deserialize then
+        self:log("error", "Can't deserialize message: deserialize was not set") 
+        error("Can't deserialize message: deserialize was not set") 
+    end
+
     local event = self.host:service(self.messageTimeout)
     
     while event do
@@ -695,6 +713,11 @@ end
 function Client:emit(event, data)
     local message = {event, data}
     local serializedMessage = nil
+
+    if not self.serialize then
+        self:log("error", "Can't serialize message: serialize was not set") 
+        error("Can't serialize message: serialize was not set") 
+    end
 
     -- 'Data' = binary data class in Love
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
@@ -1022,16 +1045,6 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
 
     server:setBandwidthLimit(inBandwidth, outBandwidth)
 
-    local serialize = function(msg)
-        return bitser.dumps(msg) 
-    end
-
-    local deserialize = function(data)
-        return bitser.loads(data)
-    end
-
-    server:setSerialization(serialize, deserialize)
-
     return server
 end
 
@@ -1098,16 +1111,6 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         client.connection = serverOrAddress
         client.connectId = client.connection:connect_id()
     end
-
-    local serialize = function(msg)
-        return bitser.dumps(msg) 
-    end
-
-    local deserialize = function(data)
-        return bitser.loads(data)
-    end
-
-    client:setSerialization(serialize, deserialize)
 
     return client
 end
