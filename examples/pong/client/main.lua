@@ -7,7 +7,7 @@ function love.load()
     tick = 0
 
     client = sock.newClient("localhost", 22122)
-    client:setSerialization(binser.serialize, binser.deserialize)
+    client:setSerialization(binser.serialize, binser.deserializeN)
 
     -- store the client's index
     -- playerNumber is nil otherwise

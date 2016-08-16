@@ -15,7 +15,7 @@ function love.load()
     tick = 0
 
     server = sock.newServer("*", 22122, 2)
-    server:setSerialization(binser.serialize, binser.deserialize)
+    server:setSerialization(binser.serialize, binser.deserializeN)
 
     -- Players are being indexed by peer index here, definitely not a good idea
     -- for a larger game, but it's good enough for this application.
