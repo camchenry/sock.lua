@@ -4,28 +4,30 @@
 
 sock.lua is a networking library for LÖVE games. Its goal is to make getting started with networking as easy as possible.
 
-**sock requires [bitser](https://github.com/gvx/bitser) and [enet](https://github.com/leafo/lua-enet) (which comes with LÖVE 0.9 and up.)**
+**sock requires [enet](https://github.com/leafo/lua-enet) (which comes with LÖVE 0.9 and up.)**
 
 - [Source code](https://github.com/camchenry/sock.lua)
 - [Documentation](http://camchenry.com/sock.lua/)
 
 ## Features
 
-- Fast enough to be used for a real-time games like FPSes and RTSes.
 - Event trigger system makes it easy to add behavior to network events.
 - Can send images and files over the network.
-- Uses bitser to minimize data usage and maximize speed.
+- Use any serialization library you want.
 - Logs events, errors, and warnings that occur.
 
 # Installation
 
-1. Clone or download the repository.
+1. Clone or download the repository. 
+    * `git clone https://github.com/camchenry/sock.lua.git`
 2. Install lua-enet, unless you are running with LÖVE in which case you already have it.
-3. Install bitser (included in this repository) and make sure it is in the same folder as sock.lua.
-4. Require it in your project.
-```
-git clone https://github.com/camchenry/sock.lua.git
-```
+3. Download a serialization library.
+    * Recommended: [bitser](https://github.com/gvx/bitser), or [binser](https://github.com/bakpakin/binser) if you don't have LuaJIT available.
+4. Place it in the same directory as sock.lua (if you are using bitser or binser).
+5. Require the library and start using it.
+    * `sock = require 'sock'`
+
+* (Optional) If you would like to use your own serialization function, look at [setSerialization](http://camchenry.com/sock.lua/index.html#Server:setSerialization).
 
 # Example
 

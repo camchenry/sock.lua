@@ -36,6 +36,12 @@ local sock = {
 
 require "enet"
 
+-- Try to load some common serialization libraries
+-- This is for convenience, you may still specify your own serializer
+local bitserLoaded, bitser = pcall(require, "bitser")
+local binserLoaded, binser = pcall(require, "binser")
+local defaultLoaded = bitserLoaded or binserLoaded
+
 -- links variables to keys based on their order
 -- note that it only works for boolean and number values, not strings
 local function zipTable(items, keys)
@@ -570,6 +576,16 @@ function Server:getClients()
     return self.clients
 end
 
+--- Set the serialization functions for sending and receiving data.
+-- Both the client and server must share the same serialization method.
+-- @tparam function serialize The serialization function to use.
+-- @tparam function deserialize The deserialization function to use.
+-- @usage
+--binser = require "binser" -- or any library you like
+--
+--server = sock.newServer("localhost", 22122)
+--
+--server:setSerialization(binser.serialize, binser.deserializeN)
 function Server:setSerialization(serialize, deserialize)
     assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
     assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
@@ -965,6 +981,16 @@ function Client:getPort()
     return self.port
 end
 
+--- Set the serialization functions for sending and receiving data.
+-- Both the client and server must share the same serialization method.
+-- @tparam function serialize The serialization function to use.
+-- @tparam function deserialize The deserialization function to use.
+-- @usage
+--binser = require "binser" -- or any library you like
+--
+--client = sock.newClient("localhost", 22122)
+--
+--client:setSerialization(binser.serialize, binser.deserializeN)
 function Client:setSerialization(serialize, deserialize)
     assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
     assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
@@ -1028,6 +1054,7 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
 
         listener        = newListener(),
         logger          = newLogger("SERVER"),
+
         serialize       = nil,
         deserialize     = nil,
 
@@ -1044,6 +1071,12 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
     end
 
     server:setBandwidthLimit(inBandwidth, outBandwidth)
+
+    if bitserLoaded then
+        server:setSerialization(bitser.dumps, bitser.loads)
+    elseif binserLoaded then
+        server:setSerialization(binser.serialize, binser.deserializeN)
+    end
 
     return server
 end
@@ -1090,6 +1123,9 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         listener        = newListener(),
         logger          = newLogger("CLIENT"),
 
+        serialize       = nil,
+        deserialize     = nil,
+
         packetsReceived = 0,
         packetsSent     = 0,
     }, Client_mt)
@@ -1110,6 +1146,12 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
     elseif type(serverOrAddress) == "userdata" then
         client.connection = serverOrAddress
         client.connectId = client.connection:connect_id()
+    end
+
+    if bitserLoaded then
+        client:setSerialization(bitser.dumps, bitser.loads)
+    elseif binserLoaded then
+        client:setSerialization(binser.serialize, binser.deserializeN)
     end
 
     return client

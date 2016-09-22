@@ -1,6 +1,5 @@
 package.path = package.path .. ";../../?.lua"
 sock = require "sock"
-binser = require "binser"
 
 function love.load()
     -- how often an update is sent out
