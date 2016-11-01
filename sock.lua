@@ -367,7 +367,7 @@ function Server:emitToAllBut(client, event, data)
 end
 
 --- Send a message to all clients.
--- @tparam string event The event to trigger with this message.
+-- @tparam String event The event to trigger with this message.
 -- @param data The data to send.
 --@usage
 --server:emitToAll("gameStarting", true)
@@ -390,6 +390,29 @@ function Server:emitToAll(event, data)
     self:resetSendSettings()
 end
 
+-- Send a message to a single enet peer. Useful to send data to a newly connected player
+-- without sending to everyone who already received it.
+-- @tparam UserData peer A valid enet peer to which to send data.
+-- @tparam String event The event to trigger with this message. 
+-- @param Data data to send to the peer.
+--@usage
+--server:sendToPeer(peer, "initialGameInfo", 1)
+function Server:sendToPeer(peer, event, data)
+    local message = {event, data}
+    local serializedMessage = nil
+    if type(data) == "userdata" and data.type and data:typeOf("Data") then
+        message[2] = data:getString()
+        serializedMessage = self.serialize(message)
+    else
+        serializedMessage = self.serialize(message)
+    end
+    
+    self.packetsSent = self.packetsSent + 1
+    peer:send(serializedMessage, self.sendChannel, self.sendMode)
+    self:resetSendSettings()
+end
+
+    
 --- Add a callback to an event.
 -- @tparam string event The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
