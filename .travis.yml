@@ -27,6 +27,6 @@ after_success:
     - luacov-coveralls -e $TRAVIS_BUILD_DIR/lua_install
 
 script:
-    - luacheck --include-files sock.lua --std max+busted --new-globals enet --ignore whitespace *.lua spec
+    - luacheck --std=max+busted *.lua spec --new-globals=enet --ignore=whitespace --include-files sock.lua sock_spec.lua
     - busted --verbose --coverage --no-auto-insulate -p ".*%.lua$" spec
 
