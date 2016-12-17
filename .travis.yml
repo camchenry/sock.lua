@@ -18,8 +18,15 @@ before_install:
 
 install:
     - luarocks install busted
-    - luarocks install enet
+    - luarocks install enet  
+    - luarocks install luacov
+    - luarocks install luacov-coveralls
+    - luarocks install luacheck
+
+after_success:
+    - luacov-coveralls -e $TRAVIS_BUILD_DIR/lua_install
 
 script:
-    - busted --verbose --no-auto-insulate -p ".*%.lua$" spec
+    - luacheck --std max+busted *.lua spec
+    - busted --verbose --coverage --no-auto-insulate -p ".*%.lua$" spec
 
