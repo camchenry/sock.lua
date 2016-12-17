@@ -14,7 +14,7 @@ function love.load()
     -- Called when someone connects to the server
     server:on("connect", function(data, peer)
         local msg = "Hello from server!"
-        peer:emit("hello", msg)
+        peer:send("hello", msg)
     end)
     
     -- Called when a connection is made to the server

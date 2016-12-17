@@ -244,7 +244,7 @@ end
 -- @see SEND_MODES
 -- @usage
 --server:setSendMode("unreliable")
---server:emitToAll("playerState", {...})
+--server:sendToAll("playerState", {...})
 function Server:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -274,7 +274,7 @@ end
 -- @tparam number channel Channel to send data on.
 -- @usage
 --server:setSendChannel(2) -- the third channel
---server:emit("important", "The message")
+--server:send("important", "The message")
 function Server:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -353,7 +353,7 @@ end
 -- @tparam Client client The client to not receive the message.
 -- @tparam string event The event to trigger with this message. 
 -- @param data The data to send.
-function Server:emitToAllBut(client, event, data)
+function Server:sendToAllBut(client, event, data)
     local message = {event, data}
     local serializedMessage = nil
     
@@ -384,8 +384,8 @@ end
 -- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
 --@usage
---server:emitToAll("gameStarting", true)
-function Server:emitToAll(event, data)
+--server:sendToAll("gameStarting", true)
+function Server:sendToAll(event, data)
     local message = {event, data}
     local serializedMessage = nil
     
@@ -606,7 +606,7 @@ local Client_mt = {__index = Client}
 -- @see SEND_MODES
 -- @usage
 --client:setSendMode("unreliable")
---client:emit("position", {...})
+--client:send("position", {...})
 function Client:setSendMode(mode)
     if not isValidSendMode(mode) then
         self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
@@ -636,7 +636,7 @@ end
 -- @tparam number channel Channel to send data on.
 -- @usage
 --client:setSendChannel(2) -- the third channel
---client:emit("important", "The message")
+--client:send("important", "The message")
 function Client:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -726,7 +726,7 @@ end
 --- Send a message to the server.
 -- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
-function Client:emit(event, data)
+function Client:send(event, data)
     local message = {event, data}
     local serializedMessage = nil
 

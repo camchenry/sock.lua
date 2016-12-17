@@ -1,5 +1,6 @@
 package.path = package.path .. ";../../?.lua"
 sock = require "sock"
+bitser = require "spec.bitser"
 
 function love.load()
     -- how often an update is sent out
@@ -7,7 +8,7 @@ function love.load()
     tick = 0
 
     client = sock.newClient("localhost", 22122)
-    client:setSerialization(binser.serialize, binser.deserializeN)
+    client:setSerialization(bitser.dumps, bitser.loads)
 
     -- store the client's index
     -- playerNumber is nil otherwise
@@ -88,7 +89,7 @@ function love.update(dt)
 
             -- Update our own player position and send it to the server
             players[playerNumber].y = playerY
-            client:emit("mouseY", playerY)
+            client:send("mouseY", playerY)
         end
     end
 end

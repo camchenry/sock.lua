@@ -1,5 +1,6 @@
 package.path = package.path .. ";../../?.lua"
 sock = require "sock"
+bitser = require "spec.bitser"
 
 -- Utility functions
 function isColliding(this, other)
@@ -15,12 +16,13 @@ function love.load()
     tick = 0
 
     server = sock.newServer("*", 22122, 2)
+    server:setSerialization(bitser.dumps, bitser.loads)
 
     -- Players are being indexed by peer index here, definitely not a good idea
     -- for a larger game, but it's good enough for this application.
     server:on("connect", function(data, client)
         -- tell the peer what their index is
-        client:emit("playerNum", client:getIndex())
+        client:send("playerNum", client:getIndex())
     end)
 
     -- receive info on where a player is located
@@ -86,7 +88,7 @@ function love.update(dt)
             scores[1] = scores[1] + 1
         end
 
-        server:emitToAll("scores", scores)
+        server:sendToAll("scores", scores)
 
         ball.x = love.graphics.getWidth()/2
         ball.y = love.graphics.getHeight()/2
@@ -116,10 +118,10 @@ function love.update(dt)
         tick = 0
 
         for i, player in pairs(players) do
-            server:emitToAll("playerState", {index = i, player = player})
+            server:sendToAll("playerState", {index = i, player = player})
         end
 
-        server:emitToAll("ballState", ball)
+        server:sendToAll("ballState", ball)
     end
 end
 
