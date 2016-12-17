@@ -407,9 +407,9 @@ function Server:sendToAll(event, data)
     self:resetSendSettings()
 end
 
---- Send a message to a single client. Useful to send data to a newly connected player
+--- Send a message to a single peer. Useful to send data to a newly connected player
 -- without sending to everyone who already received it.
--- @tparam Client peer The client to receive the message.
+-- @tparam enet_peer peer The enet peer to receive the message.
 -- @tparam string event The event to trigger with this message. 
 -- @param data data to send to the peer.
 --@usage
@@ -429,7 +429,6 @@ function Server:sendToPeer(peer, event, data)
     self:resetSendSettings()
 end
 
-    
 --- Add a callback to an event.
 -- @tparam string event The event that will trigger the callback.
 -- @tparam function callback The callback to be triggered.
