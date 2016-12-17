@@ -55,10 +55,10 @@ function love.load()
     client:connect()
     
     --  You can send different types of data
-    client:emit("greeting", "Hello, my name is Inigo Montoya.")
-    client:emit("isShooting", true)
-    client:emit("bulletsLeft", 1)
-    client:emit("position", {
+    client:send("greeting", "Hello, my name is Inigo Montoya.")
+    client:send("isShooting", true)
+    client:send("bulletsLeft", 1)
+    client:send("position", {
         x = 465.3,
         y = 50,
     })
@@ -79,7 +79,7 @@ function love.load()
     server:on("connect", function(data, client)
         -- Send a message back to the connected client
         local msg = "Hello from the server!"
-        client:emit("hello", msg)
+        client:send("hello", msg)
     end)
 end
 
