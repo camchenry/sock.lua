@@ -151,14 +151,14 @@ local function write_number(value, _)
 	end
 end
 
-local function write_string(value, seen)
+local function write_string(value, _)
 	if #value < 32 then
 		--short string
 		Buffer_write_byte(192 + #value)
 	else
 		--long string
 		Buffer_write_byte(244)
-		write_number(#value, seen)
+		write_number(#value)
 	end
 	Buffer_write_string(value)
 end
@@ -173,14 +173,14 @@ end
 
 local function write_table(value, seen)
 	local classkey
-	local class = (class_name_registry[value.class] -- MiddleClass
+	local classname = (class_name_registry[value.class] -- MiddleClass
 		or class_name_registry[value.__baseclass] -- SECL
 		or class_name_registry[getmetatable(value)] -- hump.class
 		or class_name_registry[value.__class__]) -- Slither
-	if class then
-		classkey = classkey_registry[class]
+	if classname then
+		classkey = classkey_registry[classname]
 		Buffer_write_byte(242)
-		write_string(class)
+		serialize_value(classname, seen)
 	else
 		Buffer_write_byte(240)
 	end
