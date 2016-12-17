@@ -272,7 +272,7 @@ end
 -- @tparam number channel Channel to send data on.
 -- @usage
 --server:setSendChannel(2) -- the third channel
---server:send("important", "The message")
+--server:sendToAll("importantEvent", "The message")
 function Server:setSendChannel(channel)
     if channel > (self.maxChannels - 1) then
         self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
@@ -379,7 +379,7 @@ function Server:sendToAllBut(client, event, data)
 end
 
 --- Send a message to all clients.
--- @tparam String event The event to trigger with this message.
+-- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
 --@usage
 --server:sendToAll("gameStarting", true)
@@ -407,13 +407,13 @@ function Server:sendToAll(event, data)
     self:resetSendSettings()
 end
 
--- Send a message to a single enet peer. Useful to send data to a newly connected player
+--- Send a message to a single client. Useful to send data to a newly connected player
 -- without sending to everyone who already received it.
--- @tparam UserData peer A valid enet peer to which to send data.
--- @tparam String event The event to trigger with this message. 
--- @param Data data to send to the peer.
+-- @tparam Client peer The client to receive the message.
+-- @tparam string event The event to trigger with this message. 
+-- @param data data to send to the peer.
 --@usage
---server:sendToPeer(peer, "initialGameInfo", 1)
+--server:sendToPeer(peer, "initialGameInfo", {...})
 function Server:sendToPeer(peer, event, data)
     local message = {event, data}
     local serializedMessage = nil

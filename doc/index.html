@@ -61,14 +61,6 @@
 <h2><a href="#Class_Server">Class Server </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" ><a href="#Server:emitToAll">Server:emitToAll(event, data)</a></td>
-	<td class="summary">Send a message to all clients.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:emitToAllBut">Server:emitToAllBut(client, event, data)</a></td>
-	<td class="summary">Send a message to all clients, except one.</td>
-	</tr>
-	<tr>
 	<td class="name" ><a href="#Server:getAddress">Server:getAddress()</a></td>
 	<td class="summary">Get the IP address or hostname that the server was created with.</td>
 	</tr>
@@ -157,6 +149,18 @@
 	<td class="summary">Reset all send options to their default values.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Server:sendToAll">Server:sendToAll(event, data)</a></td>
+	<td class="summary">Send a message to all clients.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:sendToAllBut">Server:sendToAllBut(client, event, data)</a></td>
+	<td class="summary">Send a message to all clients, except one.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:sendToPeer">Server:sendToPeer(peer, event, data)</a></td>
+	<td class="summary">Send a message to a single client.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></td>
 	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
 	</tr>
@@ -214,10 +218,6 @@
 	<tr>
 	<td class="name" ><a href="#Client:disconnectNow">Client:disconnectNow(code)</a></td>
 	<td class="summary">Disconnect from the server, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:emit">Client:emit(event, data)</a></td>
-	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getAddress">Client:getAddress()</a></td>
@@ -302,6 +302,10 @@
 	<tr>
 	<td class="name" ><a href="#Client:resetSendSettings">Client:resetSendSettings()</a></td>
 	<td class="summary">Reset all send options to their default values.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:send">Client:send(event, data)</a></td>
+	<td class="summary">Send a message to the server.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit(incoming, outgoing)</a></td>
@@ -487,73 +491,6 @@
           Manages all clients and receives network events.
           </div>
     <dl class="function">
-    <div class="function_def">
-    <dt>
-    <a name = "Server:emitToAll"></a>
-    <h2 class="function_name">Server:emitToAll(event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Send a message to all clients.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
-        </li>
-    </ul>
-
-
-
-
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">server:emitToAll(<span class="string">"gameStarting"</span>, <span class="keyword">true</span>)</pre>
-    </ul>
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Server:emitToAllBut"></a>
-    <h2 class="function_name">Server:emitToAllBut(client, event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Send a message to all clients, except one.
- Useful for when the client does something locally, but other clients
- need to be updated at the same time. This way avoids duplicating objects by
- never sending its own event to itself in the first place.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">client</span>
-            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
-         The client to not receive the message.
-        </li>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
     <div class="function_def">
     <dt>
     <a name = "Server:getAddress"></a>
@@ -1210,6 +1147,110 @@ server:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Server:sendToAll"></a>
+    <h2 class="function_name">Server:sendToAll(event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to all clients.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">server:sendToAll(<span class="string">"gameStarting"</span>, <span class="keyword">true</span>)</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:sendToAllBut"></a>
+    <h2 class="function_name">Server:sendToAllBut(client, event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to all clients, except one.
+ Useful for when the client does something locally, but other clients
+ need to be updated at the same time. This way avoids duplicating objects by
+ never sending its own event to itself in the first place.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">client</span>
+            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+         The client to not receive the message.
+        </li>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:sendToPeer"></a>
+    <h2 class="function_name">Server:sendToPeer(peer, event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to a single client.  Useful to send data to a newly connected player
+ without sending to everyone who already received it.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">peer</span>
+            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+         The client to receive the message.
+        </li>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         data to send to the peer.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">server:sendToPeer(peer, <span class="string">"initialGameInfo"</span>, {...})</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Server:setBandwidthLimit"></a>
     <h2 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h2>
     </dt>
@@ -1405,7 +1446,7 @@ server:removeCallback(callback)</pre>
     <ul>
         <pre class="example">
 server:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
-</span>server:emit(<span class="string">"important"</span>, <span class="string">"The message"</span>)</pre>
+</span>server:sendToAll(<span class="string">"importantEvent"</span>, <span class="string">"The message"</span>)</pre>
     </ul>
 
 </dd>
@@ -1444,7 +1485,7 @@ server:setSendChannel(<span class="number">2</span>) <span class="comment">-- th
     <ul>
         <pre class="example">
 server:setSendMode(<span class="string">"unreliable"</span>)
-server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
+server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
     </ul>
 
 </dd>
@@ -1479,11 +1520,9 @@ server:emitToAll(<span class="string">"playerState"</span>, {...})</pre>
     <h3>Usage:</h3>
     <ul>
         <pre class="example">
-binser = <span class="global">require</span> <span class="string">"binser"</span> <span class="comment">-- or any library you like
-</span>
-server = sock.newServer(<span class="string">"localhost"</span>, <span class="number">22122</span>)
-
-server:setSerialization(binser.serialize, binser.deserializeN)</pre>
+bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
+</span>server = sock.newServer(<span class="string">"localhost"</span>, <span class="number">22122</span>)
+server:setSerialization(bitser.dumps, bitser.loads)</pre>
     </ul>
 
 </dd>
@@ -1604,34 +1643,6 @@ server:setSerialization(binser.serialize, binser.deserializeN)</pre>
         <li><span class="parameter">code</span>
             <span class="types">optional <span class="type">number</span></span>
          A code to associate with this disconnect event.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Client:emit"></a>
-    <h2 class="function_name">Client:emit(event, data)</h2>
-    </dt>
-    <dd>
-    <p>
-    Send a message to the server.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to trigger with this message.
-        </li>
-        <li><span class="parameter">data</span>
-         The data to send.
         </li>
     </ul>
 
@@ -2253,6 +2264,34 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:send"></a>
+    <h2 class="function_name">Client:send(event, data)</h2>
+    </dt>
+    <dd>
+    <p>
+    Send a message to the server.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to trigger with this message.
+        </li>
+        <li><span class="parameter">data</span>
+         The data to send.
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:setBandwidthLimit"></a>
     <h2 class="function_name">Client:setBandwidthLimit(incoming, outgoing)</h2>
     </dt>
@@ -2475,7 +2514,7 @@ client:removeCallback(callback)</pre>
     <ul>
         <pre class="example">
 client:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
-</span>client:emit(<span class="string">"important"</span>, <span class="string">"The message"</span>)</pre>
+</span>client:send(<span class="string">"important"</span>, <span class="string">"The message"</span>)</pre>
     </ul>
 
 </dd>
@@ -2514,7 +2553,7 @@ client:setSendChannel(<span class="number">2</span>) <span class="comment">-- th
     <ul>
         <pre class="example">
 client:setSendMode(<span class="string">"unreliable"</span>)
-client:emit(<span class="string">"position"</span>, {...})</pre>
+client:send(<span class="string">"position"</span>, {...})</pre>
     </ul>
 
 </dd>
@@ -2549,11 +2588,9 @@ client:emit(<span class="string">"position"</span>, {...})</pre>
     <h3>Usage:</h3>
     <ul>
         <pre class="example">
-binser = <span class="global">require</span> <span class="string">"binser"</span> <span class="comment">-- or any library you like
-</span>
-client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">22122</span>)
-
-client:setSerialization(binser.serialize, binser.deserializeN)</pre>
+bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
+</span>client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">22122</span>)
+client:setSerialization(bitser.dumps, bitser.loads)</pre>
     </ul>
 
 </dd>
@@ -2799,7 +2836,7 @@ client:setSerialization(binser.serialize, binser.deserializeN)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-09-21 23:08:54 </i>
+<i style="float:right;">Last updated 2016-12-17 12:36:25 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
