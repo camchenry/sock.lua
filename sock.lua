@@ -727,11 +727,11 @@ function Client:update()
             self:log(event.type, "Connected to " .. tostring(self.connection))
         elseif event.type == "receive" then
             local message = self.deserialize(event.data)
-            local event = message[1]
+            local eventName = message[1]
             local data = message[2]
 
-            self:_activateTriggers(event, data)
-            self:log(event, data)
+            self:_activateTriggers(eventName, data)
+            self:log(eventName, data)
 
         elseif event.type == "disconnect" then
             self:_activateTriggers("disconnect", event.data)
