@@ -6,7 +6,7 @@
 -- @usage sock = require "sock"
 
 local sock = {
-    _VERSION     = 'sock.lua v0.1.0',
+    _VERSION     = 'sock.lua v0.2.0',
     _DESCRIPTION = 'A Lua networking library for LÖVE games',
     _URL         = 'https://github.com/camchenry/sock.lua',
     _LICENSE     = [[
