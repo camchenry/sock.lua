@@ -1,6 +1,7 @@
 # sock.lua
 
 [![Build Status](https://travis-ci.org/camchenry/sock.lua.svg?branch=master)](https://travis-ci.org/camchenry/sock.lua)
+[![Coverage Status](https://coveralls.io/repos/github/camchenry/sock.lua/badge.svg?branch=fix-testing)](https://coveralls.io/github/camchenry/sock.lua?branch=fix-testing)
 
 sock.lua is a networking library for LÖVE games. Its goal is to make getting started with networking as easy as possible.
 
