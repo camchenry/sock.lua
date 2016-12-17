@@ -429,7 +429,7 @@ html {
 
 body {
     font-size: 62.5%;
-    font-family: "Droid Sans", helvetica, arial, geneva, sans-serif;
+    font-family: "Source Sans Pro", helvetica, arial, geneva, sans-serif;
     color: #222;
     background-color: #eee;
     overflow: auto;
@@ -455,16 +455,22 @@ h4 {
 ul, ol { list-style-type: disc; }
 
 pre {
-    background-color: rgb(245, 245, 245);
-    border: 1px solid #C0C0C0; /* silver */
+    background-color: #fcfcfc;
+    border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0 10px 0;
     overflow: auto;
-    font-family: "Droid Sans Mono", "Consolas", "Andale Mono", monospace;
+}
+code,
+kbd,
+pre,
+samp {
+    font-family: "Source Code Pro", "Consolas", "Andale Mono", monospace;
+    font-size: 1rem; /* 2 */
 }
 
 pre.example {
-    font-size: .85rem;
+    font-size: 1rem;
 }
 
 #container {
@@ -482,7 +488,7 @@ pre.example {
 #header {
     background: #268BD2;
     color: #fff;
-    padding: 10px;
+    padding: 1.5rem;
 }
 
 #navigation {
@@ -531,7 +537,7 @@ table.function_list td {
     border-style: solid;
     border-color: #cccccc;
 }
-table.function_list td.name { background-color: #f6f6f6; min-width: 240px; }
+table.function_list td.name { min-width: 240px; }
 table.function_list td.summary { width: 100%; }
 
 a {
@@ -547,7 +553,7 @@ ul.nowrap {
     margin-top: 3rem;
 }
 .section-header {
-    font-size: 1.5rem;
+    font-size: 2rem;
     border-bottom: 1px solid #ccc;
 }
 .section-description {
@@ -559,12 +565,10 @@ ul.nowrap {
 
 
 .function_def {
-    border-top: 1px solid #ccc;
-    padding-top: 0.5rem;
-    padding-bottom: 1rem;
+    padding-top: 1rem;
 }
 .function_def:first-child {
-    border-top: none;
+    padding-top: 0;
 }
 
 .function_def li {
@@ -572,8 +576,10 @@ ul.nowrap {
 }
 
 .function_name {
-    font-family: monospace;
-    font-size: 1.1rem;
+    font-size: 1.3rem;
+    font-weight: bold;
+    padding: 3px;
+    border-bottom: 1px solid #ccc;
 }
 
 span.parameter { font-family:monospace; }
@@ -587,7 +593,8 @@ span.types:after { content:")"; }
 
 /* make the target distinct; helps when we're navigating to a function */
 a:target + * {
-    background-color: #FF9;
+    background-color: #f1f824;
+
 }
 
 /* styles for prettification of source */

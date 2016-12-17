@@ -3,7 +3,7 @@
 <head>
     <title>$(ldoc.title)</title>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Droid+Sans|Droid+Sans+Mono" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:400,700,700i" rel="stylesheet"> 
     <link rel="stylesheet" href="$(ldoc.css)">
 </head>
 <body>
@@ -32,7 +32,6 @@
 # if ldoc.body then -- verbatim HTML as contents; 'non-code' entries
     $(ldoc.body)
 # elseif module then -- module documentation
-<h1>$(ldoc.module_typename(module)) <code>$(module.name)</code></h1>
 <p>$(M(module.summary,module))</p>
 <p>$(M(module.description,module))</p>
 #   if module.tags.include then
