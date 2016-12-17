@@ -79,7 +79,7 @@ sock.SEND_MODES = {
 }
 
 local function isValidSendMode(mode)
-    for i, validMode in pairs(sock.SEND_MODES) do
+    for _, validMode in ipairs(sock.SEND_MODES) do
         if mode == validMode then
             return true
         end
@@ -90,7 +90,7 @@ end
 local Logger = {}
 local Logger_mt = {__index = Logger}
 
-function newLogger(source) 
+local function newLogger(source) 
     local logger = setmetatable({
         source          = source,
         messages        = {},
@@ -134,7 +134,7 @@ end
 local Listener = {}
 local Listener_mt = {__index = Listener}
 
-function newListener()
+local function newListener()
     local listener = setmetatable({
         triggers        = {},                           
         formats         = {},
@@ -158,7 +158,7 @@ end
 -- Removes a callback on a given trigger
 -- Returns a boolean indicating if the callback was removed
 function Listener:removeCallback(callback)
-    for event, triggers in pairs(self.triggers) do
+    for _, triggers in pairs(self.triggers) do
         for i, trigger in pairs(triggers) do
             if trigger == callback then
                 table.remove(triggers, i)
@@ -179,7 +179,7 @@ end
 -- Returns a boolean indicating if any callbacks were triggered
 function Listener:trigger(event, data, client)
     if self.triggers[event] then
-        for i, trigger in pairs(self.triggers[event]) do
+        for _, trigger in pairs(self.triggers[event]) do
             -- Event has a pre-existing format defined
             if self.formats[event] then
                 data = zipTable(data, self.formats[event])
@@ -201,7 +201,7 @@ local Server_mt = {__index = Server}
 -- @tparam peer peer An enet peer.
 -- @treturn Client Object associated with the peer.
 function Server:getClient(peer)
-    for i, client in pairs(self.clients) do
+    for _, client in pairs(self.clients) do
         if peer == client.connection then
             return client
         end
@@ -212,7 +212,7 @@ end
 -- @tparam number connectId The unique client connection id.
 -- @treturn Client
 function Server:getClientByConnectId(connectId)
-    for i, client in pairs(self.clients) do
+    for _, client in pairs(self.clients) do
         if connectId == client.connectId then
             return client
         end
@@ -222,7 +222,7 @@ end
 --- Get the Client object that has the given peer index.
 -- @treturn Client
 function Server:getClientByIndex(index)
-    for i, client in pairs(self.clients) do
+    for _, client in pairs(self.clients) do
         if index == client:getIndex() then
             return client
         end
@@ -316,11 +316,11 @@ function Server:update()
         elseif event.type == "receive" then
             local message = self.deserialize(event.data)
             local eventClient = self:getClient(event.peer)
-            local event = message[1]
+            local eventName = message[1]
             local data = message[2]
 
-            self:_activateTriggers(event, data, eventClient)
-            self:log(event, data)
+            self:_activateTriggers(eventName, data, eventClient)
+            self:log(eventName, data)
 
         elseif event.type == "disconnect" then
             -- remove from the active peer list
@@ -353,7 +353,7 @@ end
 -- @param data The data to send.
 function Server:sendToAllBut(client, event, data)
     local message = {event, data}
-    local serializedMessage = nil
+    local serializedMessage
     
     if not self.serialize then
         self:log("error", "Can't serialize message: serialize was not set") 
@@ -368,7 +368,7 @@ function Server:sendToAllBut(client, event, data)
         serializedMessage = self.serialize(message)
     end
 
-    for i, p in pairs(self.peers) do
+    for _, p in pairs(self.peers) do
         if p ~= client.connection then
             self.packetsSent = self.packetsSent + 1
             p:send(serializedMessage, self.sendChannel, self.sendMode)
@@ -385,7 +385,7 @@ end
 --server:sendToAll("gameStarting", true)
 function Server:sendToAll(event, data)
     local message = {event, data}
-    local serializedMessage = nil
+    local serializedMessage
     
     if not self.serialize then
         self:log("error", "Can't serialize message: serialize was not set") 
@@ -416,7 +416,7 @@ end
 --server:sendToPeer(peer, "initialGameInfo", {...})
 function Server:sendToPeer(peer, event, data)
     local message = {event, data}
-    local serializedMessage = nil
+    local serializedMessage
     if type(data) == "userdata" and data.type and data:typeOf("Data") then
         message[2] = data:getString()
         serializedMessage = self.serialize(message)
@@ -727,11 +727,11 @@ function Client:update()
             self:log(event.type, "Connected to " .. tostring(self.connection))
         elseif event.type == "receive" then
             local message = self.deserialize(event.data)
-            local event = message[1]
+            local eventName = message[1]
             local data = message[2]
 
-            self:_activateTriggers(event, data)
-            self:log(event, data)
+            self:_activateTriggers(eventName, data)
+            self:log(eventName, data)
 
         elseif event.type == "disconnect" then
             self:_activateTriggers("disconnect", event.data)
@@ -747,7 +747,7 @@ end
 -- @param data The data to send.
 function Client:send(event, data)
     local message = {event, data}
-    local serializedMessage = nil
+    local serializedMessage
 
     if not self.serialize then
         self:log("error", "Can't serialize message: serialize was not set") 
@@ -789,7 +789,7 @@ function Client:setDataFormat(event, format)
 end
 
 function Client:_activateTriggers(event, data)
-    local result = self.listener:trigger(event, data, client)
+    local result = self.listener:trigger(event, data)
 
     self.packetsReceived = self.packetsReceived + 1
 
