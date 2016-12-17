@@ -39,8 +39,6 @@ require "enet"
 -- Try to load some common serialization libraries
 -- This is for convenience, you may still specify your own serializer
 local bitserLoaded, bitser = pcall(require, "bitser")
-local binserLoaded, binser = pcall(require, "binser")
-local defaultLoaded = bitserLoaded or binserLoaded
 
 -- links variables to keys based on their order
 -- note that it only works for boolean and number values, not strings
@@ -581,11 +579,9 @@ end
 -- @tparam function serialize The serialization function to use.
 -- @tparam function deserialize The deserialization function to use.
 -- @usage
---binser = require "binser" -- or any library you like
---
+--bitser = require "bitser" -- or any library you like
 --server = sock.newServer("localhost", 22122)
---
---server:setSerialization(binser.serialize, binser.deserializeN)
+--server:setSerialization(bitser.dumps, bitser.loads)
 function Server:setSerialization(serialize, deserialize)
     assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
     assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
@@ -986,11 +982,9 @@ end
 -- @tparam function serialize The serialization function to use.
 -- @tparam function deserialize The deserialization function to use.
 -- @usage
---binser = require "binser" -- or any library you like
---
+--bitser = require "bitser" -- or any library you like
 --client = sock.newClient("localhost", 22122)
---
---client:setSerialization(binser.serialize, binser.deserializeN)
+--client:setSerialization(bitser.dumps, bitser.loads)
 function Client:setSerialization(serialize, deserialize)
     assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
     assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
@@ -1074,8 +1068,6 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
 
     if bitserLoaded then
         server:setSerialization(bitser.dumps, bitser.loads)
-    elseif binserLoaded then
-        server:setSerialization(binser.serialize, binser.deserializeN)
     end
 
     return server
@@ -1150,8 +1142,6 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
     if bitserLoaded then
         client:setSerialization(bitser.dumps, bitser.loads)
-    elseif binserLoaded then
-        client:setSerialization(binser.serialize, binser.deserializeN)
     end
 
     return client
