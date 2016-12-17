@@ -1,19 +1,20 @@
 -- Loading sock from root directory relative to this one
 -- This is not required in your own projects
-package.path = package.path .. ";../../?.lua"
+package.path = package.path .. ";../?.lua"
 local sock = require "sock"
+local binser = require "spec.binser"
 
 function love.load()
     client = sock.newClient("localhost", 22122)
     server = sock.newServer("localhost", 22122)
-    
+
     -- If the connect/disconnect callbacks aren't defined some warnings will
     -- be thrown, but nothing bad will happen.
     
     -- Called when someone connects to the server
     server:on("connect", function(data, peer)
         local msg = "Hello from server!"
-        peer:emit("hello", msg)
+        peer:send("hello", msg)
     end)
     
     -- Called when a connection is made to the server

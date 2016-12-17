@@ -2,10 +2,13 @@
 -- This is not required in your own projects
 package.path = package.path .. ";../../?.lua"
 local sock = require "sock"
+local bitser = require "spec.bitser"
 
 function love.load()
     client = sock.newClient("localhost", 22122)
     server = sock.newServer("*", 22122)
+    client:setSerialization(bitser.dumps, bitser.loads)
+    server:setSerialization(bitser.dumps, bitser.loads)
 
     client:connect()
 
@@ -17,7 +20,7 @@ function love.load()
 
     server:on("connect", function(data, client)
         local image = love.filesystem.newFileData("hello.png")
-        server:emitToAll("image", image)
+        server:sendToAll("image", image)
     end)
 
     lastModified = 0
@@ -32,7 +35,7 @@ function love.update(dt)
         love.timer.sleep(0.2)
         lastModified = love.filesystem.getLastModified("hello.png")
         local image = love.filesystem.newFileData("hello.png")
-        server:emitToAll("image", image)
+        server:sendToAll("image", image)
     end
 end
 
