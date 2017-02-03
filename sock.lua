@@ -6,7 +6,7 @@
 -- @usage sock = require "sock"
 
 local sock = {
-    _VERSION     = 'sock.lua v0.2.0',
+    _VERSION     = 'sock.lua v0.2.1',
     _DESCRIPTION = 'A Lua networking library for LÖVE games',
     _URL         = 'https://github.com/camchenry/sock.lua',
     _LICENSE     = [[
@@ -36,9 +36,18 @@ local sock = {
 
 require "enet"
 
+-- Current folder trick
+-- http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
+local currentFolder = (...):gsub('%.[^%.]+$', '')
+
 -- Try to load some common serialization libraries
 -- This is for convenience, you may still specify your own serializer
 local bitserLoaded, bitser = pcall(require, "bitser")
+
+-- Try to load relatively
+if not bitserLoaded then
+    bitserLoaded, bitser = pcall(require, currentFolder .. ".bitser")
+end
 
 -- links variables to keys based on their order
 -- note that it only works for boolean and number values, not strings

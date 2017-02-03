@@ -1,0 +1,24 @@
+CHANGELOG
+=========
+
+0.2.1
+-----
+
+* Fixed bitser not being required using relative location
+
+0.2.0
+-----
+
+* Added custom serialization support
+    * Added Client:setSerialization
+    * Added Server:setSerialization
+* Changed 'emit' functions to 'send'
+    * 'Client:emit' is now 'Client:send'
+    * 'Server:emitToAll' is now 'Server:emitToAll'
+    * 'Server:emitToAllBut' is now 'Server:emitToAllBut'
+* Added new 'Server:sendToPeer' function
+
+0.1.0
+-----
+
+* Initial release
