@@ -2,7 +2,7 @@ package.path = package.path .. ";../?.lua"
 local sock = require "sock"
 
 describe('sock.lua core', function()
-    it("should create clients", function()
+    it("creates clients", function()
         local client = sock.newClient()
         assert.are_not.equal(client, nil)
 
@@ -11,7 +11,7 @@ describe('sock.lua core', function()
         assert.equal(client.maxChannels, 1)
     end)
 
-    it("should create clients on localhost", function()
+    it("creates clients on localhost", function()
         local client = sock.newClient("localhost")
         assert.truthy(client)
 
@@ -25,7 +25,7 @@ describe('sock.lua core', function()
         assert.truthy(client)
     end)
 
-    it("should create servers", function()
+    it("creates servers", function()
         local server = sock.newServer()
         assert.are_not.equal(server, nil)
 
@@ -36,8 +36,26 @@ describe('sock.lua core', function()
     end)
 end)
 
-describe("clients", function()
-    it("should add callbacks", function()
+describe("the client", function()
+    it("connects to a server", function()
+        local client = sock.newClient("0.0.0.0", 1234)
+        local server = sock.newServer("0.0.0.0", 1234)
+
+        local connected = false
+        client:on("connect", function(data)
+            connected = true 
+        end)
+
+        client:connect()
+
+        client:update()
+        server:update()
+        client:update()
+
+        assert.True(connected)
+    end)
+
+    it("adds callbacks", function()
         local client = sock.newClient()
 
         local helloCallback = function()
@@ -58,7 +76,7 @@ describe("clients", function()
         assert.True(found)
     end)
 
-    it("should remove callbacks", function()
+    it("removes callbacks", function()
         local client = sock.newClient()
 
         local helloCallback = function()
@@ -70,7 +88,15 @@ describe("clients", function()
         assert.True(client:removeCallback(callback))
     end)
 
-    it("should trigger callbacks", function()
+    it("does not remove non-existent callbacks", function()
+        local client = sock.newClient()
+
+        local nonsense = function() end
+
+        assert.False(client:removeCallback(nonsense))
+    end)
+
+    it("triggers callbacks", function()
         local client = sock.newClient()
 
         local handled = false
@@ -82,5 +108,20 @@ describe("clients", function()
         client:_activateTriggers("connect", "connection event test")
 
         assert.True(handled)
+    end)
+
+    it("sets send channel", function()
+        local client = sock.newClient()
+
+        client:setSendChannel(0)
+        assert.equal(client.sendChannel, 0)
+
+        local client = sock.newClient(nil, nil, 8)
+
+        client:setSendChannel(7)
+        assert.equal(client.sendChannel, 7)
+
+        client:setSendChannel(10)
+        assert.equal(client.sendChannel, 0)
     end)
 end)
