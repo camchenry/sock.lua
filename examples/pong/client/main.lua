@@ -9,6 +9,10 @@ function love.load()
 
     client = sock.newClient("localhost", 22122)
     client:setSerialization(bitser.dumps, bitser.loads)
+    client:setSchema("playerState", {
+        "index",
+        "player",
+    })
 
     -- store the client's index
     -- playerNumber is nil otherwise

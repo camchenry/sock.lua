@@ -118,7 +118,7 @@ function love.update(dt)
         tick = 0
 
         for i, player in pairs(players) do
-            server:sendToAll("playerState", {index = i, player = player})
+            server:sendToAll("playerState", {i, player})
         end
 
         server:sendToAll("ballState", ball)
