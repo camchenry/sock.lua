@@ -15,7 +15,6 @@ before_install:
     - autoreconf -vfi
     - ./configure && sudo make && sudo make install
     - cd ..
-    - sudo apt-get install -y luajit
 
 install:
     - luarocks install busted
@@ -29,5 +28,5 @@ after_success:
 
 script:
     - luacheck --std=max+busted *.lua spec --new-globals=enet --ignore="61." --include-files sock.lua sock_spec.lua
-    - busted --verbose --coverage --no-auto-insulate --lua=luajit -p "sock_spec.lua" spec
+    - busted --verbose --coverage --no-auto-insulate -p "sock_spec.lua" spec
 
