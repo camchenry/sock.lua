@@ -422,6 +422,11 @@ function Server:enableCompression()
     return self.host:compress_with_range_coder()
 end
 
+--- Destroys the server and frees the port it is bound to.
+function Server:destroy()
+    self.host:destroy()
+end
+
 --- Set the send mode for the next outgoing message. 
 -- The mode will be reset after the next message is sent. The initial default 
 -- is "reliable".
