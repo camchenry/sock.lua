@@ -40,9 +40,17 @@ require "enet"
 -- http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
 local currentFolder = (...):gsub('%.[^%.]+$', '')
 
+local bitserLoaded = false
+
+if bitser then
+    bitserLoaded = true
+end
+
 -- Try to load some common serialization libraries
 -- This is for convenience, you may still specify your own serializer
-local bitserLoaded, bitser = pcall(require, "bitser")
+if not bitserLoaded then
+    bitserLoaded, bitser = pcall(require, "bitser")
+end
 
 -- Try to load relatively
 if not bitserLoaded then
@@ -401,14 +409,6 @@ function Server:log(event, data)
     return self.logger:log(event, data)
 end
 
---- Forcefully disconnects the client. The client is not notified of the disconnection.
--- @tparam Client client The client to reset.
-function Server:resetClient(client)
-    if client.connection then
-        client.connection:reset()
-    end
-end
-
 --- Reset all send options to their default values.
 function Server:resetSendSettings()
     self.sendMode = self.defaultSendMode
@@ -730,6 +730,14 @@ end
 function Client:disconnectNow(code)
     code = code or 0
     self.connection:disconnect_now(code)
+end
+
+--- Forcefully disconnects the client. The server is not notified of the disconnection.
+-- @tparam Client client The client to reset.
+function Client:reset()
+    if self.connection then
+        self.connection:reset()
+    end
 end
 
 --- Send a message to the server.

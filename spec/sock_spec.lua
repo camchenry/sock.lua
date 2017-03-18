@@ -1,4 +1,7 @@
 package.path = package.path .. ";../?.lua"
+local bitser = require "spec.bitser"
+-- this is a hack :)
+package.loaded['bitser'] = bitser
 local sock = require "sock"
 
 describe('sock.lua core', function()
@@ -33,13 +36,15 @@ describe('sock.lua core', function()
         assert.equal(server.port, 22122)
         assert.equal(server.maxPeers, 64)
         assert.equal(server.maxChannels, 1)
+
+        server:destroy()
     end)
 end)
 
 describe("the client", function()
     it("connects to a server", function()
-        local client = sock.newClient("0.0.0.0", 1234)
-        local server = sock.newServer("0.0.0.0", 1234)
+        local client = sock.newClient("localhost", 22122)
+        local server = sock.newServer("0.0.0.0", 22122)
 
         local connected = false
         client:on("connect", function(data)
@@ -52,7 +57,10 @@ describe("the client", function()
         server:update()
         client:update()
 
+        assert.True(client:isConnected())
         assert.True(connected)
+
+        server:destroy()
     end)
 
     it("adds callbacks", function()
@@ -111,17 +119,9 @@ describe("the client", function()
     end)
 
     it("sets send channel", function()
-        local client = sock.newClient()
-
-        client:setSendChannel(0)
-        assert.equal(client.sendChannel, 0)
-
         local client = sock.newClient(nil, nil, 8)
 
         client:setSendChannel(7)
         assert.equal(client.sendChannel, 7)
-
-        client:setSendChannel(10)
-        assert.equal(client.sendChannel, 0)
     end)
 end)

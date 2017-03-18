@@ -42,6 +42,6 @@ end
 
 function love.keypressed(key)
     if key == "q" then
-        server:resetClient(client)
+        client:reset()
     end
 end
