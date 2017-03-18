@@ -1,5 +1,7 @@
 package.path = package.path .. ";../?.lua"
-local bitser = require "bitser"
+local bitser = require "spec.bitser"
+-- this is a hack :)
+package.loaded['bitser'] = bitser
 local sock = require "sock"
 
 describe('sock.lua core', function()
