@@ -33,7 +33,8 @@
 </p>
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">sock = require &quot;sock&quot;</pre>
+        <pre class="example">sock = require &quot;sock&quot;
+</pre>
     </ul>
 
 
@@ -49,8 +50,16 @@
 <h2><a href="#Tables">Tables</a></h2>
 <table class="function_list">
 	<tr>
+	<td class="name" ><a href="#CONNECTING_STATES">CONNECTING_STATES</a></td>
+	<td class="summary">States that represent the client connecting to a server.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#CONNECTION_STATES">CONNECTION_STATES</a></td>
 	<td class="summary">All of the possible connection statuses for a client connection.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#DISCONNECTING_STATES">DISCONNECTING_STATES</a></td>
+	<td class="summary">States that represent the client disconnecting from a server.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#SEND_MODES">SEND_MODES</a></td>
@@ -59,6 +68,14 @@
 </table>
 <h2><a href="#Class_Server">Class Server </a></h2>
 <table class="function_list">
+	<tr>
+	<td class="name" ><a href="#Server:destroy">Server:destroy()</a></td>
+	<td class="summary">Destroys the server and frees the port it is bound to.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:enableCompression">Server:enableCompression()</a></td>
+	<td class="summary">Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.</td>
+	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getAddress">Server:getAddress()</a></td>
 	<td class="summary">Get the IP address or hostname that the server was created with.</td>
@@ -74,6 +91,10 @@
 	<tr>
 	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
 	<td class="summary">Get the Client object that has the given peer index.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:getClientCount">Server:getClientCount()</a></td>
+	<td class="summary">Get the number of Clients that are currently connected to the server.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:getClients">Server:getClients()</a></td>
@@ -164,10 +185,6 @@
 	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
 	</tr>
 	<tr>
-	<td class="name" ><a href="#Server:setDataFormat">Server:setDataFormat(event, format)</a></td>
-	<td class="summary">Set the data format for an event.</td>
-	</tr>
-	<tr>
 	<td class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></td>
 	<td class="summary">Set the default send channel for all future outgoing messages.</td>
 	</tr>
@@ -182,6 +199,10 @@
 	<tr>
 	<td class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></td>
 	<td class="summary">Set the timeout to wait for packets.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Server:setSchema">Server:setSchema(event, schema)</a></td>
+	<td class="summary">Set the data schema for an event.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
@@ -203,7 +224,7 @@
 <h2><a href="#Class_Client">Class Client </a></h2>
 <table class="function_list">
 	<tr>
-	<td class="name" ><a href="#Client:connect">Client:connect()</a></td>
+	<td class="name" ><a href="#Client:connect">Client:connect(code)</a></td>
 	<td class="summary">Connect to the chosen server.</td>
 	</tr>
 	<tr>
@@ -217,6 +238,10 @@
 	<tr>
 	<td class="name" ><a href="#Client:disconnectNow">Client:disconnectNow(code)</a></td>
 	<td class="summary">Disconnect from the server, if connected.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:enableCompression">Client:enableCompression()</a></td>
+	<td class="summary">Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:getAddress">Client:getAddress()</a></td>
@@ -287,6 +312,22 @@
 	<td class="summary">Get the total number of packets (messages) sent since the client was created.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:isConnected">Client:isConnected()</a></td>
+	<td class="summary">Gets whether the client is connected to the server.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:isConnecting">Client:isConnecting()</a></td>
+	<td class="summary">Gets whether the client is connecting to the server.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:isDisconnected">Client:isDisconnected()</a></td>
+	<td class="summary">Gets whether the client is disconnected from the server.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:isDisconnecting">Client:isDisconnecting()</a></td>
+	<td class="summary">Gets whether the client is disconnecting from the server.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:log">Client:log(event, data)</a></td>
 	<td class="summary">Log an event.</td>
 	</tr>
@@ -299,6 +340,10 @@
 	<td class="summary">Remove a specific callback for an event.</td>
 	</tr>
 	<tr>
+	<td class="name" ><a href="#Client:reset">Client:reset(client)</a></td>
+	<td class="summary">Forcefully disconnects the client.</td>
+	</tr>
+	<tr>
 	<td class="name" ><a href="#Client:resetSendSettings">Client:resetSendSettings()</a></td>
 	<td class="summary">Reset all send options to their default values.</td>
 	</tr>
@@ -309,10 +354,6 @@
 	<tr>
 	<td class="name" ><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit(incoming, outgoing)</a></td>
 	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setDataFormat">Client:setDataFormat(event, format)</a></td>
-	<td class="summary">Set the data format for an event.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:setDefaultSendChannel">Client:setDefaultSendChannel(channel)</a></td>
@@ -333,6 +374,10 @@
 	<tr>
 	<td class="name" ><a href="#Client:setPingInterval">Client:setPingInterval(interval)</a></td>
 	<td class="summary">Set how frequently to ping the server.</td>
+	</tr>
+	<tr>
+	<td class="name" ><a href="#Client:setSchema">Client:setSchema(event, schema)</a></td>
+	<td class="summary">Set the data schema for an event.</td>
 	</tr>
 	<tr>
 	<td class="name" ><a href="#Client:setSendChannel">Client:setSendChannel(channel)</a></td>
@@ -377,6 +422,45 @@
     <div class="section-content">
 
     <dl class="function">
+    <div class="function_def">
+    <dt>
+    <a name = "CONNECTING_STATES"></a>
+    <h2 class="function_name">CONNECTING_STATES</h2>
+    </dt>
+    <dd>
+    <p>
+    States that represent the client connecting to a server.
+    </p>
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">connecting</span>
+        In the process of connecting to the server.
+        </li>
+        <li><span class="parameter">acknowledging_connect</span>
+
+
+
+        </li>
+        <li><span class="parameter">connection_pending</span>
+
+
+
+        </li>
+        <li><span class="parameter">connection_succeeded</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
     <div class="function_def">
     <dt>
     <a name = "CONNECTION_STATES"></a>
@@ -451,6 +535,38 @@
 </div>
     <div class="function_def">
     <dt>
+    <a name = "DISCONNECTING_STATES"></a>
+    <h2 class="function_name">DISCONNECTING_STATES</h2>
+    </dt>
+    <dd>
+    <p>
+    States that represent the client disconnecting from a server.
+    </p>
+
+
+    <h3>Fields:</h3>
+    <ul>
+        <li><span class="parameter">disconnect_later</span>
+        Disconnecting, but only after sending all queued packets.
+        </li>
+        <li><span class="parameter">disconnecting</span>
+        In the process of disconnecting from the server.
+        </li>
+        <li><span class="parameter">acknowledging_disconnect</span>
+
+
+
+        </li>
+    </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "SEND_MODES"></a>
     <h2 class="function_name">SEND_MODES</h2>
     </dt>
@@ -490,6 +606,44 @@
           Manages all clients and receives network events.
           </div>
     <dl class="function">
+    <div class="function_def">
+    <dt>
+    <a name = "Server:destroy"></a>
+    <h2 class="function_name">Server:destroy()</h2>
+    </dt>
+    <dd>
+    <p>
+    Destroys the server and frees the port it is bound to.
+    </p>
+
+
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:enableCompression"></a>
+    <h2 class="function_name">Server:enableCompression()</h2>
+    </dt>
+    <dd>
+    <p>
+    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.  Both the client and server must both either have compression enabled or disabled.</p>
+
+<p> Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+    </p>
+
+
+
+
+
+
+
+</dd>
+</div>
     <div class="function_def">
     <dt>
     <a name = "Server:getAddress"></a>
@@ -610,6 +764,31 @@
 
 
 
+        </li>
+    </ol>
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Server:getClientCount"></a>
+    <h2 class="function_name">Server:getClientCount()</h2>
+    </dt>
+    <dd>
+    <p>
+    Get the number of Clients that are currently connected to the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">number</span></span>
+        The number of active clients.
         </li>
     </ol>
 
@@ -1035,8 +1214,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
+        <pre class="example"><span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
     server:log(<span class="string">"error"</span>, <span class="string">"Something bad happened!"</span>)
 <span class="keyword">end</span></pre>
     </ul>
@@ -1078,8 +1256,7 @@
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, client)
+        <pre class="example">server:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data, client)
     <span class="global">print</span>(<span class="string">"Client connected!"</span>)
 <span class="keyword">end</span>)</pre>
     </ul>
@@ -1117,8 +1294,7 @@ server:on(<span class="string">"connect"</span>, <span class="keyword">function<
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">local</span> callback = server:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
+        <pre class="example"><span class="keyword">local</span> callback = server:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
     <span class="global">print</span>(message)
 <span class="keyword">end</span>)
 server:removeCallback(callback)</pre>
@@ -1279,35 +1455,6 @@ server:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
-    <a name = "Server:setDataFormat"></a>
-    <h2 class="function_name">Server:setDataFormat(event, format)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the data format for an event.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to set the data format for.
-        </li>
-        <li><span class="parameter">format</span>
-            <span class="types"><span class="type">{string,...}</span></span>
-         The data format.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
     <a name = "Server:setDefaultSendChannel"></a>
     <h2 class="function_name">Server:setDefaultSendChannel(channel)</h2>
     </dt>
@@ -1418,6 +1565,89 @@ server:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Server:setSchema"></a>
+    <h2 class="function_name">Server:setSchema(event, schema)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the data schema for an event. </p>
+
+<p> Schemas allow you to set a specific format that the data will be sent. If the
+ client and server both know the format ahead of time, then the table keys
+ do not have to be sent across the network, which saves bandwidth.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to set the data schema for.
+        </li>
+        <li><span class="parameter">schema</span>
+            <span class="types"><span class="type">{string,...}</span></span>
+         The data schema.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">server = sock.newServer(...)
+client = sock.newClient(...)
+
+<span class="comment">-- Without schemas
+</span>client:send(<span class="string">"update"</span>, {
+    x = <span class="number">4</span>,
+    y = <span class="number">100</span>,
+    vx = -<span class="number">4.5</span>,
+    vy = <span class="number">23.1</span>,
+    rotation = <span class="number">1.4365</span>,
+})
+server:on(<span class="string">"update"</span>, <span class="keyword">function</span>(data, client)
+    <span class="comment">-- data = {
+</span>    <span class="comment">--    x = 4,
+</span>    <span class="comment">--    y = 100,
+</span>    <span class="comment">--    vx = -4.5,
+</span>    <span class="comment">--    vy = 23.1,
+</span>    <span class="comment">--    rotation = 1.4365,
+</span>    <span class="comment">-- }
+</span><span class="keyword">end</span>)
+
+
+<span class="comment">-- With schemas
+</span>server:setSchema(<span class="string">"update"</span>, {
+    <span class="string">"x"</span>,
+    <span class="string">"y"</span>,
+    <span class="string">"vx"</span>,
+    <span class="string">"vy"</span>,
+    <span class="string">"rotation"</span>,
+})
+<span class="comment">-- client no longer has to send the keys, saving bandwidth
+</span>client:send(<span class="string">"update"</span>, {
+    <span class="number">4</span>,
+    <span class="number">100</span>,
+    -<span class="number">4.5</span>,
+    <span class="number">23.1</span>,
+    <span class="number">1.4365</span>,
+})
+server:on(<span class="string">"update"</span>, <span class="keyword">function</span>(data, client)
+    <span class="comment">-- data = {
+</span>    <span class="comment">--    x = 4,
+</span>    <span class="comment">--    y = 100,
+</span>    <span class="comment">--    vx = -4.5,
+</span>    <span class="comment">--    vy = 23.1,
+</span>    <span class="comment">--    rotation = 1.4365,
+</span>    <span class="comment">-- }
+</span><span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Server:setSendChannel"></a>
     <h2 class="function_name">Server:setSendChannel(channel)</h2>
     </dt>
@@ -1443,8 +1673,7 @@ server:removeCallback(callback)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-server:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
+        <pre class="example">server:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
 </span>server:sendToAll(<span class="string">"importantEvent"</span>, <span class="string">"The message"</span>)</pre>
     </ul>
 
@@ -1482,8 +1711,7 @@ server:setSendChannel(<span class="number">2</span>) <span class="comment">-- th
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-server:setSendMode(<span class="string">"unreliable"</span>)
+        <pre class="example">server:setSendMode(<span class="string">"unreliable"</span>)
 server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
     </ul>
 
@@ -1518,8 +1746,7 @@ server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
+        <pre class="example">bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
 </span>server = sock.newServer(<span class="string">"localhost"</span>, <span class="number">22122</span>)
 server:setSerialization(bitser.dumps, bitser.loads)</pre>
     </ul>
@@ -1558,7 +1785,7 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <div class="function_def">
     <dt>
     <a name = "Client:connect"></a>
-    <h2 class="function_name">Client:connect()</h2>
+    <h2 class="function_name">Client:connect(code)</h2>
     </dt>
     <dd>
     <p>
@@ -1567,6 +1794,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     </p>
 
 
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">code</span>
+            <span class="types">optional <span class="type">number</span></span>
+         A number that can be associated with the connect event.
+        </li>
+    </ul>
 
 
 
@@ -1644,6 +1878,26 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
          A code to associate with this disconnect event.
         </li>
     </ul>
+
+
+
+
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:enableCompression"></a>
+    <h2 class="function_name">Client:enableCompression()</h2>
+    </dt>
+    <dd>
+    <p>
+    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.  Both the client and server must both either have compression enabled or disabled.</p>
+
+<p> Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+    </p>
+
+
 
 
 
@@ -2125,6 +2379,136 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:isConnected"></a>
+    <h2 class="function_name">Client:isConnected()</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets whether the client is connected to the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether the client is connected to the server.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">client:connect()
+client:isConnected() <span class="comment">-- false
+</span><span class="comment">-- After a few client updates
+</span>client:isConnected() <span class="comment">-- true</span></pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:isConnecting"></a>
+    <h2 class="function_name">Client:isConnecting()</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets whether the client is connecting to the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether the client is connected to the server.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">client:connect()
+client:isConnecting() <span class="comment">-- true
+</span><span class="comment">-- After a few client updates
+</span>client:isConnecting() <span class="comment">-- false
+</span>client:isConnected() <span class="comment">-- true</span></pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:isDisconnected"></a>
+    <h2 class="function_name">Client:isDisconnected()</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets whether the client is disconnected from the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether the client is connected to the server.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">client:disconnect()
+client:isDisconnected() <span class="comment">-- false
+</span><span class="comment">-- After a few client updates
+</span>client:isDisconnected() <span class="comment">-- true</span></pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:isDisconnecting"></a>
+    <h2 class="function_name">Client:isDisconnecting()</h2>
+    </dt>
+    <dd>
+    <p>
+    Gets whether the client is disconnecting from the server.
+    </p>
+
+
+
+    <h3>Returns:</h3>
+    <ol>
+        <li>
+           <span class="types"><span class="type">boolean</span></span>
+        Whether the client is connected to the server.
+        </li>
+    </ol>
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">client:disconnect()
+client:isDisconnecting() <span class="comment">-- true
+</span><span class="comment">-- After a few client updates
+</span>client:isDisconnecting() <span class="comment">-- false
+</span>client:isDisconnected() <span class="comment">-- true</span></pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:log"></a>
     <h2 class="function_name">Client:log(event, data)</h2>
     </dt>
@@ -2152,8 +2536,7 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
+        <pre class="example"><span class="keyword">if</span> somethingBadHappened <span class="keyword">then</span>
     client:log(<span class="string">"error"</span>, <span class="string">"Something bad happened!"</span>)
 <span class="keyword">end</span></pre>
     </ul>
@@ -2195,8 +2578,7 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-client:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data)
+        <pre class="example">client:on(<span class="string">"connect"</span>, <span class="keyword">function</span>(data)
     <span class="global">print</span>(<span class="string">"Connected to the server!"</span>)
 <span class="keyword">end</span>)</pre>
     </ul>
@@ -2234,12 +2616,36 @@ client:on(<span class="string">"connect"</span>, <span class="keyword">function<
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">local</span> callback = client:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
+        <pre class="example"><span class="keyword">local</span> callback = client:on(<span class="string">"chatMessage"</span>, <span class="keyword">function</span>(message)
     <span class="global">print</span>(message)
 <span class="keyword">end</span>)
 client:removeCallback(callback)</pre>
     </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
+    <a name = "Client:reset"></a>
+    <h2 class="function_name">Client:reset(client)</h2>
+    </dt>
+    <dd>
+    <p>
+    Forcefully disconnects the client.  The server is not notified of the disconnection.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">client</span>
+            <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+         The client to reset.
+        </li>
+    </ul>
+
+
+
+
 
 </dd>
 </div>
@@ -2309,35 +2715,6 @@ client:removeCallback(callback)</pre>
         <li><span class="parameter">outgoing</span>
             <span class="types"><span class="type">number</span></span>
          The maximum outgoing bandwidth in bytes.
-        </li>
-    </ul>
-
-
-
-
-
-</dd>
-</div>
-    <div class="function_def">
-    <dt>
-    <a name = "Client:setDataFormat"></a>
-    <h2 class="function_name">Client:setDataFormat(event, format)</h2>
-    </dt>
-    <dd>
-    <p>
-    Set the data format for an event.
-    </p>
-
-
-    <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
-            <span class="types"><span class="type">string</span></span>
-         The event to set the data format for.
-        </li>
-        <li><span class="parameter">format</span>
-            <span class="types"><span class="type">{string,...}</span></span>
-         The data format.
         </li>
     </ul>
 
@@ -2486,6 +2863,89 @@ client:removeCallback(callback)</pre>
 </div>
     <div class="function_def">
     <dt>
+    <a name = "Client:setSchema"></a>
+    <h2 class="function_name">Client:setSchema(event, schema)</h2>
+    </dt>
+    <dd>
+    <p>
+    Set the data schema for an event. </p>
+
+<p> Schemas allow you to set a specific format that the data will be sent. If the
+ client and server both know the format ahead of time, then the table keys
+ do not have to be sent across the network, which saves bandwidth.
+    </p>
+
+
+    <h3>Parameters:</h3>
+    <ul>
+        <li><span class="parameter">event</span>
+            <span class="types"><span class="type">string</span></span>
+         The event to set the data schema for.
+        </li>
+        <li><span class="parameter">schema</span>
+            <span class="types"><span class="type">{string,...}</span></span>
+         The data schema.
+        </li>
+    </ul>
+
+
+
+
+    <h3>Usage:</h3>
+    <ul>
+        <pre class="example">server = sock.newServer(...)
+client = sock.newClient(...)
+
+<span class="comment">-- Without schemas
+</span>server:send(<span class="string">"update"</span>, {
+    x = <span class="number">4</span>,
+    y = <span class="number">100</span>,
+    vx = -<span class="number">4.5</span>,
+    vy = <span class="number">23.1</span>,
+    rotation = <span class="number">1.4365</span>,
+})
+client:on(<span class="string">"update"</span>, <span class="keyword">function</span>(data)
+    <span class="comment">-- data = {
+</span>    <span class="comment">--    x = 4,
+</span>    <span class="comment">--    y = 100,
+</span>    <span class="comment">--    vx = -4.5,
+</span>    <span class="comment">--    vy = 23.1,
+</span>    <span class="comment">--    rotation = 1.4365,
+</span>    <span class="comment">-- }
+</span><span class="keyword">end</span>)
+
+
+<span class="comment">-- With schemas
+</span>client:setSchema(<span class="string">"update"</span>, {
+    <span class="string">"x"</span>,
+    <span class="string">"y"</span>,
+    <span class="string">"vx"</span>,
+    <span class="string">"vy"</span>,
+    <span class="string">"rotation"</span>,
+})
+<span class="comment">-- client no longer has to send the keys, saving bandwidth
+</span>server:send(<span class="string">"update"</span>, {
+    <span class="number">4</span>,
+    <span class="number">100</span>,
+    -<span class="number">4.5</span>,
+    <span class="number">23.1</span>,
+    <span class="number">1.4365</span>,
+})
+client:on(<span class="string">"update"</span>, <span class="keyword">function</span>(data)
+    <span class="comment">-- data = {
+</span>    <span class="comment">--    x = 4,
+</span>    <span class="comment">--    y = 100,
+</span>    <span class="comment">--    vx = -4.5,
+</span>    <span class="comment">--    vy = 23.1,
+</span>    <span class="comment">--    rotation = 1.4365,
+</span>    <span class="comment">-- }
+</span><span class="keyword">end</span>)</pre>
+    </ul>
+
+</dd>
+</div>
+    <div class="function_def">
+    <dt>
     <a name = "Client:setSendChannel"></a>
     <h2 class="function_name">Client:setSendChannel(channel)</h2>
     </dt>
@@ -2511,8 +2971,7 @@ client:removeCallback(callback)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-client:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
+        <pre class="example">client:setSendChannel(<span class="number">2</span>) <span class="comment">-- the third channel
 </span>client:send(<span class="string">"important"</span>, <span class="string">"The message"</span>)</pre>
     </ul>
 
@@ -2550,8 +3009,7 @@ client:setSendChannel(<span class="number">2</span>) <span class="comment">-- th
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-client:setSendMode(<span class="string">"unreliable"</span>)
+        <pre class="example">client:setSendMode(<span class="string">"unreliable"</span>)
 client:send(<span class="string">"position"</span>, {...})</pre>
     </ul>
 
@@ -2586,8 +3044,7 @@ client:send(<span class="string">"position"</span>, {...})</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
+        <pre class="example">bitser = <span class="global">require</span> <span class="string">"bitser"</span> <span class="comment">-- or any library you like
 </span>client = sock.newClient(<span class="string">"localhost"</span>, <span class="number">22122</span>)
 client:setSerialization(bitser.dumps, bitser.loads)</pre>
     </ul>
@@ -2730,8 +3187,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
+        <pre class="example"><span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
 
  <span class="comment">-- Client that will connect to localhost:22122 (by default)
 </span>client = sock.newClient()
@@ -2802,8 +3258,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
     <h3>Usage:</h3>
     <ul>
-        <pre class="example">
-<span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
+        <pre class="example"><span class="keyword">local</span> sock = <span class="global">require</span> <span class="string">"sock"</span>
 
  <span class="comment">-- Local server hosted on localhost:22122 (by default)
 </span>server = sock.newServer()
@@ -2835,7 +3290,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2016-12-17 17:02:19 </i>
+<i style="float:right;">Last updated 2017-03-18 13:52:08 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

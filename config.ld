@@ -2,6 +2,7 @@ project     = 'sock.lua'
 title       = 'sock.lua Documentation'
 description = 'sock.lua is a networking library for Lua/LÖVE games.'
 file        = 'sock.lua'
+dir         = 'docs'
 
 style       = 'docstyle'
 template    = 'docstyle'

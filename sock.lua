@@ -482,8 +482,60 @@ function Server:setDefaultSendChannel(channel)
 end
 
 --- Set the data schema for an event.
+--
+-- Schemas allow you to set a specific format that the data will be sent. If the
+-- client and server both know the format ahead of time, then the table keys
+-- do not have to be sent across the network, which saves bandwidth.
 -- @tparam string event The event to set the data schema for. 
 -- @tparam {string,...} schema The data schema.
+-- @usage
+-- server = sock.newServer(...)
+-- client = sock.newClient(...)
+--
+-- -- Without schemas
+-- client:send("update", {
+--     x = 4,
+--     y = 100,
+--     vx = -4.5,
+--     vy = 23.1,
+--     rotation = 1.4365,
+-- })
+-- server:on("update", function(data, client)
+--     -- data = {
+--     --    x = 4,
+--     --    y = 100,
+--     --    vx = -4.5,
+--     --    vy = 23.1,
+--     --    rotation = 1.4365,
+--     -- }
+-- end)
+--
+--
+-- -- With schemas
+-- server:setSchema("update", {
+--     "x",
+--     "y",
+--     "vx",
+--     "vy",
+--     "rotation",
+-- })
+-- -- client no longer has to send the keys, saving bandwidth
+-- client:send("update", {
+--     4,
+--     100,
+--     -4.5,
+--     23.1,
+--     1.4365,
+-- })
+-- server:on("update", function(data, client)
+--     -- data = {
+--     --    x = 4,
+--     --    y = 100,
+--     --    vx = -4.5,
+--     --    vy = 23.1,
+--     --    rotation = 1.4365,
+--     -- }
+-- end)
 function Server:setSchema(event, schema)
     return self.listener:setSchema(event, schema)
 end
@@ -881,8 +933,60 @@ function Client:setDefaultSendChannel(channel)
 end
 
 --- Set the data schema for an event.
+--
+-- Schemas allow you to set a specific format that the data will be sent. If the
+-- client and server both know the format ahead of time, then the table keys
+-- do not have to be sent across the network, which saves bandwidth.
 -- @tparam string event The event to set the data schema for. 
 -- @tparam {string,...} schema The data schema.
+-- @usage
+-- server = sock.newServer(...)
+-- client = sock.newClient(...)
+--
+-- -- Without schemas
+-- server:send("update", {
+--     x = 4,
+--     y = 100,
+--     vx = -4.5,
+--     vy = 23.1,
+--     rotation = 1.4365,
+-- })
+-- client:on("update", function(data)
+--     -- data = {
+--     --    x = 4,
+--     --    y = 100,
+--     --    vx = -4.5,
+--     --    vy = 23.1,
+--     --    rotation = 1.4365,
+--     -- }
+-- end)
+--
+--
+-- -- With schemas
+-- client:setSchema("update", {
+--     "x",
+--     "y",
+--     "vx",
+--     "vy",
+--     "rotation",
+-- })
+-- -- client no longer has to send the keys, saving bandwidth
+-- server:send("update", {
+--     4,
+--     100,
+--     -4.5,
+--     23.1,
+--     1.4365,
+-- })
+-- client:on("update", function(data)
+--     -- data = {
+--     --    x = 4,
+--     --    y = 100,
+--     --    vx = -4.5,
+--     --    vy = 23.1,
+--     --    rotation = 1.4365,
+--     -- }
+-- end)
 function Client:setSchema(event, schema)
     return self.listener:setSchema(event, schema)
 end
@@ -961,18 +1065,34 @@ end
 
 --- Gets whether the client is connected to the server.
 -- @treturn boolean Whether the client is connected to the server.
+-- @usage
+-- client:connect()
+-- client:isConnected() -- false
+-- -- After a few client updates
+-- client:isConnected() -- true
 function Client:isConnected()
     return self.connection ~= nil and self:getState() == "connected"
 end
 
---- Gets whether the client is connected to the server.
+--- Gets whether the client is disconnected from the server.
 -- @treturn boolean Whether the client is connected to the server.
+-- @usage
+-- client:disconnect()
+-- client:isDisconnected() -- false
+-- -- After a few client updates
+-- client:isDisconnected() -- true
 function Client:isDisconnected()
     return self.connection ~= nil and self:getState() == "disconnected"
 end
 
---- Gets whether the client is connected to the server.
+--- Gets whether the client is connecting to the server.
 -- @treturn boolean Whether the client is connected to the server.
+-- @usage
+-- client:connect()
+-- client:isConnecting() -- true
+-- -- After a few client updates
+-- client:isConnecting() -- false
+-- client:isConnected() -- true
 function Client:isConnecting()
     local inConnectingState = false
     for _, state in ipairs(sock.CONNECTING_STATES) do
@@ -984,8 +1104,14 @@ function Client:isConnecting()
     return self.connection ~= nil and inConnectingState
 end
 
---- Gets whether the client is connected to the server.
+--- Gets whether the client is disconnecting from the server.
 -- @treturn boolean Whether the client is connected to the server.
+-- @usage
+-- client:disconnect()
+-- client:isDisconnecting() -- true
+-- -- After a few client updates
+-- client:isDisconnecting() -- false
+-- client:isDisconnected() -- true
 function Client:isDisconnecting()
     local inDisconnectingState = false
     for _, state in ipairs(sock.DISCONNECTING_STATES) do

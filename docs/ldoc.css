@@ -455,7 +455,7 @@ h4 {
 ul, ol { list-style-type: disc; }
 
 pre {
-    background-color: #fcfcfc;
+    background-color: #f9f9f9;
     border: 1px solid #ccc;
     padding: 10px;
     margin: 10px 0 10px 0;
@@ -476,9 +476,9 @@ pre.example {
 #container {
     margin: 1rem auto 1rem auto;
     width: 100%;
-    max-width: 60rem;
+    max-width: 65rem;
     background-color: #fff;
-    box-shadow: 0px 1px 3px #bbb;
+    box-shadow: 0px 2px 4px #aaa;
 }
 
 #main {
@@ -488,7 +488,8 @@ pre.example {
 #header {
     background: #268BD2;
     color: #fff;
-    padding: 1.5rem;
+    padding: 1rem;
+    text-align: center;
 }
 
 #navigation {
@@ -505,8 +506,12 @@ pre.example {
 #about {
     clear: both;
     padding: 10px;
-    background: #195b8a;
+    background: #1c6598;
     color: #fff;
+}
+
+#about a {
+    color: #aaf;
 }
 
 table.module_list {
@@ -521,24 +526,38 @@ table.module_list td {
     border-style: solid;
     border-color: #cccccc;
 }
-table.module_list td.name { background-color: #f0f0f0; min-width: 200px; }
-table.module_list td.summary { width: 100%; }
+table.module_list td.name { 
+    background-color: #f0f0f0; 
+    min-width: 200px; 
+}
+table.module_list td.summary { 
+    width: 100%; 
+}
 
 
 table.function_list {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #cccccc;
     border-collapse: collapse;
 }
 table.function_list td {
-    border-width: 1px;
     padding: 3px;
-    border-style: solid;
-    border-color: #cccccc;
 }
-table.function_list td.name { min-width: 240px; }
-table.function_list td.summary { width: 100%; }
+table.function_list tr {
+    border-bottom: 1px solid #ddd;
+}
+table.function_list tr:nth-child(2n) {
+    background: #f6f6f6;
+}
+table.function_list tr:last-child {
+    border-bottom: none;
+}
+table.function_list tr:hover {
+    background: #eee;
+}
+table.function_list td.name { 
+    min-width: 35%;
+}
+table.function_list td.summary { 
+}
 
 a {
     text-decoration: none;
@@ -601,47 +620,47 @@ a:target + * {
 pre .comment { color: #558817; }
 pre .constant { color: #a8660d; }
 pre .escape { color: #844631; }
-pre .keyword { color: #aa5050; font-weight: bold; }
+pre .keyword { color: #aa5050; }
 pre .library { color: #0e7c6b; }
-pre .marker { color: #512b1e; background: #fedc56; font-weight: bold; }
+pre .marker { color: #512b1e; background: #fedc56; }
 pre .string { color: #8080ff; }
 pre .number { color: #f8660d; }
-pre .operator { color: #2239a8; font-weight: bold; }
+pre .operator { color: #2239a8; }
 pre .preprocessor, pre .prepro { color: #a33243; }
 pre .global { color: #800080; }
 pre .user-keyword { color: #800080; }
 pre .prompt { color: #558817; }
 pre .url { color: #272fc2; text-decoration: underline; }
 
-/* /1* print rules *1/ */
-/* @media print { */
-/*     body { */
-/*         font: 12pt "Times New Roman", "TimeNR", Times, serif; */
-/*     } */
-/*     a { font-weight: bold; color: #004080; text-decoration: underline; } */
+/* print rules */
+@media print {
+    body {
+        font: 12pt "Times New Roman", "TimeNR", Times, serif;
+    }
+    a { font-weight: bold; color: #004080; text-decoration: underline; }
 
-/*     #main { */
-/*         background-color: #ffffff; */
-/*         border-left: 0px; */
-/*     } */
+    #main {
+        background-color: #ffffff;
+        border-left: 0px;
+    }
 
-/*     #container { */
-/*         margin-left: 2%; */
-/*         margin-right: 2%; */
-/*         background-color: #ffffff; */
-/*     } */
+    #container {
+        margin-left: 2%;
+        margin-right: 2%;
+        background-color: #ffffff;
+    }
 
-/*     #content { */
-/*         padding: 1em; */
-/*         background-color: #ffffff; */
-/*     } */
+    #content {
+        padding: 1em;
+        background-color: #ffffff;
+    }
 
-/*     #navigation { */
-/*         display: none; */
-/*     } */
-/*     pre.example { */
-/*         font-family: "Droid Sans Mono", "Consolas", "Andale Mono", monospace; */
-/*         font-size: 10pt; */
-/*         page-break-inside: avoid; */
-/*     } */
-/* } */
+    #navigation {
+        display: none;
+    }
+    pre.example {
+        font-family: "Droid Sans Mono", "Consolas", "Andale Mono", monospace;
+        font-size: 10pt;
+        page-break-inside: avoid;
+    }
+}
