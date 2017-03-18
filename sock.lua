@@ -872,6 +872,13 @@ function Client:setDefaultSendChannel(channel)
     self.defaultSendChannel = channel
 end
 
+--- Set the data schema for an event.
+-- @tparam string event The event to set the data schema for. 
+-- @tparam {string,...} schema The data schema.
+function Client:setSchema(event, schema)
+    return self.listener:setSchema(event, schema)
+end
+
 --- Set the maximum number of channels.
 -- @tparam number limit The maximum number of channels allowed. If it is 0,
 -- then the maximum number of channels available on the system will be used.
