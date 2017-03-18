@@ -206,104 +206,6 @@ end
 local Server = {}
 local Server_mt = {__index = Server}
 
---- Gets the Client object associated with an enet peer.
--- @tparam peer peer An enet peer.
--- @treturn Client Object associated with the peer.
-function Server:getClient(peer)
-    for _, client in pairs(self.clients) do
-        if peer == client.connection then
-            return client
-        end
-    end
-end
-
---- Gets the Client object that has the given connection id.
--- @tparam number connectId The unique client connection id.
--- @treturn Client
-function Server:getClientByConnectId(connectId)
-    for _, client in pairs(self.clients) do
-        if connectId == client.connectId then
-            return client
-        end
-    end
-end
-
---- Get the Client object that has the given peer index.
--- @treturn Client
-function Server:getClientByIndex(index)
-    for _, client in pairs(self.clients) do
-        if index == client:getIndex() then
-            return client
-        end
-    end
-end
-
---- Get the enet_peer that has the given index.
--- @treturn enet_peer The underlying enet peer object.
-function Server:getPeerByIndex(index)
-    return self.host:get_peer(index)
-end
-
---- Set the send mode for the next outgoing message. 
--- The mode will be reset after the next message is sent. The initial default 
--- is "reliable".
--- @tparam string mode A valid send mode.
--- @see SEND_MODES
--- @usage
---server:setSendMode("unreliable")
---server:sendToAll("playerState", {...})
-function Server:setSendMode(mode)
-    if not isValidSendMode(mode) then
-        self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
-        mode = "reliable"
-    end
-
-    self.sendMode = mode
-end
-
---- Set the default send mode for all future outgoing messages. 
--- The initial default is "reliable".
--- @tparam string mode A valid send mode.
--- @see SEND_MODES
-function Server:setDefaultSendMode(mode)
-    if not isValidSendMode(mode) then
-        self:log("error", "Tried to set default send mode to invalid mode: '" .. mode .. "'")
-        error("Tried to set default send mode to invalid mode: '" .. mode .. "'")
-    end
-
-    self.defaultSendMode = mode
-end
-
---- Set the send channel for the next outgoing message. 
--- The channel will be reset after the next message. Channels are zero-indexed
--- and cannot exceed the maximum number of channels allocated. The initial 
--- default is 0.
--- @tparam number channel Channel to send data on.
--- @usage
---server:setSendChannel(2) -- the third channel
---server:sendToAll("importantEvent", "The message")
-function Server:setSendChannel(channel)
-    if channel > (self.maxChannels - 1) then
-        self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
-        channel = 0
-    end
-
-    self.sendChannel = channel
-end
-
---- Set the default send channel for all future outgoing messages.
--- The initial default is 0.
--- @tparam number channel Channel to send data on.
-function Server:setDefaultSendChannel(channel)
-   self.defaultSendChannel = channel
-end
-
---- Reset all send options to their default values.
-function Server:resetSendSettings()
-    self.sendMode = self.defaultSendMode
-    self.sendChannel = self.defaultSendChannel
-end
-
 --- Check for network events and handle them.
 function Server:update()
     if not self.deserialize then
@@ -450,13 +352,6 @@ function Server:on(event, callback)
     return self.listener:addCallback(event, callback)
 end
 
---- Set the data format for an event.
--- @tparam string event The event to set the data format for. 
--- @tparam {string,...} format The data format.
-function Server:setDataFormat(event, format)
-    return self.listener:setDataFormat(event, format)
-end
-
 function Server:_activateTriggers(event, data, client)
     local result = self.listener:trigger(event, data, client)
 
@@ -491,6 +386,147 @@ function Server:log(event, data)
     return self.logger:log(event, data)
 end
 
+--- Reset all send options to their default values.
+function Server:resetSendSettings()
+    self.sendMode = self.defaultSendMode
+    self.sendChannel = self.defaultSendChannel
+end
+
+--- Set the send mode for the next outgoing message. 
+-- The mode will be reset after the next message is sent. The initial default 
+-- is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
+-- @usage
+--server:setSendMode("unreliable")
+--server:sendToAll("playerState", {...})
+function Server:setSendMode(mode)
+    if not isValidSendMode(mode) then
+        self:log("warning", "Tried to use invalid send mode: '" .. mode .. "'. Defaulting to reliable.")
+        mode = "reliable"
+    end
+
+    self.sendMode = mode
+end
+
+--- Set the default send mode for all future outgoing messages. 
+-- The initial default is "reliable".
+-- @tparam string mode A valid send mode.
+-- @see SEND_MODES
+function Server:setDefaultSendMode(mode)
+    if not isValidSendMode(mode) then
+        self:log("error", "Tried to set default send mode to invalid mode: '" .. mode .. "'")
+        error("Tried to set default send mode to invalid mode: '" .. mode .. "'")
+    end
+
+    self.defaultSendMode = mode
+end
+
+--- Set the send channel for the next outgoing message. 
+-- The channel will be reset after the next message. Channels are zero-indexed
+-- and cannot exceed the maximum number of channels allocated. The initial 
+-- default is 0.
+-- @tparam number channel Channel to send data on.
+-- @usage
+--server:setSendChannel(2) -- the third channel
+--server:sendToAll("importantEvent", "The message")
+function Server:setSendChannel(channel)
+    if channel > (self.maxChannels - 1) then
+        self:log("warning", "Tried to use invalid channel: " .. channel .. " (max is " .. self.maxChannels - 1 .. "). Defaulting to 0.")
+        channel = 0
+    end
+
+    self.sendChannel = channel
+end
+
+--- Set the default send channel for all future outgoing messages.
+-- The initial default is 0.
+-- @tparam number channel Channel to send data on.
+function Server:setDefaultSendChannel(channel)
+   self.defaultSendChannel = channel
+end
+
+--- Set the data format for an event.
+-- @tparam string event The event to set the data format for. 
+-- @tparam {string,...} format The data format.
+function Server:setDataFormat(event, format)
+    return self.listener:setDataFormat(event, format)
+end
+
+--- Set the incoming and outgoing bandwidth limits.
+-- @tparam number incoming The maximum incoming bandwidth in bytes.
+-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
+function Server:setBandwidthLimit(incoming, outgoing)
+    return self.host:bandwidth_limit(incoming, outgoing)
+end
+
+--- Set the maximum number of channels.
+-- @tparam number limit The maximum number of channels allowed. If it is 0,
+-- then the maximum number of channels available on the system will be used.
+function Server:setMaxChannels(limit)
+    self.host:channel_limit(limit)
+end
+
+--- Set the timeout to wait for packets.
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The 
+-- initial default is 0.
+function Server:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
+end
+
+--- Set the serialization functions for sending and receiving data.
+-- Both the client and server must share the same serialization method.
+-- @tparam function serialize The serialization function to use.
+-- @tparam function deserialize The deserialization function to use.
+-- @usage
+--bitser = require "bitser" -- or any library you like
+--server = sock.newServer("localhost", 22122)
+--server:setSerialization(bitser.dumps, bitser.loads)
+function Server:setSerialization(serialize, deserialize)
+    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
+    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
+    self.serialize = serialize
+    self.deserialize = deserialize
+end
+
+--- Gets the Client object associated with an enet peer.
+-- @tparam peer peer An enet peer.
+-- @treturn Client Object associated with the peer.
+function Server:getClient(peer)
+    for _, client in pairs(self.clients) do
+        if peer == client.connection then
+            return client
+        end
+    end
+end
+
+--- Gets the Client object that has the given connection id.
+-- @tparam number connectId The unique client connection id.
+-- @treturn Client
+function Server:getClientByConnectId(connectId)
+    for _, client in pairs(self.clients) do
+        if connectId == client.connectId then
+            return client
+        end
+    end
+end
+
+--- Get the Client object that has the given peer index.
+-- @treturn Client
+function Server:getClientByIndex(index)
+    for _, client in pairs(self.clients) do
+        if index == client:getIndex() then
+            return client
+        end
+    end
+end
+
+--- Get the enet_peer that has the given index.
+-- @treturn enet_peer The underlying enet peer object.
+function Server:getPeerByIndex(index)
+    return self.host:get_peer(index)
+end
+
 --- Get the total sent data since the server was created.
 -- @treturn number The total sent data in bytes.
 function Server:getTotalSentData()
@@ -518,13 +554,6 @@ function Server:getTotalReceivedPackets()
     return self.packetsReceived
 end
 
---- Set the incoming and outgoing bandwidth limits.
--- @tparam number incoming The maximum incoming bandwidth in bytes.
--- @tparam number outgoing The maximum outgoing bandwidth in bytes.
-function Server:setBandwidthLimit(incoming, outgoing)
-    return self.host:bandwidth_limit(incoming, outgoing)
-end
-
 --- Get the last time when network events were serviced.
 -- @treturn number Timestamp of the last time events were serviced.
 function Server:getLastServiceTime()
@@ -543,20 +572,6 @@ end
 -- @treturn number Number of allocated channels.
 function Server:getMaxChannels()
     return self.maxChannels 
-end
-
---- Set the maximum number of channels.
--- @tparam number limit The maximum number of channels allowed. If it is 0,
--- then the maximum number of channels available on the system will be used.
-function Server:setMaxChannels(limit)
-    self.host:channel_limit(limit)
-end
-
---- Set the timeout to wait for packets.
--- @tparam number timeout Time to wait for incoming packets in milliseconds. The 
--- initial default is 0.
-function Server:setMessageTimeout(timeout)
-    self.messageTimeout = timeout
 end
 
 --- Get the timeout for packets.
@@ -605,26 +620,154 @@ function Server:getClients()
     return self.clients
 end
 
---- Set the serialization functions for sending and receiving data.
--- Both the client and server must share the same serialization method.
--- @tparam function serialize The serialization function to use.
--- @tparam function deserialize The deserialization function to use.
--- @usage
---bitser = require "bitser" -- or any library you like
---server = sock.newServer("localhost", 22122)
---server:setSerialization(bitser.dumps, bitser.loads)
-function Server:setSerialization(serialize, deserialize)
-    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
-    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
-    self.serialize = serialize
-    self.deserialize = deserialize
-end
-
 
 --- Connects to servers.
 -- @type Client
 local Client = {}
 local Client_mt = {__index = Client}
+
+--- Check for network events and handle them.
+function Client:update()
+    if not self.deserialize then
+        self:log("error", "Can't deserialize message: deserialize was not set") 
+        error("Can't deserialize message: deserialize was not set") 
+    end
+
+    local event = self.host:service(self.messageTimeout)
+    
+    while event do
+        if event.type == "connect" then
+            self:_activateTriggers("connect", event.data)
+            self:log(event.type, "Connected to " .. tostring(self.connection))
+        elseif event.type == "receive" then
+            local message = self.deserialize(event.data)
+            local eventName = message[1]
+            local data = message[2]
+
+            self:_activateTriggers(eventName, data)
+            self:log(eventName, data)
+
+        elseif event.type == "disconnect" then
+            self:_activateTriggers("disconnect", event.data)
+            self:log(event.type, "Disconnected from " .. tostring(self.connection))
+        end
+
+        event = self.host:service(self.messageTimeout)
+    end
+end
+
+--- Connect to the chosen server.
+-- Connection will not actually occur until the next time `Client:update` is called.
+function Client:connect()
+    -- number of channels for the client and server must match
+    self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
+    self.connectId = self.connection:connect_id()
+end
+
+--- Disconnect from the server, if connected. The client will disconnect the 
+-- next time that network messages are sent.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
+function Client:disconnect(code)
+    code = code or 0
+    self.connection:disconnect(code)
+end
+
+--- Disconnect from the server, if connected. The client will disconnect after
+-- sending all queued packets.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
+function Client:disconnectLater(code)
+    code = code or 0
+    self.connection:disconnect_later(code)
+end
+
+--- Disconnect from the server, if connected. The client will disconnect immediately.
+-- @tparam ?number code A code to associate with this disconnect event.
+-- @todo Pass the code into the disconnect callback on the server
+function Client:disconnectNow(code)
+    code = code or 0
+    self.connection:disconnect_now(code)
+end
+
+--- Send a message to the server.
+-- @tparam string event The event to trigger with this message.
+-- @param data The data to send.
+function Client:send(event, data)
+    local message = {event, data}
+    local serializedMessage
+
+    if not self.serialize then
+        self:log("error", "Can't serialize message: serialize was not set") 
+        error("Can't serialize message: serialize was not set") 
+    end
+
+    -- 'Data' = binary data class in Love
+    if type(data) == "userdata" and data.type and data:typeOf("Data") then
+        message[2] = data:getString()
+        serializedMessage = self.serialize(message)
+    else
+        serializedMessage = self.serialize(message)
+    end
+
+    self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
+
+    self.packetsSent = self.packetsSent + 1
+
+    self:resetSendSettings()
+end
+
+--- Add a callback to an event.
+-- @tparam string event The event that will trigger the callback.
+-- @tparam function callback The callback to be triggered.
+-- @treturn function The callback that was passed in.
+--@usage
+--client:on("connect", function(data)
+--    print("Connected to the server!")
+--end)
+function Client:on(event, callback)
+    return self.listener:addCallback(event, callback)
+end
+
+function Client:_activateTriggers(event, data)
+    local result = self.listener:trigger(event, data)
+
+    self.packetsReceived = self.packetsReceived + 1
+
+    if not result then
+        self:log("warning", "Tried to activate trigger: '" .. tostring(event) .. "' but it does not exist.")
+    end
+end
+
+--- Remove a specific callback for an event.
+-- @tparam function callback The callback to remove.
+-- @treturn boolean Whether or not the callback was removed.
+--@usage
+--local callback = client:on("chatMessage", function(message)
+--    print(message)
+--end)
+--client:removeCallback(callback)
+function Client:removeCallback(callback)
+    return self.listener:removeCallback(callback)
+end
+
+--- Log an event.
+-- Alias for Client.logger:log.
+-- @tparam string event The type of event that happened.
+-- @tparam string data The message to log.
+--@usage
+--if somethingBadHappened then
+--    client:log("error", "Something bad happened!")
+--end
+function Client:log(event, data)
+    return self.logger:log(event, data)
+end
+
+--- Reset all send options to their default values.
+function Client:resetSendSettings()
+    self.sendMode = self.defaultSendMode
+    self.sendChannel = self.defaultSendChannel
+end
 
 --- Set the send mode for the next outgoing message. 
 -- The mode will be reset after the next message is sent. The initial default 
@@ -680,154 +823,76 @@ function Client:setDefaultSendChannel(channel)
     self.defaultSendChannel = channel
 end
 
---- Reset all send options to their default values.
-function Client:resetSendSettings()
-    self.sendMode = self.defaultSendMode
-    self.sendChannel = self.defaultSendChannel
+--- Set the maximum number of channels.
+-- @tparam number limit The maximum number of channels allowed. If it is 0,
+-- then the maximum number of channels available on the system will be used.
+function Client:setMaxChannels(limit)
+    self.host:channel_limit(limit)
 end
 
---- Connect to the chosen server.
--- Connection will not actually occur until the next time `Client:update` is called.
-function Client:connect()
-    -- number of channels for the client and server must match
-    self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
-    self.connectId = self.connection:connect_id()
+--- Set the timeout to wait for packets.
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
+-- default is 0.
+function Client:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
 end
 
---- Disconnect from the server, if connected. The client will disconnect the 
--- next time that network messages are sent.
--- @tparam ?number code A code to associate with this disconnect event.
--- @todo Pass the code into the disconnect callback on the server
-function Client:disconnect(code)
-    code = code or 0
-    self.connection:disconnect(code)
+--- Set the incoming and outgoing bandwidth limits.
+-- @tparam number incoming The maximum incoming bandwidth in bytes.
+-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
+function Client:setBandwidthLimit(incoming, outgoing)
+    return self.host:bandwidth_limit(incoming, outgoing)
 end
 
---- Disconnect from the server, if connected. The client will disconnect after
--- sending all queued packets.
--- @tparam ?number code A code to associate with this disconnect event.
--- @todo Pass the code into the disconnect callback on the server
-function Client:disconnectLater(code)
-    code = code or 0
-    self.connection:disconnect_later(code)
-end
-
---- Disconnect from the server, if connected. The client will disconnect immediately.
--- @tparam ?number code A code to associate with this disconnect event.
--- @todo Pass the code into the disconnect callback on the server
-function Client:disconnectNow(code)
-    code = code or 0
-    self.connection:disconnect_now(code)
-end
-
---- Check for network events and handle them.
-function Client:update()
-    if not self.deserialize then
-        self:log("error", "Can't deserialize message: deserialize was not set") 
-        error("Can't deserialize message: deserialize was not set") 
-    end
-
-    local event = self.host:service(self.messageTimeout)
-    
-    while event do
-        if event.type == "connect" then
-            self:_activateTriggers("connect", event.data)
-            self:log(event.type, "Connected to " .. tostring(self.connection))
-        elseif event.type == "receive" then
-            local message = self.deserialize(event.data)
-            local eventName = message[1]
-            local data = message[2]
-
-            self:_activateTriggers(eventName, data)
-            self:log(eventName, data)
-
-        elseif event.type == "disconnect" then
-            self:_activateTriggers("disconnect", event.data)
-            self:log(event.type, "Disconnected from " .. tostring(self.connection))
-        end
-
-        event = self.host:service(self.messageTimeout)
+--- Set how frequently to ping the server.
+-- The round trip time is updated each time a ping is sent. The initial
+-- default is 500ms.
+-- @tparam number interval The interval, in milliseconds.
+function Client:setPingInterval(interval)
+    if self.connection then
+        self.connection:ping_interval(interval)
     end
 end
 
---- Send a message to the server.
--- @tparam string event The event to trigger with this message.
--- @param data The data to send.
-function Client:send(event, data)
-    local message = {event, data}
-    local serializedMessage
-
-    if not self.serialize then
-        self:log("error", "Can't serialize message: serialize was not set") 
-        error("Can't serialize message: serialize was not set") 
-    end
-
-    -- 'Data' = binary data class in Love
-    if type(data) == "userdata" and data.type and data:typeOf("Data") then
-        message[2] = data:getString()
-        serializedMessage = self.serialize(message)
-    else
-        serializedMessage = self.serialize(message)
-    end
-
-    self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
-
-    self.packetsSent = self.packetsSent + 1
-
-    self:resetSendSettings()
-end
-
---- Add a callback to an event.
--- @tparam string event The event that will trigger the callback.
--- @tparam function callback The callback to be triggered.
--- @treturn function The callback that was passed in.
---@usage
---client:on("connect", function(data)
---    print("Connected to the server!")
---end)
-function Client:on(event, callback)
-    return self.listener:addCallback(event, callback)
-end
-
---- Set the data format for an event.
--- @tparam string event The event to set the data format for. 
--- @tparam {string,...} format The data format.
-function Client:setDataFormat(event, format)
-    return self.listener:setDataFormat(event, format)
-end
-
-function Client:_activateTriggers(event, data)
-    local result = self.listener:trigger(event, data)
-
-    self.packetsReceived = self.packetsReceived + 1
-
-    if not result then
-        self:log("warning", "Tried to activate trigger: '" .. tostring(event) .. "' but it does not exist.")
+--- Change the probability at which unreliable packets should not be dropped.
+-- @tparam number interval Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
+-- @tparam number acceleration Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
+-- @tparam number deceleration Rate at which to decrease the throttle probability as mean RTT increases.
+function Client:setThrottle(interval, acceleration, deceleration)
+    interval = interval or 5000
+    acceleration = acceleration or 2
+    deceleration = deceleration or 2
+    if self.connection then
+        self.connection:throttle_configure(interval, acceleration, deceleration)
     end
 end
 
---- Remove a specific callback for an event.
--- @tparam function callback The callback to remove.
--- @treturn boolean Whether or not the callback was removed.
---@usage
---local callback = client:on("chatMessage", function(message)
---    print(message)
---end)
---client:removeCallback(callback)
-function Client:removeCallback(callback)
-    return self.listener:removeCallback(callback)
+--- Set the parameters for attempting to reconnect if a timeout is detected.
+-- @tparam ?number limit A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
+-- @tparam ?number minimum Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
+-- @tparam ?number maximum Fixed timeout in milliseconds for which any packet has to be acknowledged.
+function Client:setTimeout(limit, minimum, maximum)
+    limit = limit or 32
+    minimum = minimum or 5000
+    maximum = maximum or 30000
+    if self.connection then
+        self.connection:timeout(limit, minimum, maximum)
+    end
 end
 
---- Log an event.
--- Alias for Client.logger:log.
--- @tparam string event The type of event that happened.
--- @tparam string data The message to log.
---@usage
---if somethingBadHappened then
---    client:log("error", "Something bad happened!")
---end
-function Client:log(event, data)
-    return self.logger:log(event, data)
+--- Set the serialization functions for sending and receiving data.
+-- Both the client and server must share the same serialization method.
+-- @tparam function serialize The serialization function to use.
+-- @tparam function deserialize The deserialization function to use.
+-- @usage
+--bitser = require "bitser" -- or any library you like
+--client = sock.newClient("localhost", 22122)
+--client:setSerialization(bitser.dumps, bitser.loads)
+function Client:setSerialization(serialize, deserialize)
+    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
+    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
+    self.serialize = serialize
+    self.deserialize = deserialize
 end
 
 --- Get the total sent data since the server was created.
@@ -858,13 +923,6 @@ function Client:getTotalReceivedPackets()
     return self.packetsReceived
 end
 
---- Set the incoming and outgoing bandwidth limits.
--- @tparam number incoming The maximum incoming bandwidth in bytes.
--- @tparam number outgoing The maximum outgoing bandwidth in bytes.
-function Client:setBandwidthLimit(incoming, outgoing)
-    return self.host:bandwidth_limit(incoming, outgoing)
-end
-
 --- Get the last time when network events were serviced.
 -- @treturn number Timestamp of the last time events were serviced.
 function Client:getLastServiceTime()
@@ -877,20 +935,6 @@ end
 -- @treturn number Number of allocated channels.
 function Client:getMaxChannels()
     return self.maxChannels 
-end
-
---- Set the maximum number of channels.
--- @tparam number limit The maximum number of channels allowed. If it is 0,
--- then the maximum number of channels available on the system will be used.
-function Client:setMaxChannels(limit)
-    self.host:channel_limit(limit)
-end
-
---- Set the timeout to wait for packets.
--- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
--- default is 0.
-function Client:setMessageTimeout(timeout)
-    self.messageTimeout = timeout
 end
 
 --- Get the timeout for packets.
@@ -906,16 +950,6 @@ end
 function Client:getRoundTripTime()
     if self.connection then
         return self.connection:round_trip_time()
-    end
-end
-
---- Set how frequently to ping the server.
--- The round trip time is updated each time a ping is sent. The initial
--- default is 500ms.
--- @tparam number interval The interval, in milliseconds.
-function Client:setPingInterval(interval)
-    if self.connection then
-        self.connection:ping_interval(interval)
     end
 end
 
@@ -941,32 +975,6 @@ end
 function Client:getIndex()
     if self.connection then
         return self.connection:index()
-    end
-end
-
---- Change the probability at which unreliable packets should not be dropped.
--- @tparam number interval Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
--- @tparam number acceleration Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
--- @tparam number deceleration Rate at which to decrease the throttle probability as mean RTT increases.
-function Client:setThrottle(interval, acceleration, deceleration)
-    interval = interval or 5000
-    acceleration = acceleration or 2
-    deceleration = deceleration or 2
-    if self.connection then
-        self.connection:throttle_configure(interval, acceleration, deceleration)
-    end
-end
-
---- Set the parameters for attempting to reconnect if a timeout is detected.
--- @tparam ?number limit A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
--- @tparam ?number minimum Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
--- @tparam ?number maximum Fixed timeout in milliseconds for which any packet has to be acknowledged.
-function Client:setTimeout(limit, minimum, maximum)
-    limit = limit or 32
-    minimum = minimum or 5000
-    maximum = maximum or 30000
-    if self.connection then
-        self.connection:timeout(limit, minimum, maximum)
     end
 end
 
@@ -1006,21 +1014,6 @@ end
 -- @treturn number
 function Client:getPort()
     return self.port
-end
-
---- Set the serialization functions for sending and receiving data.
--- Both the client and server must share the same serialization method.
--- @tparam function serialize The serialization function to use.
--- @tparam function deserialize The deserialization function to use.
--- @usage
---bitser = require "bitser" -- or any library you like
---client = sock.newClient("localhost", 22122)
---client:setSerialization(bitser.dumps, bitser.loads)
-function Client:setSerialization(serialize, deserialize)
-    assert(type(serialize) == "function", "Serialize must be a function, got: '"..type(serialize).."'")
-    assert(type(deserialize) == "function", "Deserialize must be a function, got: '"..type(deserialize).."'")
-    self.serialize = serialize
-    self.deserialize = deserialize
 end
 
 --- Creates a new Server object.
