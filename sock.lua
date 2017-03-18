@@ -161,7 +161,7 @@ local Listener_mt = {__index = Listener}
 local function newListener()
     local listener = setmetatable({
         triggers        = {},                           
-        formats         = {},
+        schemas         = {},
     }, Listener_mt)
 
     return listener
@@ -193,10 +193,10 @@ function Listener:removeCallback(callback)
     return false
 end
 
--- Accepts: event (string), format (table)
+-- Accepts: event (string), schema (table)
 -- Returns: nothing
-function Listener:setDataFormat(event, format)
-    self.formats[event] = format 
+function Listener:setSchema(event, schema)
+    self.schemas[event] = schema 
 end
 
 -- Activates all callbacks for a trigger
@@ -204,9 +204,9 @@ end
 function Listener:trigger(event, data, client)
     if self.triggers[event] then
         for _, trigger in pairs(self.triggers[event]) do
-            -- Event has a pre-existing format defined
-            if self.formats[event] then
-                data = zipTable(data, self.formats[event])
+            -- Event has a pre-existing schema defined
+            if self.schemas[event] then
+                data = zipTable(data, self.schemas[event])
             end
             trigger(data, client)
         end
@@ -481,11 +481,11 @@ function Server:setDefaultSendChannel(channel)
    self.defaultSendChannel = channel
 end
 
---- Set the data format for an event.
--- @tparam string event The event to set the data format for. 
--- @tparam {string,...} format The data format.
-function Server:setDataFormat(event, format)
-    return self.listener:setDataFormat(event, format)
+--- Set the data schema for an event.
+-- @tparam string event The event to set the data schema for. 
+-- @tparam {string,...} schema The data schema.
+function Server:setSchema(event, schema)
+    return self.listener:setSchema(event, schema)
 end
 
 --- Set the incoming and outgoing bandwidth limits.
