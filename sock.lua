@@ -650,6 +650,12 @@ function Server:getClients()
     return self.clients
 end
 
+--- Get the number of Clients that are currently connected to the server.
+-- @treturn number The number of active clients.
+function Server:getClientCount()
+    return #self.clients
+end
+
 
 --- Connects to servers.
 -- @type Client
