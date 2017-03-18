@@ -11,9 +11,9 @@ CHANGELOG
     * Added `Server:enableCompression`
     * Added `Client:enableCompression`
 * Added optional code for `Client:connect`
-* Added `Server:resetClient`
 * Added `Server:getClientCount`
 * Added `Server:destroy`
+* Added `Client:reset`
 * Added `Client:isConnected`
 * Added `Client:isConnecting`
 * Added `Client:isDisconnected`
