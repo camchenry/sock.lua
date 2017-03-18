@@ -80,6 +80,21 @@ sock.CONNECTION_STATES = {
     "unknown",                  --
 }
 
+--- States that represent the client connecting to a server.
+sock.CONNECTING_STATES = {
+    "connecting",               -- In the process of connecting to the server.
+    "acknowledging_connect",    -- 
+    "connection_pending",       --
+    "connection_succeeded",     --
+}
+
+--- States that represent the client disconnecting from a server.
+sock.DISCONNECTING_STATES = {
+    "disconnect_later",         -- Disconnecting, but only after sending all queued packets.
+    "disconnecting",            -- In the process of disconnecting from the server.
+    "acknowledging_disconnect", --
+}
+
 --- Valid modes for sending messages.
 sock.SEND_MODES = {
     "reliable",     -- Message is guaranteed to arrive, and arrive in the order in which it is sent.
@@ -922,6 +937,38 @@ end
 -- @treturn boolean Whether the client is connected to the server.
 function Client:isConnected()
     return self.connection ~= nil and self:getState() == "connected"
+end
+
+--- Gets whether the client is connected to the server.
+-- @treturn boolean Whether the client is connected to the server.
+function Client:isDisconnected()
+    return self.connection ~= nil and self:getState() == "disconnected"
+end
+
+--- Gets whether the client is connected to the server.
+-- @treturn boolean Whether the client is connected to the server.
+function Client:isConnecting()
+    local inConnectingState = false
+    for _, state in ipairs(sock.CONNECTING_STATES) do
+        if state == self:getState() then
+            inConnectingState = true
+            break
+        end
+    end
+    return self.connection ~= nil and inConnectingState
+end
+
+--- Gets whether the client is connected to the server.
+-- @treturn boolean Whether the client is connected to the server.
+function Client:isDisconnecting()
+    local inDisconnectingState = false
+    for _, state in ipairs(sock.DISCONNECTING_STATES) do
+        if state == self:getState() then
+            inDisconnectingState = true
+            break
+        end
+    end
+    return self.connection ~= nil and inDisconnectingState
 end
 
 --- Get the total sent data since the server was created.
