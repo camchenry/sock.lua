@@ -29,14 +29,13 @@ function love.load()
     end)
 
     client:connect()
-
 end
 
 function love.update(dt)
     server:update()
     client:update()
 
-    if love.math.random() > 0.9 then
+    if love.math.random() > 0.95 then
         server:sendToAll("hello", "This is an update message")
     end
 end

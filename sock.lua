@@ -918,6 +918,12 @@ function Client:setSerialization(serialize, deserialize)
     self.deserialize = deserialize
 end
 
+--- Gets whether the client is connected to the server.
+-- @treturn boolean Whether the client is connected to the server.
+function Client:isConnected()
+    return self.connection ~= nil and self:getState() == "connected"
+end
+
 --- Get the total sent data since the server was created.
 -- @treturn number The total sent data in bytes.
 function Client:getTotalSentData()
