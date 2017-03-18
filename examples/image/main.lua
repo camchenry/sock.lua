@@ -9,6 +9,8 @@ function love.load()
     server = sock.newServer("*", 22122)
     client:setSerialization(bitser.dumps, bitser.loads)
     server:setSerialization(bitser.dumps, bitser.loads)
+    client:enableCompression()
+    server:enableCompression()
 
     client:connect()
 

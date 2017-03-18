@@ -392,6 +392,13 @@ function Server:resetSendSettings()
     self.sendChannel = self.defaultSendChannel
 end
 
+--- Enables an adaptive order-2 PPM range coder for the transmitted data of all peers. Both the client and server must both either have compression enabled or disabled.
+--
+-- Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+function Server:enableCompression()
+    return self.host:compress_with_range_coder()
+end
+
 --- Set the send mode for the next outgoing message. 
 -- The mode will be reset after the next message is sent. The initial default 
 -- is "reliable".
@@ -767,6 +774,13 @@ end
 function Client:resetSendSettings()
     self.sendMode = self.defaultSendMode
     self.sendChannel = self.defaultSendChannel
+end
+
+--- Enables an adaptive order-2 PPM range coder for the transmitted data of all peers. Both the client and server must both either have compression enabled or disabled.
+--
+-- Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+function Client:enableCompression()
+    return self.host:compress_with_range_coder()
 end
 
 --- Set the send mode for the next outgoing message. 
