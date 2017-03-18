@@ -665,9 +665,10 @@ end
 
 --- Connect to the chosen server.
 -- Connection will not actually occur until the next time `Client:update` is called.
-function Client:connect()
+-- @tparam ?number code A number that can be associated with the connect event.
+function Client:connect(code)
     -- number of channels for the client and server must match
-    self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels)
+    self.connection = self.host:connect(self.address .. ":" .. self.port, self.maxChannels, code)
     self.connectId = self.connection:connect_id()
 end
 
