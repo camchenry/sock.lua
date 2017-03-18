@@ -1,6 +1,24 @@
 CHANGELOG
 =========
 
+0.3.0
+-----
+
+* Renamed 'data format' to 'schema'
+    * `Server:setDataFormat` is now `Server:setSchema`
+    * Added `Client:setSchema`
+* Added enet's range coding compression
+    * Added `Server:enableCompression`
+    * Added `Client:enableCompression`
+* Added optional code for `Client:connect`
+* Added `Server:resetClient`
+* Added `Server:getClientCount`
+* Added `Server:destroy`
+* Added `Client:isConnected`
+* Added `Client:isConnecting`
+* Added `Client:isDisconnected`
+* Added `Client:isDisconnecting`
+
 0.2.1
 -----
 
