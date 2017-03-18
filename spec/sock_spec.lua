@@ -1,4 +1,3 @@
-print(_VERSION)
 package.path = package.path .. ";../?.lua"
 local bitser = require "bitser"
 local sock = require "sock"
@@ -52,11 +51,9 @@ describe("the client", function()
 
         client:connect()
 
-        for i=1, 100 do
-            client:update()
-            server:update()
-        end
-
+        client:update()
+        server:update()
+        client:update()
 
         assert.True(client:isConnected())
         assert.True(connected)

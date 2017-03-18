@@ -40,9 +40,18 @@ require "enet"
 -- http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
 local currentFolder = (...):gsub('%.[^%.]+$', '')
 
+local bitserLoaded = false
+local bitser = bitser
+
+if bitser then
+    bitserLoaded = true
+end
+
 -- Try to load some common serialization libraries
 -- This is for convenience, you may still specify your own serializer
-local bitserLoaded, bitser = pcall(require, "bitser")
+if not bitserLoaded then
+    bitserLoaded, bitser = pcall(require, "bitser")
+end
 
 -- Try to load relatively
 if not bitserLoaded then

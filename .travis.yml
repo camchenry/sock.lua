@@ -15,6 +15,7 @@ before_install:
     - autoreconf -vfi
     - ./configure && sudo make && sudo make install
     - cd ..
+    - sudo apt-get install -y luajit
 
 install:
     - luarocks install busted
