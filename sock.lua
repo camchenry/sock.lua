@@ -386,6 +386,14 @@ function Server:log(event, data)
     return self.logger:log(event, data)
 end
 
+--- Forcefully disconnects the client. The client is not notified of the disconnection.
+-- @tparam Client client The client to reset.
+function Server:resetClient(client)
+    if client.connection then
+        client.connection:reset()
+    end
+end
+
 --- Reset all send options to their default values.
 function Server:resetSendSettings()
     self.sendMode = self.defaultSendMode

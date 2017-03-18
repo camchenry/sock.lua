@@ -35,4 +35,14 @@ end
 function love.update(dt)
     server:update()
     client:update()
+
+    if love.math.random() > 0.9 then
+        server:sendToAll("hello", "This is an update message")
+    end
+end
+
+function love.keypressed(key)
+    if key == "q" then
+        server:resetClient(client)
+    end
 end
