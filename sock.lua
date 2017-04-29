@@ -278,17 +278,13 @@ function Server:update()
     end
 end
 
---- Send a message to all clients, except one.
--- Useful for when the client does something locally, but other clients
--- need to be updated at the same time. This way avoids duplicating objects by
--- never sending its own event to itself in the first place.
--- @tparam Client client The client to not receive the message.
--- @tparam string event The event to trigger with this message. 
--- @param data The data to send.
-function Server:sendToAllBut(client, event, data)
+-- Creates the serialized message that will be sent over the network
+-- In: event (string), data (mixed)
+-- Out: serialized message (string)
+function Server:__pack(event, data)
     local message = {event, data}
     local serializedMessage
-    
+
     if not self.serialize then
         self:log("error", "Can't serialize message: serialize was not set") 
         error("Can't serialize message: serialize was not set") 
@@ -301,6 +297,19 @@ function Server:sendToAllBut(client, event, data)
     else
         serializedMessage = self.serialize(message)
     end
+
+    return serializedMessage
+end
+
+--- Send a message to all clients, except one.
+-- Useful for when the client does something locally, but other clients
+-- need to be updated at the same time. This way avoids duplicating objects by
+-- never sending its own event to itself in the first place.
+-- @tparam Client client The client to not receive the message.
+-- @tparam string event The event to trigger with this message. 
+-- @param data The data to send.
+function Server:sendToAllBut(client, event, data)
+    local serializedMessage = self:__pack(event, data)
 
     for _, p in pairs(self.peers) do
         if p ~= client.connection then
@@ -318,21 +327,7 @@ end
 --@usage
 --server:sendToAll("gameStarting", true)
 function Server:sendToAll(event, data)
-    local message = {event, data}
-    local serializedMessage
-    
-    if not self.serialize then
-        self:log("error", "Can't serialize message: serialize was not set") 
-        error("Can't serialize message: serialize was not set") 
-    end
-
-    -- 'Data' = binary data class in Love
-    if type(data) == "userdata" and data.type and data:typeOf("Data") then
-        message[2] = data:getString()
-        serializedMessage = self.serialize(message)
-    else
-        serializedMessage = self.serialize(message)
-    end
+    local serializedMessage = self:__pack(event, data)
     
     self.packetsSent = self.packetsSent + #self.peers
 
@@ -349,17 +344,12 @@ end
 --@usage
 --server:sendToPeer(peer, "initialGameInfo", {...})
 function Server:sendToPeer(peer, event, data)
-    local message = {event, data}
-    local serializedMessage
-    if type(data) == "userdata" and data.type and data:typeOf("Data") then
-        message[2] = data:getString()
-        serializedMessage = self.serialize(message)
-    else
-        serializedMessage = self.serialize(message)
-    end
+    local serializedMessage = self:__pack(event, data)
     
     self.packetsSent = self.packetsSent + 1
+
     peer:send(serializedMessage, self.sendChannel, self.sendMode)
+
     self:resetSendSettings()
 end
 
@@ -792,10 +782,10 @@ function Client:reset()
     end
 end
 
---- Send a message to the server.
--- @tparam string event The event to trigger with this message.
--- @param data The data to send.
-function Client:send(event, data)
+-- Creates the serialized message that will be sent over the network
+-- In: event (string), data (mixed)
+-- Out: serialized message (string)
+function Client:__pack(event, data)
     local message = {event, data}
     local serializedMessage
 
@@ -811,6 +801,15 @@ function Client:send(event, data)
     else
         serializedMessage = self.serialize(message)
     end
+
+    return serializedMessage
+end
+
+--- Send a message to the server.
+-- @tparam string event The event to trigger with this message.
+-- @param data The data to send.
+function Client:send(event, data)
+    local serializedMessage = self:__pack(event, data)
 
     self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
 
