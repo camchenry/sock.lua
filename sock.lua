@@ -231,11 +231,6 @@ local Server_mt = {__index = Server}
 
 --- Check for network events and handle them.
 function Server:update()
-    if not self.deserialize then
-        self:log("error", "Can't deserialize message: deserialize was not set") 
-        error("Can't deserialize message: deserialize was not set") 
-    end
-
     local event = self.host:service(self.messageTimeout)
     
     while event do
@@ -248,10 +243,8 @@ function Server:update()
             self:log(event.type, tostring(event.peer) .. " connected")
 
         elseif event.type == "receive" then
-            local message = self.deserialize(event.data)
+            local eventName, data = self:__unpack(event.data)
             local eventClient = self:getClient(event.peer)
-            local eventName = message[1]
-            local data = message[2]
 
             self:_activateTriggers(eventName, data, eventClient)
             self:log(eventName, data)
@@ -276,6 +269,20 @@ function Server:update()
 
         event = self.host:service(self.messageTimeout)
     end
+end
+
+-- Creates the unserialized message that will be used in callbacks
+-- In: serialized message (string)
+-- Out: event (string), data (mixed)
+function Server:__unpack(data)
+    if not self.deserialize then
+        self:log("error", "Can't deserialize message: deserialize was not set") 
+        error("Can't deserialize message: deserialize was not set") 
+    end
+
+    local message = self.deserialize(data)
+    local eventName, data = message[1], message[2]
+    return eventName, data
 end
 
 -- Creates the serialized message that will be sent over the network
@@ -711,11 +718,6 @@ local Client_mt = {__index = Client}
 
 --- Check for network events and handle them.
 function Client:update()
-    if not self.deserialize then
-        self:log("error", "Can't deserialize message: deserialize was not set") 
-        error("Can't deserialize message: deserialize was not set") 
-    end
-
     local event = self.host:service(self.messageTimeout)
     
     while event do
@@ -723,9 +725,7 @@ function Client:update()
             self:_activateTriggers("connect", event.data)
             self:log(event.type, "Connected to " .. tostring(self.connection))
         elseif event.type == "receive" then
-            local message = self.deserialize(event.data)
-            local eventName = message[1]
-            local data = message[2]
+            local eventName, data = self:__unpack(event.data)
 
             self:_activateTriggers(eventName, data)
             self:log(eventName, data)
@@ -780,6 +780,20 @@ function Client:reset()
     if self.connection then
         self.connection:reset()
     end
+end
+
+-- Creates the unserialized message that will be used in callbacks
+-- In: serialized message (string)
+-- Out: event (string), data (mixed)
+function Client:__unpack(data)
+    if not self.deserialize then
+        self:log("error", "Can't deserialize message: deserialize was not set")
+        error("Can't deserialize message: deserialize was not set")
+    end
+
+    local message = self.deserialize(data)
+    local eventName, data = message[1], message[2]
+    return eventName, data
 end
 
 -- Creates the serialized message that will be sent over the network
