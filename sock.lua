@@ -66,8 +66,8 @@ local function zipTable(items, keys, event)
     for i, value in ipairs(items) do
         local key = keys[i]
 
-        if not data[key] then
-            error("Event '"..event.."' invalid data key: '"..key.."'. Is the schema different between server and client?")
+        if not key then
+            error("Event '"..event.."' missing data key. Is the schema different between server and client?")
         end
 
         data[key] = value
