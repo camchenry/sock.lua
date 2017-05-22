@@ -1,5 +1,7 @@
 # sock.lua
 
+[![Join the chat at https://gitter.im/sock-lua/Lobby](https://badges.gitter.im/sock-lua/Lobby.svg)](https://gitter.im/sock-lua/Lobby?utm_source=badge&utm_medium=badge&utm_campaign=pr-badge&utm_content=badge)
+
 [![Build Status](https://travis-ci.org/camchenry/sock.lua.svg?branch=master)](https://travis-ci.org/camchenry/sock.lua)
 [![Coverage Status](https://coveralls.io/repos/github/camchenry/sock.lua/badge.svg?branch=master)](https://coveralls.io/github/camchenry/sock.lua?branch=master)
 
