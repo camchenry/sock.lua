@@ -3,7 +3,6 @@
 -- * [Source code](https://github.com/camchenry/sock.lua)
 -- * [Examples](https://github.com/camchenry/sock.lua/tree/master/examples)
 -- @module sock
--- @usage sock = require "sock"
 
 local sock = {
     _VERSION     = 'sock.lua v0.3.0',

@@ -1,21 +1,13 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head lang="en">
     <title>$(ldoc.title)</title>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:400,700,700i" rel="stylesheet"> 
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="styleshet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css" rel="stylesheet">
     <link rel="stylesheet" href="$(ldoc.css)">
 </head>
 <body>
-
-<div id="container">
-
-<!-- Header -->
-<header id="header">
-    <h1>$(ldoc.project)</h1>
-</header>
-
-<div id="main">
 
 # local no_spaces = ldoc.no_spaces
 # local use_li = ldoc.use_li
@@ -23,6 +15,33 @@
 # local iter = ldoc.modules.iter
 # local function M(txt,item) return ldoc.markup(txt,item,ldoc.plain) end
 # local nowrap = ldoc.wrap and '' or 'nowrap'
+
+<div class="sidebar">
+    <div class="table-of-contents">
+# if not ldoc.no_summary then
+#   -- bang out the tables of item types for this module (e.g Functions, Tables, etc)
+#   for kind,items in module.kinds() do
+        <h2><a href="#$(no_spaces(kind))">$(kind)</a></h2>
+        <div class="function_list">
+#       for item in items() do
+            <div class="name" $(nowrap)><a href="#$(item.name)">$(display_name(item))</a></div>
+#       end -- for items
+        </div>
+        <br>
+#end -- for kinds
+#end -- if not no_summary
+    </div>
+</div>
+
+
+<div class="contents">
+
+<!-- Header -->
+<header class="header">
+    <h1 class="project-title">$(ldoc.project)</h1>
+</header>
+
+<div id="main">
 
 <!-- Menu -->
 
@@ -55,34 +74,6 @@
     </ul>
 #   end -- if module.info
 
-
-# --------- contents of module -------------
-# if module and not ldoc.no_summary and #module.items > 0 then
-<div id="contents">
-<h2>Table of Contents</h2>
-<ul>
-# for kind,items in module.kinds() do
-<li><a href="#$(no_spaces(kind))">$(kind)</a></li>
-# end
-</ul>
-# end
-</div>
-# if not ldoc.no_summary then
-# -- bang out the tables of item types for this module (e.g Functions, Tables, etc)
-# for kind,items in module.kinds() do
-<h2><a href="#$(no_spaces(kind))">$(kind)</a></h2>
-<table class="function_list">
-#  for item in items() do
-	<tr>
-	<td class="name" $(nowrap)><a href="#$(item.name)">$(display_name(item))</a></td>
-	<td class="summary">$(M(item.summary,item))</td>
-	</tr>
-#  end -- for items
-</table>
-#end -- for kinds
-
-#end -- if not no_summary
-
 # --- currently works for both Functions and Tables. The params field either contains
 # --- function parameters or table fields.
 # local show_return = not ldoc.no_return_or_parms
@@ -92,14 +83,14 @@
 <section id="$(section_link_name)">
 #   local kitem = module.kinds:get_item(kind)
 #   local has_description = kitem and ldoc.descript(kitem) ~= ""
-    <h2 class="section-header $(has_description and 'has-description')"><a name="$(no_spaces(kind))"></a>$(kind)</h2>
+    <h1 class="section-header $(has_description and 'has-description')"><a name="$(no_spaces(kind))"></a>$(kind)</h1>
     <div class="section-content">
     $(M(module.kinds:get_section_description(kind),nil))
 #   if kitem then
 #       if has_description then
-          <div class="section-description">
+          <p class="section-description">
           $(M(ldoc.descript(kitem),kitem))
-          </div>
+          </p>
 #       end
 #       if kitem.usage then
             <h3>Usage:</h3>
@@ -109,9 +100,8 @@
     <dl class="function">
 #  for item in items() do
     <div class="function_def">
-    <dt>
-    <a name = "$(item.name)"></a>
-    <h2 class="function_name">$(display_name(item))</h2>
+    <a class="anchor_link" href="#$(item.name)" name="$(item.name)">🔗</a>
+    <h3 class="function_name">$(display_name(item))</h3>
 #   if ldoc.prettify_files then
     <a style="float:right;" href="$(ldoc.source_ref(item))">line $(item.lineno)</a>
 #  end

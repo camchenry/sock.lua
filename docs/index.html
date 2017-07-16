@@ -1,22 +1,134 @@
 <!DOCTYPE html>
 <html>
-<head>
+<head lang="en">
     <title>sock.lua Documentation</title>
     <meta charset="utf-8">
-    <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro|Source+Sans+Pro:400,700,700i" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="styleshet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css" rel="stylesheet">
     <link rel="stylesheet" href="ldoc.css">
 </head>
 <body>
 
-<div id="container">
+
+<div class="sidebar">
+    <div class="table-of-contents">
+        <h2><a href="#Tables">Tables</a></h2>
+        <div class="function_list">
+            <div class="name" ><a href="#CONNECTING_STATES">CONNECTING_STATES</a></div>
+            <div class="name" ><a href="#CONNECTION_STATES">CONNECTION_STATES</a></div>
+            <div class="name" ><a href="#DISCONNECTING_STATES">DISCONNECTING_STATES</a></div>
+            <div class="name" ><a href="#SEND_MODES">SEND_MODES</a></div>
+        </div>
+        <br>
+        <h2><a href="#Class_Server">Class Server </a></h2>
+        <div class="function_list">
+            <div class="name" ><a href="#Server:destroy">Server:destroy()</a></div>
+            <div class="name" ><a href="#Server:enableCompression">Server:enableCompression()</a></div>
+            <div class="name" ><a href="#Server:getAddress">Server:getAddress()</a></div>
+            <div class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></div>
+            <div class="name" ><a href="#Server:getClientByConnectId">Server:getClientByConnectId(connectId)</a></div>
+            <div class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></div>
+            <div class="name" ><a href="#Server:getClientCount">Server:getClientCount()</a></div>
+            <div class="name" ><a href="#Server:getClients">Server:getClients()</a></div>
+            <div class="name" ><a href="#Server:getDefaultSendMode">Server:getDefaultSendMode()</a></div>
+            <div class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></div>
+            <div class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></div>
+            <div class="name" ><a href="#Server:getMaxPeers">Server:getMaxPeers()</a></div>
+            <div class="name" ><a href="#Server:getMessageTimeout">Server:getMessageTimeout()</a></div>
+            <div class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></div>
+            <div class="name" ><a href="#Server:getPort">Server:getPort()</a></div>
+            <div class="name" ><a href="#Server:getSendMode">Server:getSendMode()</a></div>
+            <div class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></div>
+            <div class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></div>
+            <div class="name" ><a href="#Server:getTotalReceivedPackets">Server:getTotalReceivedPackets()</a></div>
+            <div class="name" ><a href="#Server:getTotalSentData">Server:getTotalSentData()</a></div>
+            <div class="name" ><a href="#Server:getTotalSentPackets">Server:getTotalSentPackets()</a></div>
+            <div class="name" ><a href="#Server:log">Server:log(event, data)</a></div>
+            <div class="name" ><a href="#Server:on">Server:on(event, callback)</a></div>
+            <div class="name" ><a href="#Server:removeCallback">Server:removeCallback(callback)</a></div>
+            <div class="name" ><a href="#Server:resetSendSettings">Server:resetSendSettings()</a></div>
+            <div class="name" ><a href="#Server:sendToAll">Server:sendToAll(event, data)</a></div>
+            <div class="name" ><a href="#Server:sendToAllBut">Server:sendToAllBut(client, event, data)</a></div>
+            <div class="name" ><a href="#Server:sendToPeer">Server:sendToPeer(peer, event, data)</a></div>
+            <div class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></div>
+            <div class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></div>
+            <div class="name" ><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode(mode)</a></div>
+            <div class="name" ><a href="#Server:setMaxChannels">Server:setMaxChannels(limit)</a></div>
+            <div class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></div>
+            <div class="name" ><a href="#Server:setSchema">Server:setSchema(event, schema)</a></div>
+            <div class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></div>
+            <div class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></div>
+            <div class="name" ><a href="#Server:setSerialization">Server:setSerialization(serialize, deserialize)</a></div>
+            <div class="name" ><a href="#Server:update">Server:update()</a></div>
+        </div>
+        <br>
+        <h2><a href="#Class_Client">Class Client </a></h2>
+        <div class="function_list">
+            <div class="name" ><a href="#Client:connect">Client:connect(code)</a></div>
+            <div class="name" ><a href="#Client:disconnect">Client:disconnect(code)</a></div>
+            <div class="name" ><a href="#Client:disconnectLater">Client:disconnectLater(code)</a></div>
+            <div class="name" ><a href="#Client:disconnectNow">Client:disconnectNow(code)</a></div>
+            <div class="name" ><a href="#Client:enableCompression">Client:enableCompression()</a></div>
+            <div class="name" ><a href="#Client:getAddress">Client:getAddress()</a></div>
+            <div class="name" ><a href="#Client:getConnectId">Client:getConnectId()</a></div>
+            <div class="name" ><a href="#Client:getDefaultSendMode">Client:getDefaultSendMode()</a></div>
+            <div class="name" ><a href="#Client:getIndex">Client:getIndex()</a></div>
+            <div class="name" ><a href="#Client:getLastServiceTime">Client:getLastServiceTime()</a></div>
+            <div class="name" ><a href="#Client:getMaxChannels">Client:getMaxChannels()</a></div>
+            <div class="name" ><a href="#Client:getMessageTimeout">Client:getMessageTimeout()</a></div>
+            <div class="name" ><a href="#Client:getPeerByIndex">Client:getPeerByIndex(index)</a></div>
+            <div class="name" ><a href="#Client:getPort">Client:getPort()</a></div>
+            <div class="name" ><a href="#Client:getRoundTripTime">Client:getRoundTripTime()</a></div>
+            <div class="name" ><a href="#Client:getSendMode">Client:getSendMode()</a></div>
+            <div class="name" ><a href="#Client:getSocketAddress">Client:getSocketAddress()</a></div>
+            <div class="name" ><a href="#Client:getState">Client:getState()</a></div>
+            <div class="name" ><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData()</a></div>
+            <div class="name" ><a href="#Client:getTotalReceivedPackets">Client:getTotalReceivedPackets()</a></div>
+            <div class="name" ><a href="#Client:getTotalSentData">Client:getTotalSentData()</a></div>
+            <div class="name" ><a href="#Client:getTotalSentPackets">Client:getTotalSentPackets()</a></div>
+            <div class="name" ><a href="#Client:isConnected">Client:isConnected()</a></div>
+            <div class="name" ><a href="#Client:isConnecting">Client:isConnecting()</a></div>
+            <div class="name" ><a href="#Client:isDisconnected">Client:isDisconnected()</a></div>
+            <div class="name" ><a href="#Client:isDisconnecting">Client:isDisconnecting()</a></div>
+            <div class="name" ><a href="#Client:log">Client:log(event, data)</a></div>
+            <div class="name" ><a href="#Client:on">Client:on(event, callback)</a></div>
+            <div class="name" ><a href="#Client:removeCallback">Client:removeCallback(callback)</a></div>
+            <div class="name" ><a href="#Client:reset">Client:reset(client)</a></div>
+            <div class="name" ><a href="#Client:resetSendSettings">Client:resetSendSettings()</a></div>
+            <div class="name" ><a href="#Client:send">Client:send(event, data)</a></div>
+            <div class="name" ><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit(incoming, outgoing)</a></div>
+            <div class="name" ><a href="#Client:setDefaultSendChannel">Client:setDefaultSendChannel(channel)</a></div>
+            <div class="name" ><a href="#Client:setDefaultSendMode">Client:setDefaultSendMode(mode)</a></div>
+            <div class="name" ><a href="#Client:setMaxChannels">Client:setMaxChannels(limit)</a></div>
+            <div class="name" ><a href="#Client:setMessageTimeout">Client:setMessageTimeout(timeout)</a></div>
+            <div class="name" ><a href="#Client:setPingInterval">Client:setPingInterval(interval)</a></div>
+            <div class="name" ><a href="#Client:setSchema">Client:setSchema(event, schema)</a></div>
+            <div class="name" ><a href="#Client:setSendChannel">Client:setSendChannel(channel)</a></div>
+            <div class="name" ><a href="#Client:setSendMode">Client:setSendMode(mode)</a></div>
+            <div class="name" ><a href="#Client:setSerialization">Client:setSerialization(serialize, deserialize)</a></div>
+            <div class="name" ><a href="#Client:setThrottle">Client:setThrottle(interval, acceleration, deceleration)</a></div>
+            <div class="name" ><a href="#Client:setTimeout">Client:setTimeout(limit, minimum, maximum)</a></div>
+            <div class="name" ><a href="#Client:update">Client:update()</a></div>
+        </div>
+        <br>
+        <h2><a href="#sock">sock</a></h2>
+        <div class="function_list">
+            <div class="name" ><a href="#newClient">newClient(serverOrAddress, port, maxChannels)</a></div>
+            <div class="name" ><a href="#newServer">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</a></div>
+        </div>
+        <br>
+    </div>
+</div>
+
+
+<div class="contents">
 
 <!-- Header -->
-<header id="header">
-    <h1>sock.lua</h1>
+<header class="header">
+    <h1 class="project-title">sock.lua</h1>
 </header>
 
 <div id="main">
-
 
 <!-- Menu -->
 
@@ -31,401 +143,15 @@
     <li><a href="https://github.com/camchenry/sock.lua/tree/master/examples">Examples</a></li>
 </ul>
 </p>
-    <h3>Usage:</h3>
-    <ul>
-        <pre class="example">sock = require &quot;sock&quot;
-</pre>
-    </ul>
-
-
-<div id="contents">
-<h2>Table of Contents</h2>
-<ul>
-<li><a href="#Tables">Tables</a></li>
-<li><a href="#Class_Server">Class Server </a></li>
-<li><a href="#Class_Client">Class Client </a></li>
-<li><a href="#sock">sock</a></li>
-</ul>
-</div>
-<h2><a href="#Tables">Tables</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#CONNECTING_STATES">CONNECTING_STATES</a></td>
-	<td class="summary">States that represent the client connecting to a server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#CONNECTION_STATES">CONNECTION_STATES</a></td>
-	<td class="summary">All of the possible connection statuses for a client connection.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#DISCONNECTING_STATES">DISCONNECTING_STATES</a></td>
-	<td class="summary">States that represent the client disconnecting from a server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#SEND_MODES">SEND_MODES</a></td>
-	<td class="summary">Valid modes for sending messages.</td>
-	</tr>
-</table>
-<h2><a href="#Class_Server">Class Server </a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#Server:destroy">Server:destroy()</a></td>
-	<td class="summary">Destroys the server and frees the port it is bound to.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:enableCompression">Server:enableCompression()</a></td>
-	<td class="summary">Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getAddress">Server:getAddress()</a></td>
-	<td class="summary">Get the IP address or hostname that the server was created with.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClient">Server:getClient(peer)</a></td>
-	<td class="summary">Gets the Client object associated with an enet peer.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClientByConnectId">Server:getClientByConnectId(connectId)</a></td>
-	<td class="summary">Gets the Client object that has the given connection id.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClientByIndex">Server:getClientByIndex(index)</a></td>
-	<td class="summary">Get the Client object that has the given peer index.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClientCount">Server:getClientCount()</a></td>
-	<td class="summary">Get the number of Clients that are currently connected to the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getClients">Server:getClients()</a></td>
-	<td class="summary">Get the table of Clients actively connected to the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getDefaultSendMode">Server:getDefaultSendMode()</a></td>
-	<td class="summary">Get the default send mode.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getLastServiceTime">Server:getLastServiceTime()</a></td>
-	<td class="summary">Get the last time when network events were serviced.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMaxChannels">Server:getMaxChannels()</a></td>
-	<td class="summary">Get the number of allocated channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMaxPeers">Server:getMaxPeers()</a></td>
-	<td class="summary">Get the number of allocated slots for peers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getMessageTimeout">Server:getMessageTimeout()</a></td>
-	<td class="summary">Get the timeout for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getPeerByIndex">Server:getPeerByIndex(index)</a></td>
-	<td class="summary">Get the enet_peer that has the given index.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getPort">Server:getPort()</a></td>
-	<td class="summary">Get the port that the server is hosted on.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getSendMode">Server:getSendMode()</a></td>
-	<td class="summary">Get the current send mode.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getSocketAddress">Server:getSocketAddress()</a></td>
-	<td class="summary">Get the socket address of the host.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalReceivedData">Server:getTotalReceivedData()</a></td>
-	<td class="summary">Get the total received data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalReceivedPackets">Server:getTotalReceivedPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) received since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalSentData">Server:getTotalSentData()</a></td>
-	<td class="summary">Get the total sent data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:getTotalSentPackets">Server:getTotalSentPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) sent since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:log">Server:log(event, data)</a></td>
-	<td class="summary">Log an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:on">Server:on(event, callback)</a></td>
-	<td class="summary">Add a callback to an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:removeCallback">Server:removeCallback(callback)</a></td>
-	<td class="summary">Remove a specific callback for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:resetSendSettings">Server:resetSendSettings()</a></td>
-	<td class="summary">Reset all send options to their default values.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:sendToAll">Server:sendToAll(event, data)</a></td>
-	<td class="summary">Send a message to all clients.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:sendToAllBut">Server:sendToAllBut(client, event, data)</a></td>
-	<td class="summary">Send a message to all clients, except one.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:sendToPeer">Server:sendToPeer(peer, event, data)</a></td>
-	<td class="summary">Send a message to a single peer.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setBandwidthLimit">Server:setBandwidthLimit(incoming, outgoing)</a></td>
-	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setDefaultSendChannel">Server:setDefaultSendChannel(channel)</a></td>
-	<td class="summary">Set the default send channel for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setDefaultSendMode">Server:setDefaultSendMode(mode)</a></td>
-	<td class="summary">Set the default send mode for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setMaxChannels">Server:setMaxChannels(limit)</a></td>
-	<td class="summary">Set the maximum number of channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setMessageTimeout">Server:setMessageTimeout(timeout)</a></td>
-	<td class="summary">Set the timeout to wait for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSchema">Server:setSchema(event, schema)</a></td>
-	<td class="summary">Set the data schema for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSendChannel">Server:setSendChannel(channel)</a></td>
-	<td class="summary">Set the send channel for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSendMode">Server:setSendMode(mode)</a></td>
-	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:setSerialization">Server:setSerialization(serialize, deserialize)</a></td>
-	<td class="summary">Set the serialization functions for sending and receiving data.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Server:update">Server:update()</a></td>
-	<td class="summary">Check for network events and handle them.</td>
-	</tr>
-</table>
-<h2><a href="#Class_Client">Class Client </a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#Client:connect">Client:connect(code)</a></td>
-	<td class="summary">Connect to the chosen server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:disconnect">Client:disconnect(code)</a></td>
-	<td class="summary">Disconnect from the server, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:disconnectLater">Client:disconnectLater(code)</a></td>
-	<td class="summary">Disconnect from the server, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:disconnectNow">Client:disconnectNow(code)</a></td>
-	<td class="summary">Disconnect from the server, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:enableCompression">Client:enableCompression()</a></td>
-	<td class="summary">Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getAddress">Client:getAddress()</a></td>
-	<td class="summary">Get the IP address or hostname that the client was created with.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getConnectId">Client:getConnectId()</a></td>
-	<td class="summary">Get the unique connection id, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getDefaultSendMode">Client:getDefaultSendMode()</a></td>
-	<td class="summary">Get the default send mode.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getIndex">Client:getIndex()</a></td>
-	<td class="summary">Get the index of the enet peer.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getLastServiceTime">Client:getLastServiceTime()</a></td>
-	<td class="summary">Get the last time when network events were serviced.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getMaxChannels">Client:getMaxChannels()</a></td>
-	<td class="summary">Get the number of allocated channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getMessageTimeout">Client:getMessageTimeout()</a></td>
-	<td class="summary">Get the timeout for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getPeerByIndex">Client:getPeerByIndex(index)</a></td>
-	<td class="summary">Get the enet_peer that has the given index.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getPort">Client:getPort()</a></td>
-	<td class="summary">Get the port that the client is connecting to.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getRoundTripTime">Client:getRoundTripTime()</a></td>
-	<td class="summary">Return the round trip time (RTT, or ping) to the server, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getSendMode">Client:getSendMode()</a></td>
-	<td class="summary">Get the current send mode.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getSocketAddress">Client:getSocketAddress()</a></td>
-	<td class="summary">Get the socket address of the host.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getState">Client:getState()</a></td>
-	<td class="summary">Get the current connection state, if connected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getTotalReceivedData">Client:getTotalReceivedData()</a></td>
-	<td class="summary">Get the total received data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getTotalReceivedPackets">Client:getTotalReceivedPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) received since the client was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getTotalSentData">Client:getTotalSentData()</a></td>
-	<td class="summary">Get the total sent data since the server was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:getTotalSentPackets">Client:getTotalSentPackets()</a></td>
-	<td class="summary">Get the total number of packets (messages) sent since the client was created.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:isConnected">Client:isConnected()</a></td>
-	<td class="summary">Gets whether the client is connected to the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:isConnecting">Client:isConnecting()</a></td>
-	<td class="summary">Gets whether the client is connecting to the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:isDisconnected">Client:isDisconnected()</a></td>
-	<td class="summary">Gets whether the client is disconnected from the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:isDisconnecting">Client:isDisconnecting()</a></td>
-	<td class="summary">Gets whether the client is disconnecting from the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:log">Client:log(event, data)</a></td>
-	<td class="summary">Log an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:on">Client:on(event, callback)</a></td>
-	<td class="summary">Add a callback to an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:removeCallback">Client:removeCallback(callback)</a></td>
-	<td class="summary">Remove a specific callback for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:reset">Client:reset(client)</a></td>
-	<td class="summary">Forcefully disconnects the client.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:resetSendSettings">Client:resetSendSettings()</a></td>
-	<td class="summary">Reset all send options to their default values.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:send">Client:send(event, data)</a></td>
-	<td class="summary">Send a message to the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setBandwidthLimit">Client:setBandwidthLimit(incoming, outgoing)</a></td>
-	<td class="summary">Set the incoming and outgoing bandwidth limits.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setDefaultSendChannel">Client:setDefaultSendChannel(channel)</a></td>
-	<td class="summary">Set the default send channel for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setDefaultSendMode">Client:setDefaultSendMode(mode)</a></td>
-	<td class="summary">Set the default send mode for all future outgoing messages.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setMaxChannels">Client:setMaxChannels(limit)</a></td>
-	<td class="summary">Set the maximum number of channels.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setMessageTimeout">Client:setMessageTimeout(timeout)</a></td>
-	<td class="summary">Set the timeout to wait for packets.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setPingInterval">Client:setPingInterval(interval)</a></td>
-	<td class="summary">Set how frequently to ping the server.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setSchema">Client:setSchema(event, schema)</a></td>
-	<td class="summary">Set the data schema for an event.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setSendChannel">Client:setSendChannel(channel)</a></td>
-	<td class="summary">Set the send channel for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setSendMode">Client:setSendMode(mode)</a></td>
-	<td class="summary">Set the send mode for the next outgoing message.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setSerialization">Client:setSerialization(serialize, deserialize)</a></td>
-	<td class="summary">Set the serialization functions for sending and receiving data.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setThrottle">Client:setThrottle(interval, acceleration, deceleration)</a></td>
-	<td class="summary">Change the probability at which unreliable packets should not be dropped.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:setTimeout">Client:setTimeout(limit, minimum, maximum)</a></td>
-	<td class="summary">Set the parameters for attempting to reconnect if a timeout is detected.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#Client:update">Client:update()</a></td>
-	<td class="summary">Check for network events and handle them.</td>
-	</tr>
-</table>
-<h2><a href="#sock">sock</a></h2>
-<table class="function_list">
-	<tr>
-	<td class="name" ><a href="#newClient">newClient(serverOrAddress, port, maxChannels)</a></td>
-	<td class="summary">Creates a new Client instance.</td>
-	</tr>
-	<tr>
-	<td class="name" ><a href="#newServer">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</a></td>
-	<td class="summary">Creates a new Server object.</td>
-	</tr>
-</table>
-
 
 <section id="Tables">
-    <h2 class="section-header "><a name="Tables"></a>Tables</h2>
+    <h1 class="section-header "><a name="Tables"></a>Tables</h1>
     <div class="section-content">
 
     <dl class="function">
     <div class="function_def">
-    <dt>
-    <a name = "CONNECTING_STATES"></a>
-    <h2 class="function_name">CONNECTING_STATES</h2>
+    <a class="anchor_link" href="#CONNECTING_STATES" name="CONNECTING_STATES">🔗</a>
+    <h3 class="function_name">CONNECTING_STATES</h3>
     </dt>
     <dd>
     <p>
@@ -462,9 +188,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "CONNECTION_STATES"></a>
-    <h2 class="function_name">CONNECTION_STATES</h2>
+    <a class="anchor_link" href="#CONNECTION_STATES" name="CONNECTION_STATES">🔗</a>
+    <h3 class="function_name">CONNECTION_STATES</h3>
     </dt>
     <dd>
     <p>
@@ -534,9 +259,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "DISCONNECTING_STATES"></a>
-    <h2 class="function_name">DISCONNECTING_STATES</h2>
+    <a class="anchor_link" href="#DISCONNECTING_STATES" name="DISCONNECTING_STATES">🔗</a>
+    <h3 class="function_name">DISCONNECTING_STATES</h3>
     </dt>
     <dd>
     <p>
@@ -566,9 +290,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "SEND_MODES"></a>
-    <h2 class="function_name">SEND_MODES</h2>
+    <a class="anchor_link" href="#SEND_MODES" name="SEND_MODES">🔗</a>
+    <h3 class="function_name">SEND_MODES</h3>
     </dt>
     <dd>
     <p>
@@ -599,17 +322,16 @@
 </div>
 </section>
 <section id="Server">
-    <h2 class="section-header has-description"><a name="Class_Server"></a>Class Server </h2>
+    <h1 class="section-header has-description"><a name="Class_Server"></a>Class Server </h1>
     <div class="section-content">
 
-          <div class="section-description">
+          <p class="section-description">
           Manages all clients and receives network events.
-          </div>
+          </p>
     <dl class="function">
     <div class="function_def">
-    <dt>
-    <a name = "Server:destroy"></a>
-    <h2 class="function_name">Server:destroy()</h2>
+    <a class="anchor_link" href="#Server:destroy" name="Server:destroy">🔗</a>
+    <h3 class="function_name">Server:destroy()</h3>
     </dt>
     <dd>
     <p>
@@ -625,9 +347,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:enableCompression"></a>
-    <h2 class="function_name">Server:enableCompression()</h2>
+    <a class="anchor_link" href="#Server:enableCompression" name="Server:enableCompression">🔗</a>
+    <h3 class="function_name">Server:enableCompression()</h3>
     </dt>
     <dd>
     <p>
@@ -645,9 +366,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getAddress"></a>
-    <h2 class="function_name">Server:getAddress()</h2>
+    <a class="anchor_link" href="#Server:getAddress" name="Server:getAddress">🔗</a>
+    <h3 class="function_name">Server:getAddress()</h3>
     </dt>
     <dd>
     <p>
@@ -672,9 +392,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getClient"></a>
-    <h2 class="function_name">Server:getClient(peer)</h2>
+    <a class="anchor_link" href="#Server:getClient" name="Server:getClient">🔗</a>
+    <h3 class="function_name">Server:getClient(peer)</h3>
     </dt>
     <dd>
     <p>
@@ -704,9 +423,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getClientByConnectId"></a>
-    <h2 class="function_name">Server:getClientByConnectId(connectId)</h2>
+    <a class="anchor_link" href="#Server:getClientByConnectId" name="Server:getClientByConnectId">🔗</a>
+    <h3 class="function_name">Server:getClientByConnectId(connectId)</h3>
     </dt>
     <dd>
     <p>
@@ -738,9 +456,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getClientByIndex"></a>
-    <h2 class="function_name">Server:getClientByIndex(index)</h2>
+    <a class="anchor_link" href="#Server:getClientByIndex" name="Server:getClientByIndex">🔗</a>
+    <h3 class="function_name">Server:getClientByIndex(index)</h3>
     </dt>
     <dd>
     <p>
@@ -773,9 +490,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getClientCount"></a>
-    <h2 class="function_name">Server:getClientCount()</h2>
+    <a class="anchor_link" href="#Server:getClientCount" name="Server:getClientCount">🔗</a>
+    <h3 class="function_name">Server:getClientCount()</h3>
     </dt>
     <dd>
     <p>
@@ -798,9 +514,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getClients"></a>
-    <h2 class="function_name">Server:getClients()</h2>
+    <a class="anchor_link" href="#Server:getClients" name="Server:getClients">🔗</a>
+    <h3 class="function_name">Server:getClients()</h3>
     </dt>
     <dd>
     <p>
@@ -822,9 +537,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getDefaultSendMode"></a>
-    <h2 class="function_name">Server:getDefaultSendMode()</h2>
+    <a class="anchor_link" href="#Server:getDefaultSendMode" name="Server:getDefaultSendMode">🔗</a>
+    <h3 class="function_name">Server:getDefaultSendMode()</h3>
     </dt>
     <dd>
     <p>
@@ -855,9 +569,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getLastServiceTime"></a>
-    <h2 class="function_name">Server:getLastServiceTime()</h2>
+    <a class="anchor_link" href="#Server:getLastServiceTime" name="Server:getLastServiceTime">🔗</a>
+    <h3 class="function_name">Server:getLastServiceTime()</h3>
     </dt>
     <dd>
     <p>
@@ -880,9 +593,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getMaxChannels"></a>
-    <h2 class="function_name">Server:getMaxChannels()</h2>
+    <a class="anchor_link" href="#Server:getMaxChannels" name="Server:getMaxChannels">🔗</a>
+    <h3 class="function_name">Server:getMaxChannels()</h3>
     </dt>
     <dd>
     <p>
@@ -907,9 +619,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getMaxPeers"></a>
-    <h2 class="function_name">Server:getMaxPeers()</h2>
+    <a class="anchor_link" href="#Server:getMaxPeers" name="Server:getMaxPeers">🔗</a>
+    <h3 class="function_name">Server:getMaxPeers()</h3>
     </dt>
     <dd>
     <p>
@@ -932,9 +643,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getMessageTimeout"></a>
-    <h2 class="function_name">Server:getMessageTimeout()</h2>
+    <a class="anchor_link" href="#Server:getMessageTimeout" name="Server:getMessageTimeout">🔗</a>
+    <h3 class="function_name">Server:getMessageTimeout()</h3>
     </dt>
     <dd>
     <p>
@@ -958,9 +668,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getPeerByIndex"></a>
-    <h2 class="function_name">Server:getPeerByIndex(index)</h2>
+    <a class="anchor_link" href="#Server:getPeerByIndex" name="Server:getPeerByIndex">🔗</a>
+    <h3 class="function_name">Server:getPeerByIndex(index)</h3>
     </dt>
     <dd>
     <p>
@@ -991,9 +700,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getPort"></a>
-    <h2 class="function_name">Server:getPort()</h2>
+    <a class="anchor_link" href="#Server:getPort" name="Server:getPort">🔗</a>
+    <h3 class="function_name">Server:getPort()</h3>
     </dt>
     <dd>
     <p>
@@ -1018,9 +726,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getSendMode"></a>
-    <h2 class="function_name">Server:getSendMode()</h2>
+    <a class="anchor_link" href="#Server:getSendMode" name="Server:getSendMode">🔗</a>
+    <h3 class="function_name">Server:getSendMode()</h3>
     </dt>
     <dd>
     <p>
@@ -1051,9 +758,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getSocketAddress"></a>
-    <h2 class="function_name">Server:getSocketAddress()</h2>
+    <a class="anchor_link" href="#Server:getSocketAddress" name="Server:getSocketAddress">🔗</a>
+    <h3 class="function_name">Server:getSocketAddress()</h3>
     </dt>
     <dd>
     <p>
@@ -1077,9 +783,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalReceivedData"></a>
-    <h2 class="function_name">Server:getTotalReceivedData()</h2>
+    <a class="anchor_link" href="#Server:getTotalReceivedData" name="Server:getTotalReceivedData">🔗</a>
+    <h3 class="function_name">Server:getTotalReceivedData()</h3>
     </dt>
     <dd>
     <p>
@@ -1102,9 +807,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalReceivedPackets"></a>
-    <h2 class="function_name">Server:getTotalReceivedPackets()</h2>
+    <a class="anchor_link" href="#Server:getTotalReceivedPackets" name="Server:getTotalReceivedPackets">🔗</a>
+    <h3 class="function_name">Server:getTotalReceivedPackets()</h3>
     </dt>
     <dd>
     <p>
@@ -1133,9 +837,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalSentData"></a>
-    <h2 class="function_name">Server:getTotalSentData()</h2>
+    <a class="anchor_link" href="#Server:getTotalSentData" name="Server:getTotalSentData">🔗</a>
+    <h3 class="function_name">Server:getTotalSentData()</h3>
     </dt>
     <dd>
     <p>
@@ -1158,9 +861,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:getTotalSentPackets"></a>
-    <h2 class="function_name">Server:getTotalSentPackets()</h2>
+    <a class="anchor_link" href="#Server:getTotalSentPackets" name="Server:getTotalSentPackets">🔗</a>
+    <h3 class="function_name">Server:getTotalSentPackets()</h3>
     </dt>
     <dd>
     <p>
@@ -1186,9 +888,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:log"></a>
-    <h2 class="function_name">Server:log(event, data)</h2>
+    <a class="anchor_link" href="#Server:log" name="Server:log">🔗</a>
+    <h3 class="function_name">Server:log(event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -1222,9 +923,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:on"></a>
-    <h2 class="function_name">Server:on(event, callback)</h2>
+    <a class="anchor_link" href="#Server:on" name="Server:on">🔗</a>
+    <h3 class="function_name">Server:on(event, callback)</h3>
     </dt>
     <dd>
     <p>
@@ -1264,9 +964,8 @@
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:removeCallback"></a>
-    <h2 class="function_name">Server:removeCallback(callback)</h2>
+    <a class="anchor_link" href="#Server:removeCallback" name="Server:removeCallback">🔗</a>
+    <h3 class="function_name">Server:removeCallback(callback)</h3>
     </dt>
     <dd>
     <p>
@@ -1303,9 +1002,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:resetSendSettings"></a>
-    <h2 class="function_name">Server:resetSendSettings()</h2>
+    <a class="anchor_link" href="#Server:resetSendSettings" name="Server:resetSendSettings">🔗</a>
+    <h3 class="function_name">Server:resetSendSettings()</h3>
     </dt>
     <dd>
     <p>
@@ -1321,9 +1019,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:sendToAll"></a>
-    <h2 class="function_name">Server:sendToAll(event, data)</h2>
+    <a class="anchor_link" href="#Server:sendToAll" name="Server:sendToAll">🔗</a>
+    <h3 class="function_name">Server:sendToAll(event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -1353,9 +1050,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:sendToAllBut"></a>
-    <h2 class="function_name">Server:sendToAllBut(client, event, data)</h2>
+    <a class="anchor_link" href="#Server:sendToAllBut" name="Server:sendToAllBut">🔗</a>
+    <h3 class="function_name">Server:sendToAllBut(client, event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -1388,9 +1084,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:sendToPeer"></a>
-    <h2 class="function_name">Server:sendToPeer(peer, event, data)</h2>
+    <a class="anchor_link" href="#Server:sendToPeer" name="Server:sendToPeer">🔗</a>
+    <h3 class="function_name">Server:sendToPeer(peer, event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -1425,9 +1120,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setBandwidthLimit"></a>
-    <h2 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h2>
+    <a class="anchor_link" href="#Server:setBandwidthLimit" name="Server:setBandwidthLimit">🔗</a>
+    <h3 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h3>
     </dt>
     <dd>
     <p>
@@ -1454,9 +1148,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setDefaultSendChannel"></a>
-    <h2 class="function_name">Server:setDefaultSendChannel(channel)</h2>
+    <a class="anchor_link" href="#Server:setDefaultSendChannel" name="Server:setDefaultSendChannel">🔗</a>
+    <h3 class="function_name">Server:setDefaultSendChannel(channel)</h3>
     </dt>
     <dd>
     <p>
@@ -1480,9 +1173,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setDefaultSendMode"></a>
-    <h2 class="function_name">Server:setDefaultSendMode(mode)</h2>
+    <a class="anchor_link" href="#Server:setDefaultSendMode" name="Server:setDefaultSendMode">🔗</a>
+    <h3 class="function_name">Server:setDefaultSendMode(mode)</h3>
     </dt>
     <dd>
     <p>
@@ -1512,9 +1204,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setMaxChannels"></a>
-    <h2 class="function_name">Server:setMaxChannels(limit)</h2>
+    <a class="anchor_link" href="#Server:setMaxChannels" name="Server:setMaxChannels">🔗</a>
+    <h3 class="function_name">Server:setMaxChannels(limit)</h3>
     </dt>
     <dd>
     <p>
@@ -1538,9 +1229,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setMessageTimeout"></a>
-    <h2 class="function_name">Server:setMessageTimeout(timeout)</h2>
+    <a class="anchor_link" href="#Server:setMessageTimeout" name="Server:setMessageTimeout">🔗</a>
+    <h3 class="function_name">Server:setMessageTimeout(timeout)</h3>
     </dt>
     <dd>
     <p>
@@ -1564,9 +1254,8 @@ server:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setSchema"></a>
-    <h2 class="function_name">Server:setSchema(event, schema)</h2>
+    <a class="anchor_link" href="#Server:setSchema" name="Server:setSchema">🔗</a>
+    <h3 class="function_name">Server:setSchema(event, schema)</h3>
     </dt>
     <dd>
     <p>
@@ -1647,9 +1336,8 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setSendChannel"></a>
-    <h2 class="function_name">Server:setSendChannel(channel)</h2>
+    <a class="anchor_link" href="#Server:setSendChannel" name="Server:setSendChannel">🔗</a>
+    <h3 class="function_name">Server:setSendChannel(channel)</h3>
     </dt>
     <dd>
     <p>
@@ -1680,9 +1368,8 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setSendMode"></a>
-    <h2 class="function_name">Server:setSendMode(mode)</h2>
+    <a class="anchor_link" href="#Server:setSendMode" name="Server:setSendMode">🔗</a>
+    <h3 class="function_name">Server:setSendMode(mode)</h3>
     </dt>
     <dd>
     <p>
@@ -1718,9 +1405,8 @@ server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:setSerialization"></a>
-    <h2 class="function_name">Server:setSerialization(serialize, deserialize)</h2>
+    <a class="anchor_link" href="#Server:setSerialization" name="Server:setSerialization">🔗</a>
+    <h3 class="function_name">Server:setSerialization(serialize, deserialize)</h3>
     </dt>
     <dd>
     <p>
@@ -1754,9 +1440,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Server:update"></a>
-    <h2 class="function_name">Server:update()</h2>
+    <a class="anchor_link" href="#Server:update" name="Server:update">🔗</a>
+    <h3 class="function_name">Server:update()</h3>
     </dt>
     <dd>
     <p>
@@ -1775,17 +1460,16 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div>
 </section>
 <section id="Client">
-    <h2 class="section-header has-description"><a name="Class_Client"></a>Class Client </h2>
+    <h1 class="section-header has-description"><a name="Class_Client"></a>Class Client </h1>
     <div class="section-content">
 
-          <div class="section-description">
+          <p class="section-description">
           Connects to servers.
-          </div>
+          </p>
     <dl class="function">
     <div class="function_def">
-    <dt>
-    <a name = "Client:connect"></a>
-    <h2 class="function_name">Client:connect(code)</h2>
+    <a class="anchor_link" href="#Client:connect" name="Client:connect">🔗</a>
+    <h3 class="function_name">Client:connect(code)</h3>
     </dt>
     <dd>
     <p>
@@ -1809,9 +1493,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:disconnect"></a>
-    <h2 class="function_name">Client:disconnect(code)</h2>
+    <a class="anchor_link" href="#Client:disconnect" name="Client:disconnect">🔗</a>
+    <h3 class="function_name">Client:disconnect(code)</h3>
     </dt>
     <dd>
     <p>
@@ -1835,9 +1518,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:disconnectLater"></a>
-    <h2 class="function_name">Client:disconnectLater(code)</h2>
+    <a class="anchor_link" href="#Client:disconnectLater" name="Client:disconnectLater">🔗</a>
+    <h3 class="function_name">Client:disconnectLater(code)</h3>
     </dt>
     <dd>
     <p>
@@ -1861,9 +1543,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:disconnectNow"></a>
-    <h2 class="function_name">Client:disconnectNow(code)</h2>
+    <a class="anchor_link" href="#Client:disconnectNow" name="Client:disconnectNow">🔗</a>
+    <h3 class="function_name">Client:disconnectNow(code)</h3>
     </dt>
     <dd>
     <p>
@@ -1886,9 +1567,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:enableCompression"></a>
-    <h2 class="function_name">Client:enableCompression()</h2>
+    <a class="anchor_link" href="#Client:enableCompression" name="Client:enableCompression">🔗</a>
+    <h3 class="function_name">Client:enableCompression()</h3>
     </dt>
     <dd>
     <p>
@@ -1906,9 +1586,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getAddress"></a>
-    <h2 class="function_name">Client:getAddress()</h2>
+    <a class="anchor_link" href="#Client:getAddress" name="Client:getAddress">🔗</a>
+    <h3 class="function_name">Client:getAddress()</h3>
     </dt>
     <dd>
     <p>
@@ -1933,9 +1612,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getConnectId"></a>
-    <h2 class="function_name">Client:getConnectId()</h2>
+    <a class="anchor_link" href="#Client:getConnectId" name="Client:getConnectId">🔗</a>
+    <h3 class="function_name">Client:getConnectId()</h3>
     </dt>
     <dd>
     <p>
@@ -1958,9 +1636,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getDefaultSendMode"></a>
-    <h2 class="function_name">Client:getDefaultSendMode()</h2>
+    <a class="anchor_link" href="#Client:getDefaultSendMode" name="Client:getDefaultSendMode">🔗</a>
+    <h3 class="function_name">Client:getDefaultSendMode()</h3>
     </dt>
     <dd>
     <p>
@@ -1991,9 +1668,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getIndex"></a>
-    <h2 class="function_name">Client:getIndex()</h2>
+    <a class="anchor_link" href="#Client:getIndex" name="Client:getIndex">🔗</a>
+    <h3 class="function_name">Client:getIndex()</h3>
     </dt>
     <dd>
     <p>
@@ -2016,9 +1692,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getLastServiceTime"></a>
-    <h2 class="function_name">Client:getLastServiceTime()</h2>
+    <a class="anchor_link" href="#Client:getLastServiceTime" name="Client:getLastServiceTime">🔗</a>
+    <h3 class="function_name">Client:getLastServiceTime()</h3>
     </dt>
     <dd>
     <p>
@@ -2041,9 +1716,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getMaxChannels"></a>
-    <h2 class="function_name">Client:getMaxChannels()</h2>
+    <a class="anchor_link" href="#Client:getMaxChannels" name="Client:getMaxChannels">🔗</a>
+    <h3 class="function_name">Client:getMaxChannels()</h3>
     </dt>
     <dd>
     <p>
@@ -2068,9 +1742,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getMessageTimeout"></a>
-    <h2 class="function_name">Client:getMessageTimeout()</h2>
+    <a class="anchor_link" href="#Client:getMessageTimeout" name="Client:getMessageTimeout">🔗</a>
+    <h3 class="function_name">Client:getMessageTimeout()</h3>
     </dt>
     <dd>
     <p>
@@ -2094,9 +1767,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getPeerByIndex"></a>
-    <h2 class="function_name">Client:getPeerByIndex(index)</h2>
+    <a class="anchor_link" href="#Client:getPeerByIndex" name="Client:getPeerByIndex">🔗</a>
+    <h3 class="function_name">Client:getPeerByIndex(index)</h3>
     </dt>
     <dd>
     <p>
@@ -2127,9 +1799,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getPort"></a>
-    <h2 class="function_name">Client:getPort()</h2>
+    <a class="anchor_link" href="#Client:getPort" name="Client:getPort">🔗</a>
+    <h3 class="function_name">Client:getPort()</h3>
     </dt>
     <dd>
     <p>
@@ -2154,9 +1825,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getRoundTripTime"></a>
-    <h2 class="function_name">Client:getRoundTripTime()</h2>
+    <a class="anchor_link" href="#Client:getRoundTripTime" name="Client:getRoundTripTime">🔗</a>
+    <h3 class="function_name">Client:getRoundTripTime()</h3>
     </dt>
     <dd>
     <p>
@@ -2180,9 +1850,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getSendMode"></a>
-    <h2 class="function_name">Client:getSendMode()</h2>
+    <a class="anchor_link" href="#Client:getSendMode" name="Client:getSendMode">🔗</a>
+    <h3 class="function_name">Client:getSendMode()</h3>
     </dt>
     <dd>
     <p>
@@ -2213,9 +1882,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getSocketAddress"></a>
-    <h2 class="function_name">Client:getSocketAddress()</h2>
+    <a class="anchor_link" href="#Client:getSocketAddress" name="Client:getSocketAddress">🔗</a>
+    <h3 class="function_name">Client:getSocketAddress()</h3>
     </dt>
     <dd>
     <p>
@@ -2238,9 +1906,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getState"></a>
-    <h2 class="function_name">Client:getState()</h2>
+    <a class="anchor_link" href="#Client:getState" name="Client:getState">🔗</a>
+    <h3 class="function_name">Client:getState()</h3>
     </dt>
     <dd>
     <p>
@@ -2269,9 +1936,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getTotalReceivedData"></a>
-    <h2 class="function_name">Client:getTotalReceivedData()</h2>
+    <a class="anchor_link" href="#Client:getTotalReceivedData" name="Client:getTotalReceivedData">🔗</a>
+    <h3 class="function_name">Client:getTotalReceivedData()</h3>
     </dt>
     <dd>
     <p>
@@ -2294,9 +1960,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getTotalReceivedPackets"></a>
-    <h2 class="function_name">Client:getTotalReceivedPackets()</h2>
+    <a class="anchor_link" href="#Client:getTotalReceivedPackets" name="Client:getTotalReceivedPackets">🔗</a>
+    <h3 class="function_name">Client:getTotalReceivedPackets()</h3>
     </dt>
     <dd>
     <p>
@@ -2325,9 +1990,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getTotalSentData"></a>
-    <h2 class="function_name">Client:getTotalSentData()</h2>
+    <a class="anchor_link" href="#Client:getTotalSentData" name="Client:getTotalSentData">🔗</a>
+    <h3 class="function_name">Client:getTotalSentData()</h3>
     </dt>
     <dd>
     <p>
@@ -2350,9 +2014,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:getTotalSentPackets"></a>
-    <h2 class="function_name">Client:getTotalSentPackets()</h2>
+    <a class="anchor_link" href="#Client:getTotalSentPackets" name="Client:getTotalSentPackets">🔗</a>
+    <h3 class="function_name">Client:getTotalSentPackets()</h3>
     </dt>
     <dd>
     <p>
@@ -2378,9 +2041,8 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:isConnected"></a>
-    <h2 class="function_name">Client:isConnected()</h2>
+    <a class="anchor_link" href="#Client:isConnected" name="Client:isConnected">🔗</a>
+    <h3 class="function_name">Client:isConnected()</h3>
     </dt>
     <dd>
     <p>
@@ -2410,9 +2072,8 @@ client:isConnected() <span class="comment">-- false
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:isConnecting"></a>
-    <h2 class="function_name">Client:isConnecting()</h2>
+    <a class="anchor_link" href="#Client:isConnecting" name="Client:isConnecting">🔗</a>
+    <h3 class="function_name">Client:isConnecting()</h3>
     </dt>
     <dd>
     <p>
@@ -2443,9 +2104,8 @@ client:isConnecting() <span class="comment">-- true
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:isDisconnected"></a>
-    <h2 class="function_name">Client:isDisconnected()</h2>
+    <a class="anchor_link" href="#Client:isDisconnected" name="Client:isDisconnected">🔗</a>
+    <h3 class="function_name">Client:isDisconnected()</h3>
     </dt>
     <dd>
     <p>
@@ -2475,9 +2135,8 @@ client:isDisconnected() <span class="comment">-- false
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:isDisconnecting"></a>
-    <h2 class="function_name">Client:isDisconnecting()</h2>
+    <a class="anchor_link" href="#Client:isDisconnecting" name="Client:isDisconnecting">🔗</a>
+    <h3 class="function_name">Client:isDisconnecting()</h3>
     </dt>
     <dd>
     <p>
@@ -2508,9 +2167,8 @@ client:isDisconnecting() <span class="comment">-- true
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:log"></a>
-    <h2 class="function_name">Client:log(event, data)</h2>
+    <a class="anchor_link" href="#Client:log" name="Client:log">🔗</a>
+    <h3 class="function_name">Client:log(event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -2544,9 +2202,8 @@ client:isDisconnecting() <span class="comment">-- true
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:on"></a>
-    <h2 class="function_name">Client:on(event, callback)</h2>
+    <a class="anchor_link" href="#Client:on" name="Client:on">🔗</a>
+    <h3 class="function_name">Client:on(event, callback)</h3>
     </dt>
     <dd>
     <p>
@@ -2586,9 +2243,8 @@ client:isDisconnecting() <span class="comment">-- true
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:removeCallback"></a>
-    <h2 class="function_name">Client:removeCallback(callback)</h2>
+    <a class="anchor_link" href="#Client:removeCallback" name="Client:removeCallback">🔗</a>
+    <h3 class="function_name">Client:removeCallback(callback)</h3>
     </dt>
     <dd>
     <p>
@@ -2625,9 +2281,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:reset"></a>
-    <h2 class="function_name">Client:reset(client)</h2>
+    <a class="anchor_link" href="#Client:reset" name="Client:reset">🔗</a>
+    <h3 class="function_name">Client:reset(client)</h3>
     </dt>
     <dd>
     <p>
@@ -2650,9 +2305,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:resetSendSettings"></a>
-    <h2 class="function_name">Client:resetSendSettings()</h2>
+    <a class="anchor_link" href="#Client:resetSendSettings" name="Client:resetSendSettings">🔗</a>
+    <h3 class="function_name">Client:resetSendSettings()</h3>
     </dt>
     <dd>
     <p>
@@ -2668,9 +2322,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:send"></a>
-    <h2 class="function_name">Client:send(event, data)</h2>
+    <a class="anchor_link" href="#Client:send" name="Client:send">🔗</a>
+    <h3 class="function_name">Client:send(event, data)</h3>
     </dt>
     <dd>
     <p>
@@ -2696,9 +2349,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setBandwidthLimit"></a>
-    <h2 class="function_name">Client:setBandwidthLimit(incoming, outgoing)</h2>
+    <a class="anchor_link" href="#Client:setBandwidthLimit" name="Client:setBandwidthLimit">🔗</a>
+    <h3 class="function_name">Client:setBandwidthLimit(incoming, outgoing)</h3>
     </dt>
     <dd>
     <p>
@@ -2725,9 +2377,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setDefaultSendChannel"></a>
-    <h2 class="function_name">Client:setDefaultSendChannel(channel)</h2>
+    <a class="anchor_link" href="#Client:setDefaultSendChannel" name="Client:setDefaultSendChannel">🔗</a>
+    <h3 class="function_name">Client:setDefaultSendChannel(channel)</h3>
     </dt>
     <dd>
     <p>
@@ -2751,9 +2402,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setDefaultSendMode"></a>
-    <h2 class="function_name">Client:setDefaultSendMode(mode)</h2>
+    <a class="anchor_link" href="#Client:setDefaultSendMode" name="Client:setDefaultSendMode">🔗</a>
+    <h3 class="function_name">Client:setDefaultSendMode(mode)</h3>
     </dt>
     <dd>
     <p>
@@ -2783,9 +2433,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setMaxChannels"></a>
-    <h2 class="function_name">Client:setMaxChannels(limit)</h2>
+    <a class="anchor_link" href="#Client:setMaxChannels" name="Client:setMaxChannels">🔗</a>
+    <h3 class="function_name">Client:setMaxChannels(limit)</h3>
     </dt>
     <dd>
     <p>
@@ -2809,9 +2458,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setMessageTimeout"></a>
-    <h2 class="function_name">Client:setMessageTimeout(timeout)</h2>
+    <a class="anchor_link" href="#Client:setMessageTimeout" name="Client:setMessageTimeout">🔗</a>
+    <h3 class="function_name">Client:setMessageTimeout(timeout)</h3>
     </dt>
     <dd>
     <p>
@@ -2835,9 +2483,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setPingInterval"></a>
-    <h2 class="function_name">Client:setPingInterval(interval)</h2>
+    <a class="anchor_link" href="#Client:setPingInterval" name="Client:setPingInterval">🔗</a>
+    <h3 class="function_name">Client:setPingInterval(interval)</h3>
     </dt>
     <dd>
     <p>
@@ -2862,9 +2509,8 @@ client:removeCallback(callback)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setSchema"></a>
-    <h2 class="function_name">Client:setSchema(event, schema)</h2>
+    <a class="anchor_link" href="#Client:setSchema" name="Client:setSchema">🔗</a>
+    <h3 class="function_name">Client:setSchema(event, schema)</h3>
     </dt>
     <dd>
     <p>
@@ -2945,9 +2591,8 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setSendChannel"></a>
-    <h2 class="function_name">Client:setSendChannel(channel)</h2>
+    <a class="anchor_link" href="#Client:setSendChannel" name="Client:setSendChannel">🔗</a>
+    <h3 class="function_name">Client:setSendChannel(channel)</h3>
     </dt>
     <dd>
     <p>
@@ -2978,9 +2623,8 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setSendMode"></a>
-    <h2 class="function_name">Client:setSendMode(mode)</h2>
+    <a class="anchor_link" href="#Client:setSendMode" name="Client:setSendMode">🔗</a>
+    <h3 class="function_name">Client:setSendMode(mode)</h3>
     </dt>
     <dd>
     <p>
@@ -3016,9 +2660,8 @@ client:send(<span class="string">"position"</span>, {...})</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setSerialization"></a>
-    <h2 class="function_name">Client:setSerialization(serialize, deserialize)</h2>
+    <a class="anchor_link" href="#Client:setSerialization" name="Client:setSerialization">🔗</a>
+    <h3 class="function_name">Client:setSerialization(serialize, deserialize)</h3>
     </dt>
     <dd>
     <p>
@@ -3052,9 +2695,8 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setThrottle"></a>
-    <h2 class="function_name">Client:setThrottle(interval, acceleration, deceleration)</h2>
+    <a class="anchor_link" href="#Client:setThrottle" name="Client:setThrottle">🔗</a>
+    <h3 class="function_name">Client:setThrottle(interval, acceleration, deceleration)</h3>
     </dt>
     <dd>
     <p>
@@ -3085,9 +2727,8 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:setTimeout"></a>
-    <h2 class="function_name">Client:setTimeout(limit, minimum, maximum)</h2>
+    <a class="anchor_link" href="#Client:setTimeout" name="Client:setTimeout">🔗</a>
+    <h3 class="function_name">Client:setTimeout(limit, minimum, maximum)</h3>
     </dt>
     <dd>
     <p>
@@ -3118,9 +2759,8 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "Client:update"></a>
-    <h2 class="function_name">Client:update()</h2>
+    <a class="anchor_link" href="#Client:update" name="Client:update">🔗</a>
+    <h3 class="function_name">Client:update()</h3>
     </dt>
     <dd>
     <p>
@@ -3139,14 +2779,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div>
 </section>
 <section id="sock">
-    <h2 class="section-header "><a name="sock"></a>sock</h2>
+    <h1 class="section-header "><a name="sock"></a>sock</h1>
     <div class="section-content">
 
     <dl class="function">
     <div class="function_def">
-    <dt>
-    <a name = "newClient"></a>
-    <h2 class="function_name">newClient(serverOrAddress, port, maxChannels)</h2>
+    <a class="anchor_link" href="#newClient" name="newClient">🔗</a>
+    <h3 class="function_name">newClient(serverOrAddress, port, maxChannels)</h3>
     </dt>
     <dd>
     <p>
@@ -3203,9 +2842,8 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dd>
 </div>
     <div class="function_def">
-    <dt>
-    <a name = "newServer"></a>
-    <h2 class="function_name">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</h2>
+    <a class="anchor_link" href="#newServer" name="newServer">🔗</a>
+    <h3 class="function_name">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</h3>
     </dt>
     <dd>
     <p>
@@ -3290,7 +2928,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2017-03-18 13:52:08 </i>
+<i style="float:right;">Last updated 2017-07-16 00:21:46 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
