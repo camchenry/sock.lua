@@ -80,7 +80,7 @@
 # local show_parms = show_return
 # for kind, items in module.kinds() do
 #   local section_link_name = kind:gsub("Class ", ""):gsub(" ", "")
-<section id="$(section_link_name)">
+<section class="section" id="$(section_link_name)">
 #   local kitem = module.kinds:get_item(kind)
 #   local has_description = kitem and ldoc.descript(kitem) ~= ""
     <h1 class="section-header $(has_description and 'has-description')"><a name="$(no_spaces(kind))"></a>$(kind)</h1>
@@ -131,20 +131,26 @@
 #    if subnames then
     <h3>$(subnames):</h3>
 #    end
-    <ul>
+    <dl>
 #   for parm in iter(item.params) do
 #     local param,sublist = item:subparam(parm)
 #     if sublist then
-        <li><span class="parameter">$(sublist)</span>$(M(item.params.map[sublist],item))
-        <ul>
+        <dt><span class="parameter">$(sublist)</dt>$(M(item.params.map[sublist],item))
+        <dl><dd>
 #     end
 #     for p in iter(param) do
 #        local name,tp,def = item:display_name_of(p), ldoc.typename(item:type_of_param(p)), item:default_of_param(p)
-        <li><span class="parameter">$(name)</span>
+          <dt>
+          <span class="parameter_info">
 #       if tp ~= '' then
             <span class="types">$(tp)</span>
 #       end
+            <span class="parameter">$(name)</span>
+          </span>
+          </dt>
+        <dd>
         $(M(item.params.map[p],item))
+        </dt>
 #       if def == true then
          (<em>optional</em>)
 #      elseif def then
@@ -156,10 +162,10 @@
         </li>
 #     end
 #     if sublist then
-        </li></ul>
+        </dd></dl>
 #     end
 #   end -- for
-    </ul>
+    </dl>
 #   end -- if params
 
 #  if show_return and item.retgroups then local groups = item.retgroups

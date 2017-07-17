@@ -1,13 +1,17 @@
+/*
+ * Tag styles
+ */
 html {
     background: #eee;
 }
 
 body {
-    color: #222;
-    background-color: #eee;
+    display: flex;
     box-sizing: border-box;
     margin: 0;
-    display: flex;
+    color: #222;
+    background-color: #eee;
+    font-size: 1.8em;
 }
 
 ul, ol {
@@ -24,16 +28,18 @@ pre {
     overflow: auto;
 }
 
-.example {
-    font-size: 1.4rem;
-}
-
 a {
     color: #07f;
+    text-decoration: none;
+}
+/* make the target distinct; helps when we're navigating to a function */
+a:target + * {
+    background-color: #fff824;
 }
 
-/****/
-
+/*
+ * Class styles
+ */
 .header {
     background: #56CCF2;  /* fallback for old browsers */
     background: -webkit-linear-gradient(to right, #2F80ED, #56CCF2);  /* Chrome 10-25, Safari 5.1-6 */
@@ -78,61 +84,7 @@ a {
     flex: 1 1 100%;
 }
 
-table.module_list {
-    border-width: 1px;
-    border-style: solid;
-    border-color: #cccccc;
-    border-collapse: collapse;
-}
-table.module_list td {
-    border-width: 1px;
-    padding: 3px;
-    border-style: solid;
-    border-color: #cccccc;
-}
-table.module_list td.name {
-    background-color: #f0f0f0;
-    min-width: 200px;
-}
-table.module_list td.summary {
-    width: 100%;
-}
-
-
-table.function_list {
-    border-collapse: collapse;
-}
-table.function_list td {
-    padding: 3px;
-}
-table.function_list tr {
-    border-bottom: 1px solid #ddd;
-}
-table.function_list tr:nth-child(2n) {
-    background: #f6f6f6;
-}
-table.function_list tr:last-child {
-    border-bottom: none;
-}
-table.function_list tr:hover {
-    background: #eee;
-}
-table.function_list td.name {
-    min-width: 35%;
-}
-table.function_list td.summary {
-}
-
-a {
-    text-decoration: none;
-}
-
-ul.nowrap {
-    overflow:auto;
-    white-space:nowrap;
-}
-
-#content > section {
+.section {
     margin-top: 3rem;
 }
 .section-header {
@@ -145,7 +97,6 @@ ul.nowrap {
 .section-content {
     padding-left: 1rem;
 }
-
 
 .function_def {
     margin-top: 2.5rem;
@@ -163,18 +114,22 @@ ul.nowrap {
     font-weight: 400;
 }
 
-span.parameter { font-family:monospace; }
-span.parameter:after { content:":"; }
-span.types:before { content:"("; }
-span.types:after { content:")"; }
+.anchor_link {
+    font-size: 85%;
+}
+
 .type {
     font-weight: bolder;
     font-style: italic;
 }
+.parameter_info .type {
+    font-weight: bold;
+}
 
-/* make the target distinct; helps when we're navigating to a function */
-a:target + * {
-    background-color: #fff824;
+.parameter_info {
+    background: #f7f7f7;
+    padding: 5px;
+    font-family: monospace;
 }
 
 /*

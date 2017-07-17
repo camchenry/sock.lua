@@ -144,7 +144,7 @@
 </ul>
 </p>
 
-<section id="Tables">
+<section class="section" id="Tables">
     <h1 class="section-header "><a name="Tables"></a>Tables</h1>
     <div class="section-content">
 
@@ -160,26 +160,50 @@
 
 
     <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">connecting</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connecting</span>
+          </span>
+          </dt>
+        <dd>
         In the process of connecting to the server.
+        </dt>
         </li>
-        <li><span class="parameter">acknowledging_connect</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">acknowledging_connect</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">connection_pending</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connection_pending</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">connection_succeeded</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connection_succeeded</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -198,53 +222,119 @@
 
 
     <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">disconnected</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">disconnected</span>
+          </span>
+          </dt>
+        <dd>
         Disconnected from the server.
+        </dt>
         </li>
-        <li><span class="parameter">connecting</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connecting</span>
+          </span>
+          </dt>
+        <dd>
         In the process of connecting to the server.
+        </dt>
         </li>
-        <li><span class="parameter">acknowledging_connect</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">acknowledging_connect</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">connection_pending</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connection_pending</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">connection_succeeded</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connection_succeeded</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">connected</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">connected</span>
+          </span>
+          </dt>
+        <dd>
         Successfully connected to the server.
+        </dt>
         </li>
-        <li><span class="parameter">disconnect_later</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">disconnect_later</span>
+          </span>
+          </dt>
+        <dd>
         Disconnecting, but only after sending all queued packets.
+        </dt>
         </li>
-        <li><span class="parameter">disconnecting</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">disconnecting</span>
+          </span>
+          </dt>
+        <dd>
         In the process of disconnecting from the server.
+        </dt>
         </li>
-        <li><span class="parameter">acknowledging_disconnect</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">acknowledging_disconnect</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">zombie</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">zombie</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-        <li><span class="parameter">unknown</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">unknown</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -269,19 +359,37 @@
 
 
     <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">disconnect_later</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">disconnect_later</span>
+          </span>
+          </dt>
+        <dd>
         Disconnecting, but only after sending all queued packets.
+        </dt>
         </li>
-        <li><span class="parameter">disconnecting</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">disconnecting</span>
+          </span>
+          </dt>
+        <dd>
         In the process of disconnecting from the server.
+        </dt>
         </li>
-        <li><span class="parameter">acknowledging_disconnect</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">acknowledging_disconnect</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -300,17 +408,35 @@
 
 
     <h3>Fields:</h3>
-    <ul>
-        <li><span class="parameter">reliable</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">reliable</span>
+          </span>
+          </dt>
+        <dd>
         Message is guaranteed to arrive, and arrive in the order in which it is sent.
+        </dt>
         </li>
-        <li><span class="parameter">unsequenced</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">unsequenced</span>
+          </span>
+          </dt>
+        <dd>
         Message has no guarantee on the order that it arrives.
+        </dt>
         </li>
-        <li><span class="parameter">unreliable</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">unreliable</span>
+          </span>
+          </dt>
+        <dd>
         Message is not guaranteed to arrive.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -321,7 +447,7 @@
 </dl>
 </div>
 </section>
-<section id="Server">
+<section class="section" id="Server">
     <h1 class="section-header has-description"><a name="Class_Server"></a>Class Server </h1>
     <div class="section-content">
 
@@ -402,12 +528,18 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">peer</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">peer</span></span>
+            <span class="parameter">peer</span>
+          </span>
+          </dt>
+        <dd>
          An enet peer.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -433,12 +565,18 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">connectId</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">connectId</span>
+          </span>
+          </dt>
+        <dd>
          The unique client connection id.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -466,13 +604,19 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">index</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">index</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -678,13 +822,19 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">index</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">index</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -899,16 +1049,28 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The type of event that happened.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          The message to log.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -933,16 +1095,28 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event that will trigger the callback.
+        </dt>
         </li>
-        <li><span class="parameter">callback</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">callback</span>
+          </span>
+          </dt>
+        <dd>
          The callback to be triggered.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -974,12 +1148,18 @@
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">callback</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">callback</span>
+          </span>
+          </dt>
+        <dd>
          The callback to remove.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -1029,15 +1209,27 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to trigger with this message.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          The data to send.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1063,19 +1255,37 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">client</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+            <span class="parameter">client</span>
+          </span>
+          </dt>
+        <dd>
          The client to not receive the message.
+        </dt>
         </li>
-        <li><span class="parameter">event</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to trigger with this message.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          The data to send.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1095,19 +1305,37 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">peer</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">enet_peer</span></span>
+            <span class="parameter">peer</span>
+          </span>
+          </dt>
+        <dd>
          The enet peer to receive the message.
+        </dt>
         </li>
-        <li><span class="parameter">event</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to trigger with this message.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          data to send to the peer.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1130,16 +1358,28 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">incoming</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">incoming</span>
+          </span>
+          </dt>
+        <dd>
          The maximum incoming bandwidth in bytes.
+        </dt>
         </li>
-        <li><span class="parameter">outgoing</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">outgoing</span>
+          </span>
+          </dt>
+        <dd>
          The maximum outgoing bandwidth in bytes.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1159,12 +1399,18 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">channel</span>
+          </span>
+          </dt>
+        <dd>
          Channel to send data on.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1184,12 +1430,18 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">mode</span>
+          </span>
+          </dt>
+        <dd>
          A valid send mode.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1214,13 +1466,19 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">limit</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">limit</span>
+          </span>
+          </dt>
+        <dd>
          The maximum number of channels allowed. If it is 0,
  then the maximum number of channels available on the system will be used.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1239,13 +1497,19 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">timeout</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">timeout</span>
+          </span>
+          </dt>
+        <dd>
          Time to wait for incoming packets in milliseconds. The
  initial default is 0.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1268,16 +1532,28 @@ server:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to set the data schema for.
+        </dt>
         </li>
-        <li><span class="parameter">schema</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">{string,...}</span></span>
+            <span class="parameter">schema</span>
+          </span>
+          </dt>
+        <dd>
          The data schema.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1349,12 +1625,18 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">channel</span>
+          </span>
+          </dt>
+        <dd>
          Channel to send data on.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1380,12 +1662,18 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">mode</span>
+          </span>
+          </dt>
+        <dd>
          A valid send mode.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1416,16 +1704,28 @@ server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">serialize</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">serialize</span>
+          </span>
+          </dt>
+        <dd>
          The serialization function to use.
+        </dt>
         </li>
-        <li><span class="parameter">deserialize</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">deserialize</span>
+          </span>
+          </dt>
+        <dd>
          The deserialization function to use.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1459,7 +1759,7 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dl>
 </div>
 </section>
-<section id="Client">
+<section class="section" id="Client">
     <h1 class="section-header has-description"><a name="Class_Client"></a>Class Client </h1>
     <div class="section-content">
 
@@ -1479,12 +1779,18 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">code</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">code</span>
+          </span>
+          </dt>
+        <dd>
          A number that can be associated with the connect event.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1504,12 +1810,18 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">code</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">code</span>
+          </span>
+          </dt>
+        <dd>
          A code to associate with this disconnect event.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1529,12 +1841,18 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">code</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">code</span>
+          </span>
+          </dt>
+        <dd>
          A code to associate with this disconnect event.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1553,12 +1871,18 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">code</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">code</span>
+          </span>
+          </dt>
+        <dd>
          A code to associate with this disconnect event.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -1777,13 +2101,19 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">index</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">index</span>
+          </span>
+          </dt>
+        <dd>
 
 
 
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -2178,16 +2508,28 @@ client:isDisconnecting() <span class="comment">-- true
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The type of event that happened.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          The message to log.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2212,16 +2554,28 @@ client:isDisconnecting() <span class="comment">-- true
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event that will trigger the callback.
+        </dt>
         </li>
-        <li><span class="parameter">callback</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">callback</span>
+          </span>
+          </dt>
+        <dd>
          The callback to be triggered.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -2253,12 +2607,18 @@ client:isDisconnecting() <span class="comment">-- true
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">callback</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">callback</span>
+          </span>
+          </dt>
+        <dd>
          The callback to remove.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -2291,12 +2651,18 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">client</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><a class="type" href="index.html#Client">Client</a></span>
+            <span class="parameter">client</span>
+          </span>
+          </dt>
+        <dd>
          The client to reset.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2332,15 +2698,27 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to trigger with this message.
+        </dt>
         </li>
-        <li><span class="parameter">data</span>
+          <dt>
+          <span class="parameter_info">
+            <span class="parameter">data</span>
+          </span>
+          </dt>
+        <dd>
          The data to send.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2359,16 +2737,28 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">incoming</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">incoming</span>
+          </span>
+          </dt>
+        <dd>
          The maximum incoming bandwidth in bytes.
+        </dt>
         </li>
-        <li><span class="parameter">outgoing</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">outgoing</span>
+          </span>
+          </dt>
+        <dd>
          The maximum outgoing bandwidth in bytes.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2388,12 +2778,18 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">channel</span>
+          </span>
+          </dt>
+        <dd>
          Channel to send data on.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2413,12 +2809,18 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">mode</span>
+          </span>
+          </dt>
+        <dd>
          A valid send mode.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2443,13 +2845,19 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">limit</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">limit</span>
+          </span>
+          </dt>
+        <dd>
          The maximum number of channels allowed. If it is 0,
  then the maximum number of channels available on the system will be used.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2468,13 +2876,19 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">timeout</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">timeout</span>
+          </span>
+          </dt>
+        <dd>
          Time to wait for incoming packets in milliseconds. The initial
  default is 0.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2495,12 +2909,18 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">interval</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">interval</span>
+          </span>
+          </dt>
+        <dd>
          The interval, in milliseconds.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2523,16 +2943,28 @@ client:removeCallback(callback)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">event</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">event</span>
+          </span>
+          </dt>
+        <dd>
          The event to set the data schema for.
+        </dt>
         </li>
-        <li><span class="parameter">schema</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">{string,...}</span></span>
+            <span class="parameter">schema</span>
+          </span>
+          </dt>
+        <dd>
          The data schema.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2604,12 +3036,18 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">channel</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">channel</span>
+          </span>
+          </dt>
+        <dd>
          Channel to send data on.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2635,12 +3073,18 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">mode</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">string</span></span>
+            <span class="parameter">mode</span>
+          </span>
+          </dt>
+        <dd>
          A valid send mode.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2671,16 +3115,28 @@ client:send(<span class="string">"position"</span>, {...})</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">serialize</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">serialize</span>
+          </span>
+          </dt>
+        <dd>
          The serialization function to use.
+        </dt>
         </li>
-        <li><span class="parameter">deserialize</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">function</span></span>
+            <span class="parameter">deserialize</span>
+          </span>
+          </dt>
+        <dd>
          The deserialization function to use.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2705,20 +3161,38 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">interval</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">interval</span>
+          </span>
+          </dt>
+        <dd>
          Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
+        </dt>
         </li>
-        <li><span class="parameter">acceleration</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">acceleration</span>
+          </span>
+          </dt>
+        <dd>
          Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
+        </dt>
         </li>
-        <li><span class="parameter">deceleration</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types"><span class="type">number</span></span>
+            <span class="parameter">deceleration</span>
+          </span>
+          </dt>
+        <dd>
          Rate at which to decrease the throttle probability as mean RTT increases.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2737,20 +3211,38 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">limit</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">limit</span>
+          </span>
+          </dt>
+        <dd>
          A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
+        </dt>
         </li>
-        <li><span class="parameter">minimum</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">minimum</span>
+          </span>
+          </dt>
+        <dd>
          Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
+        </dt>
         </li>
-        <li><span class="parameter">maximum</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">maximum</span>
+          </span>
+          </dt>
+        <dd>
          Fixed timeout in milliseconds for which any packet has to be acknowledged.
+        </dt>
         </li>
-    </ul>
+    </dl>
 
 
 
@@ -2778,7 +3270,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </dl>
 </div>
 </section>
-<section id="sock">
+<section class="section" id="sock">
     <h1 class="section-header "><a name="sock"></a>sock</h1>
     <div class="section-content">
 
@@ -2794,20 +3286,38 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">serverOrAddress</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">string/peer</span></span>
+            <span class="parameter">serverOrAddress</span>
+          </span>
+          </dt>
+        <dd>
          Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
+        </dt>
         </li>
-        <li><span class="parameter">port</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">port</span>
+          </span>
+          </dt>
+        <dd>
          Port number of the server to connect to. (default: 22122)
+        </dt>
         </li>
-        <li><span class="parameter">maxChannels</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">maxChannels</span>
+          </span>
+          </dt>
+        <dd>
          Maximum channels available to send and receive data. (default: 1)
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -2852,32 +3362,68 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 
 
     <h3>Parameters:</h3>
-    <ul>
-        <li><span class="parameter">address</span>
+    <dl>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">string</span></span>
+            <span class="parameter">address</span>
+          </span>
+          </dt>
+        <dd>
          Hostname or IP address to bind to. (default: "localhost")
+        </dt>
         </li>
-        <li><span class="parameter">port</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">port</span>
+          </span>
+          </dt>
+        <dd>
          Port to listen to for data. (default: 22122)
+        </dt>
         </li>
-        <li><span class="parameter">maxPeers</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">maxPeers</span>
+          </span>
+          </dt>
+        <dd>
          Maximum peers that can connect to the server. (default: 64)
+        </dt>
         </li>
-        <li><span class="parameter">maxChannels</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">maxChannels</span>
+          </span>
+          </dt>
+        <dd>
          Maximum channels available to send and receive data. (default: 1)
+        </dt>
         </li>
-        <li><span class="parameter">inBandwidth</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">inBandwidth</span>
+          </span>
+          </dt>
+        <dd>
          Maximum incoming bandwidth (default: 0)
+        </dt>
         </li>
-        <li><span class="parameter">outBandwidth</span>
+          <dt>
+          <span class="parameter_info">
             <span class="types">optional <span class="type">number</span></span>
+            <span class="parameter">outBandwidth</span>
+          </span>
+          </dt>
+        <dd>
          Maximum outgoing bandwidth (default: 0)
+        </dt>
         </li>
-    </ul>
+    </dl>
 
     <h3>Returns:</h3>
     <ol>
@@ -2928,7 +3474,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2017-07-16 00:21:46 </i>
+<i style="float:right;">Last updated 2017-07-16 19:38:29 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>
