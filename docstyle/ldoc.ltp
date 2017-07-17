@@ -16,6 +16,9 @@
 # local function M(txt,item) return ldoc.markup(txt,item,ldoc.plain) end
 # local nowrap = ldoc.wrap and '' or 'nowrap'
 
+<input type="checkbox" id="sidebar_toggle" class="sidebar_toggle" role="button">
+<label class="sidebar_toggle_label" for="sidebar_toggle"></label>
+
 <div class="sidebar">
     <div class="table-of-contents">
 # if not ldoc.no_summary then
@@ -32,7 +35,6 @@
 #end -- if not no_summary
     </div>
 </div>
-
 
 <div class="contents">
 
