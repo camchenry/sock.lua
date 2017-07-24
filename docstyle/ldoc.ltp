@@ -209,7 +209,7 @@
     <ul class="see-items">
 #     for see in iter(item.see) do
     <li> 
-        <a href="$(ldoc.href(see))">$(see.label)</a>$(il)
+        <a href="#$(see.name)">$(see.label)</a>$(il)
     </li>
 #    end -- for
     </ul>
