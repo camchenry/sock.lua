@@ -15,6 +15,13 @@
 # local iter = ldoc.modules.iter
 # local function M(txt,item) return ldoc.markup(txt,item,ldoc.plain) end
 # local nowrap = ldoc.wrap and '' or 'nowrap'
+# local orig_ldoc_href = ldoc.href
+# local function H(see)
+#   local ref = orig_ldoc_href(see)
+#   ref = ref:gsub('index.html', '')
+#   return ref
+# end
+# ldoc.href = H
 
 <input type="checkbox" id="sidebar_toggle" class="sidebar_toggle" role="button">
 <label class="sidebar_toggle_label" for="sidebar_toggle"></label>
