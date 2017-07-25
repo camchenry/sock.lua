@@ -156,8 +156,13 @@
     <h3 class="function_name">CONNECTING_STATES</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     States that represent the client connecting to a server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -218,8 +223,13 @@
     <h3 class="function_name">CONNECTION_STATES</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     All of the possible connection statuses for a client connection.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -355,8 +365,13 @@
     <h3 class="function_name">DISCONNECTING_STATES</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     States that represent the client disconnecting from a server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -404,8 +419,13 @@
     <h3 class="function_name">SEND_MODES</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Valid modes for sending messages.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -462,8 +482,13 @@
     <h3 class="function_name">Server:destroy()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Destroys the server and frees the port it is bound to.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -479,8 +504,11 @@
     <h3 class="function_name">Server:enableCompression()</h3>
     </dt>
     <dd>
-    <p>
-    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.  Both the client and server must both either have compression enabled or disabled.</p>
+    <p class="summary">
+    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.
+    </p>
+    <p class="description">
+     Both the client and server must both either have compression enabled or disabled.</p>
 
 <p> Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
     </p>
@@ -498,8 +526,13 @@
     <h3 class="function_name">Server:getAddress()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the IP address or hostname that the server was created with.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -524,8 +557,13 @@
     <h3 class="function_name">Server:getClient(peer)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets the Client object associated with an enet peer.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -561,8 +599,13 @@
     <h3 class="function_name">Server:getClientByConnectId(connectId)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets the Client object that has the given connection id.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -600,8 +643,13 @@
     <h3 class="function_name">Server:getClientByIndex(index)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the Client object that has the given peer index.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -640,8 +688,13 @@
     <h3 class="function_name">Server:getClientCount()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the number of Clients that are currently connected to the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -664,8 +717,13 @@
     <h3 class="function_name">Server:getClients()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the table of Clients actively connected to the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -687,8 +745,13 @@
     <h3 class="function_name">Server:getDefaultSendMode()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the default send mode.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -719,8 +782,13 @@
     <h3 class="function_name">Server:getLastServiceTime()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the last time when network events were serviced.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -743,9 +811,11 @@
     <h3 class="function_name">Server:getMaxChannels()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the number of allocated channels.
- Channels are zero-indexed, e.g. 16 channels allocated means that the
+    </p>
+    <p class="description">
+     Channels are zero-indexed, e.g. 16 channels allocated means that the
  maximum channel that can be used is 15.
     </p>
 
@@ -769,8 +839,13 @@
     <h3 class="function_name">Server:getMaxPeers()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the number of allocated slots for peers.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -793,8 +868,13 @@
     <h3 class="function_name">Server:getMessageTimeout()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the timeout for packets.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -818,8 +898,13 @@
     <h3 class="function_name">Server:getPeerByIndex(index)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the enet_peer that has the given index.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -856,8 +941,13 @@
     <h3 class="function_name">Server:getPort()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the port that the server is hosted on.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -882,8 +972,13 @@
     <h3 class="function_name">Server:getSendMode()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the current send mode.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -914,8 +1009,13 @@
     <h3 class="function_name">Server:getSocketAddress()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the socket address of the host.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -939,8 +1039,13 @@
     <h3 class="function_name">Server:getTotalReceivedData()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total received data since the server was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -963,8 +1068,13 @@
     <h3 class="function_name">Server:getTotalReceivedPackets()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total number of packets (messages) received since the server was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -993,8 +1103,13 @@
     <h3 class="function_name">Server:getTotalSentData()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total sent data since the server was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1017,9 +1132,11 @@
     <h3 class="function_name">Server:getTotalSentPackets()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total number of packets (messages) sent since the server was created.
- Everytime a message is sent or received, the corresponding figure is incremented.
+    </p>
+    <p class="description">
+     Everytime a message is sent or received, the corresponding figure is incremented.
  Therefore, this is not necessarily an accurate indicator of how many packets were actually
  exchanged over the network.
     </p>
@@ -1044,9 +1161,11 @@
     <h3 class="function_name">Server:log(event, data)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Log an event.
- Alias for Server.logger:log.
+    </p>
+    <p class="description">
+     Alias for Server.logger:log.
     </p>
 
 
@@ -1091,8 +1210,13 @@
     <h3 class="function_name">Server:on(event, callback)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Add a callback to an event.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1144,8 +1268,13 @@
     <h3 class="function_name">Server:removeCallback(callback)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Remove a specific callback for an event.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1188,8 +1317,13 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:resetSendSettings()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Reset all send options to their default values.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1205,8 +1339,13 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:sendToAll(event, data)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Send a message to all clients.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1248,9 +1387,11 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:sendToAllBut(client, event, data)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Send a message to all clients, except one.
- Useful for when the client does something locally, but other clients
+    </p>
+    <p class="description">
+     Useful for when the client does something locally, but other clients
  need to be updated at the same time. This way avoids duplicating objects by
  never sending its own event to itself in the first place.
     </p>
@@ -1300,8 +1441,11 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:sendToPeer(peer, event, data)</h3>
     </dt>
     <dd>
-    <p>
-    Send a message to a single peer.  Useful to send data to a newly connected player
+    <p class="summary">
+    Send a message to a single peer.
+    </p>
+    <p class="description">
+     Useful to send data to a newly connected player
  without sending to everyone who already received it.
     </p>
 
@@ -1354,8 +1498,13 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setBandwidthLimit(incoming, outgoing)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the incoming and outgoing bandwidth limits.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1394,9 +1543,11 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setDefaultSendChannel(channel)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the default send channel for all future outgoing messages.
- The initial default is 0.
+    </p>
+    <p class="description">
+     The initial default is 0.
     </p>
 
 
@@ -1425,8 +1576,11 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setDefaultSendMode(mode)</h3>
     </dt>
     <dd>
-    <p>
-    Set the default send mode for all future outgoing messages. <br/>
+    <p class="summary">
+    Set the default send mode for all future outgoing messages.
+    </p>
+    <p class="description">
+
  The initial default is "reliable".
     </p>
 
@@ -1462,8 +1616,13 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setMaxChannels(limit)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the maximum number of channels.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1493,8 +1652,13 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setMessageTimeout(timeout)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the timeout to wait for packets.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1524,10 +1688,11 @@ server:removeCallback(callback)</pre>
     <h3 class="function_name">Server:setSchema(event, schema)</h3>
     </dt>
     <dd>
-    <p>
-    Set the data schema for an event. </p>
-
-<p> Schemas allow you to set a specific format that the data will be sent. If the
+    <p class="summary">
+    Set the data schema for an event.
+    </p>
+    <p class="description">
+     Schemas allow you to set a specific format that the data will be sent. If the
  client and server both know the format ahead of time, then the table keys
  do not have to be sent across the network, which saves bandwidth.
     </p>
@@ -1618,8 +1783,11 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
     <h3 class="function_name">Server:setSendChannel(channel)</h3>
     </dt>
     <dd>
-    <p>
-    Set the send channel for the next outgoing message. <br/>
+    <p class="summary">
+    Set the send channel for the next outgoing message.
+    </p>
+    <p class="description">
+
  The channel will be reset after the next message. Channels are zero-indexed
  and cannot exceed the maximum number of channels allocated. The initial
  default is 0.
@@ -1656,8 +1824,11 @@ server:on(<span class="string">"update"</span>, <span class="keyword">function</
     <h3 class="function_name">Server:setSendMode(mode)</h3>
     </dt>
     <dd>
-    <p>
-    Set the send mode for the next outgoing message. <br/>
+    <p class="summary">
+    Set the send mode for the next outgoing message.
+    </p>
+    <p class="description">
+
  The mode will be reset after the next message is sent. The initial default
  is "reliable".
     </p>
@@ -1699,9 +1870,11 @@ server:sendToAll(<span class="string">"playerState"</span>, {...})</pre>
     <h3 class="function_name">Server:setSerialization(serialize, deserialize)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the serialization functions for sending and receiving data.
- Both the client and server must share the same serialization method.
+    </p>
+    <p class="description">
+     Both the client and server must share the same serialization method.
     </p>
 
 
@@ -1746,8 +1919,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Server:update()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Check for network events and handle them.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1774,9 +1952,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:connect(code)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Connect to the chosen server.
- Connection will not actually occur until the next time <a href="index.html#Client:update">Client:update</a> is called.
+    </p>
+    <p class="description">
+     Connection will not actually occur until the next time <a href="index.html#Client:update">Client:update</a> is called.
     </p>
 
 
@@ -1805,8 +1985,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:disconnect(code)</h3>
     </dt>
     <dd>
-    <p>
-    Disconnect from the server, if connected.  The client will disconnect the
+    <p class="summary">
+    Disconnect from the server, if connected.
+    </p>
+    <p class="description">
+     The client will disconnect the
  next time that network messages are sent.
     </p>
 
@@ -1836,8 +2019,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:disconnectLater(code)</h3>
     </dt>
     <dd>
-    <p>
-    Disconnect from the server, if connected.  The client will disconnect after
+    <p class="summary">
+    Disconnect from the server, if connected.
+    </p>
+    <p class="description">
+     The client will disconnect after
  sending all queued packets.
     </p>
 
@@ -1867,8 +2053,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:disconnectNow(code)</h3>
     </dt>
     <dd>
-    <p>
-    Disconnect from the server, if connected.  The client will disconnect immediately.
+    <p class="summary">
+    Disconnect from the server, if connected.
+    </p>
+    <p class="description">
+     The client will disconnect immediately.
     </p>
 
 
@@ -1897,8 +2086,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:enableCompression()</h3>
     </dt>
     <dd>
-    <p>
-    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.  Both the client and server must both either have compression enabled or disabled.</p>
+    <p class="summary">
+    Enables an adaptive order-2 PPM range coder for the transmitted data of all peers.
+    </p>
+    <p class="description">
+     Both the client and server must both either have compression enabled or disabled.</p>
 
 <p> Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
     </p>
@@ -1916,8 +2108,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getAddress()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the IP address or hostname that the client was created with.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1942,8 +2139,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getConnectId()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the unique connection id, if connected.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1966,8 +2168,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getDefaultSendMode()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the default send mode.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -1998,8 +2205,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getIndex()</h3>
     </dt>
     <dd>
-    <p>
-    Get the index of the enet peer.  All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure.
+    <p class="summary">
+    Get the index of the enet peer.
+    </p>
+    <p class="description">
+     All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure.
     </p>
 
 
@@ -2022,8 +2232,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getLastServiceTime()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the last time when network events were serviced.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2046,9 +2261,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getMaxChannels()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the number of allocated channels.
- Channels are zero-indexed, e.g. 16 channels allocated means that the
+    </p>
+    <p class="description">
+     Channels are zero-indexed, e.g. 16 channels allocated means that the
  maximum channel that can be used is 15.
     </p>
 
@@ -2072,8 +2289,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getMessageTimeout()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the timeout for packets.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2097,8 +2319,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getPeerByIndex(index)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the enet_peer that has the given index.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2135,8 +2362,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getPort()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the port that the client is connecting to.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2161,9 +2393,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getRoundTripTime()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Return the round trip time (RTT, or ping) to the server, if connected.
- It can take a few seconds for the time to approach an accurate value.
+    </p>
+    <p class="description">
+     It can take a few seconds for the time to approach an accurate value.
     </p>
 
 
@@ -2186,8 +2420,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getSendMode()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the current send mode.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2218,8 +2457,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getSocketAddress()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the socket address of the host.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2242,8 +2486,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getState()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the current connection state, if connected.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2272,8 +2521,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getTotalReceivedData()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total received data since the server was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2296,8 +2550,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getTotalReceivedPackets()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total number of packets (messages) received since the client was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2326,8 +2585,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getTotalSentData()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total sent data since the server was created.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2350,9 +2614,11 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:getTotalSentPackets()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Get the total number of packets (messages) sent since the client was created.
- Everytime a message is sent or received, the corresponding figure is incremented.
+    </p>
+    <p class="description">
+     Everytime a message is sent or received, the corresponding figure is incremented.
  Therefore, this is not necessarily an accurate indicator of how many packets were actually
  exchanged over the network.
     </p>
@@ -2377,8 +2643,13 @@ server:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:isConnected()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets whether the client is connected to the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2408,8 +2679,13 @@ client:isConnected() <span class="comment">-- false
     <h3 class="function_name">Client:isConnecting()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets whether the client is connecting to the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2440,8 +2716,13 @@ client:isConnecting() <span class="comment">-- true
     <h3 class="function_name">Client:isDisconnected()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets whether the client is disconnected from the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2471,8 +2752,13 @@ client:isDisconnected() <span class="comment">-- false
     <h3 class="function_name">Client:isDisconnecting()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Gets whether the client is disconnecting from the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2503,9 +2789,11 @@ client:isDisconnecting() <span class="comment">-- true
     <h3 class="function_name">Client:log(event, data)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Log an event.
- Alias for Client.logger:log.
+    </p>
+    <p class="description">
+     Alias for Client.logger:log.
     </p>
 
 
@@ -2550,8 +2838,13 @@ client:isDisconnecting() <span class="comment">-- true
     <h3 class="function_name">Client:on(event, callback)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Add a callback to an event.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2603,8 +2896,13 @@ client:isDisconnecting() <span class="comment">-- true
     <h3 class="function_name">Client:removeCallback(callback)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Remove a specific callback for an event.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2647,8 +2945,11 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:reset(client)</h3>
     </dt>
     <dd>
-    <p>
-    Forcefully disconnects the client.  The server is not notified of the disconnection.
+    <p class="summary">
+    Forcefully disconnects the client.
+    </p>
+    <p class="description">
+     The server is not notified of the disconnection.
     </p>
 
 
@@ -2677,8 +2978,13 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:resetSendSettings()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Reset all send options to their default values.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2694,8 +3000,13 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:send(event, data)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Send a message to the server.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2733,8 +3044,13 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setBandwidthLimit(incoming, outgoing)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the incoming and outgoing bandwidth limits.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2773,9 +3089,11 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setDefaultSendChannel(channel)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the default send channel for all future outgoing messages.
- The initial default is 0.
+    </p>
+    <p class="description">
+     The initial default is 0.
     </p>
 
 
@@ -2804,8 +3122,11 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setDefaultSendMode(mode)</h3>
     </dt>
     <dd>
-    <p>
-    Set the default send mode for all future outgoing messages. <br/>
+    <p class="summary">
+    Set the default send mode for all future outgoing messages.
+    </p>
+    <p class="description">
+
  The initial default is "reliable".
     </p>
 
@@ -2841,8 +3162,13 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setMaxChannels(limit)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the maximum number of channels.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2872,8 +3198,13 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setMessageTimeout(timeout)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the timeout to wait for packets.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -2903,9 +3234,11 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setPingInterval(interval)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set how frequently to ping the server.
- The round trip time is updated each time a ping is sent. The initial
+    </p>
+    <p class="description">
+     The round trip time is updated each time a ping is sent. The initial
  default is 500ms.
     </p>
 
@@ -2935,10 +3268,11 @@ client:removeCallback(callback)</pre>
     <h3 class="function_name">Client:setSchema(event, schema)</h3>
     </dt>
     <dd>
-    <p>
-    Set the data schema for an event. </p>
-
-<p> Schemas allow you to set a specific format that the data will be sent. If the
+    <p class="summary">
+    Set the data schema for an event.
+    </p>
+    <p class="description">
+     Schemas allow you to set a specific format that the data will be sent. If the
  client and server both know the format ahead of time, then the table keys
  do not have to be sent across the network, which saves bandwidth.
     </p>
@@ -3029,8 +3363,11 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
     <h3 class="function_name">Client:setSendChannel(channel)</h3>
     </dt>
     <dd>
-    <p>
-    Set the send channel for the next outgoing message. <br/>
+    <p class="summary">
+    Set the send channel for the next outgoing message.
+    </p>
+    <p class="description">
+
  The channel will be reset after the next message. Channels are zero-indexed
  and cannot exceed the maximum number of channels allocated. The initial
  default is 0.
@@ -3067,8 +3404,11 @@ client:on(<span class="string">"update"</span>, <span class="keyword">function</
     <h3 class="function_name">Client:setSendMode(mode)</h3>
     </dt>
     <dd>
-    <p>
-    Set the send mode for the next outgoing message. <br/>
+    <p class="summary">
+    Set the send mode for the next outgoing message.
+    </p>
+    <p class="description">
+
  The mode will be reset after the next message is sent. The initial default
  is "reliable".
     </p>
@@ -3110,9 +3450,11 @@ client:send(<span class="string">"position"</span>, {...})</pre>
     <h3 class="function_name">Client:setSerialization(serialize, deserialize)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the serialization functions for sending and receiving data.
- Both the client and server must share the same serialization method.
+    </p>
+    <p class="description">
+     Both the client and server must share the same serialization method.
     </p>
 
 
@@ -3157,8 +3499,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:setThrottle(interval, acceleration, deceleration)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Change the probability at which unreliable packets should not be dropped.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -3207,8 +3554,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:setTimeout(limit, minimum, maximum)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Set the parameters for attempting to reconnect if a timeout is detected.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -3257,8 +3609,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">Client:update()</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Check for network events and handle them.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -3282,8 +3639,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">newClient(serverOrAddress, port, maxChannels)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Creates a new Client instance.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -3358,8 +3720,13 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
     <h3 class="function_name">newServer(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)</h3>
     </dt>
     <dd>
-    <p>
+    <p class="summary">
     Creates a new Server object.
+    </p>
+    <p class="description">
+
+
+
     </p>
 
 
@@ -3476,7 +3843,7 @@ client:setSerialization(bitser.dumps, bitser.loads)</pre>
 </div> <!-- id="main" -->
 <div id="about">
 <i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
-<i style="float:right;">Last updated 2017-07-24 19:27:57 </i>
+<i style="float:right;">Last updated 2017-07-24 20:11:54 </i>
 </div> <!-- id="about" -->
 </div> <!-- id="container" -->
 </body>

@@ -109,8 +109,11 @@
 #  end
     </dt>
     <dd>
-    <p>
-    $(M(ldoc.descript(item),item))
+    <p class="summary">
+    $(M(item.summary,item))
+    </p>
+    <p class="description">
+    $(M(item.description,item))
     </p>
 
 #   if ldoc.custom_tags then

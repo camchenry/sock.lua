@@ -1,0 +1,1461 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <title>sock.lua Documentation</title>
+    <meta charset="utf-8">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/normalize/7.0.0/normalize.min.css" rel="styleshet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/milligram/1.3.0/milligram.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="../ldoc.css">
+</head>
+<body>
+
+
+<input type="checkbox" id="sidebar_toggle" class="sidebar_toggle" role="button">
+<label class="sidebar_toggle_label" for="sidebar_toggle"></label>
+
+<div class="sidebar">
+    <div class="table-of-contents">
+    </div>
+</div>
+
+<div class="contents">
+
+<!-- Header -->
+<header class="header">
+    <h1 class="project-title">sock.lua</h1>
+</header>
+
+<div id="main">
+
+<!-- Menu -->
+
+<div id="content">
+
+
+    <h2>sock.lua</h2>
+<pre>
+
+<span class="comment">--- A Lua networking library for LÖVE games.
+</span><span class="comment">-- * [Source code](https://github.com/camchenry/sock.lua)
+</span><span class="comment">-- * [Examples](https://github.com/camchenry/sock.lua/tree/master/examples)
+</span><span class="comment">-- @module sock
+</span>
+<span class="keyword">local</span> sock = {
+    _VERSION     = <span class="string">'sock.lua v0.3.0'</span>,
+    _DESCRIPTION = <span class="string">'A Lua networking library for LÖVE games'</span>,
+    _URL         = <span class="string">'https://github.com/camchenry/sock.lua'</span>,
+    _LICENSE     = <span class="string">[[
+        MIT License
+
+        Copyright (c) 2016 Cameron McHenry
+
+        Permission is hereby granted, free of charge, to any person obtaining a copy
+        of this software and associated documentation files (the "Software"), to deal
+        in the Software without restriction, including without limitation the rights
+        to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+        copies of the Software, and to permit persons to whom the Software is
+        furnished to do so, subject to the following conditions:
+
+        The above copyright notice and this permission notice shall be included in all
+        copies or substantial portions of the Software.
+
+        THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+        IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+        FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+        AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+        LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+        OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+        SOFTWARE.
+    ]]</span>
+}
+
+<span class="global">require</span> <span class="string">"enet"</span>
+
+<span class="comment">-- Current folder trick
+</span><span class="comment">-- http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
+</span><span class="keyword">local</span> currentFolder = (...):gsub(<span class="string">'%.[^%.]+$'</span>, <span class="string">''</span>)
+
+<span class="keyword">local</span> bitserLoaded = <span class="keyword">false</span>
+
+<span class="keyword">if</span> bitser <span class="keyword">then</span>
+    bitserLoaded = <span class="keyword">true</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- Try to load some common serialization libraries
+</span><span class="comment">-- This is for convenience, you may still specify your own serializer
+</span><span class="keyword">if</span> <span class="keyword">not</span> bitserLoaded <span class="keyword">then</span>
+    bitserLoaded, bitser = <span class="global">pcall</span>(<span class="global">require</span>, <span class="string">"bitser"</span>)
+<span class="keyword">end</span>
+
+<span class="comment">-- Try to load relatively
+</span><span class="keyword">if</span> <span class="keyword">not</span> bitserLoaded <span class="keyword">then</span>
+    bitserLoaded, bitser = <span class="global">pcall</span>(<span class="global">require</span>, currentFolder .. <span class="string">".bitser"</span>)
+<span class="keyword">end</span>
+
+<span class="comment">-- links variables to keys based on their order
+</span><span class="comment">-- note that it only works for boolean and number values, not strings
+</span><span class="keyword">local</span> <span class="keyword">function</span> zipTable(items, keys)
+    <span class="keyword">local</span> data = {}
+
+    <span class="comment">-- convert variable at index 1 into the value for the key value at index 1, and so on
+</span>    <span class="keyword">for</span> i, value <span class="keyword">in</span> <span class="global">ipairs</span>(items) <span class="keyword">do</span>
+        <span class="keyword">local</span> key = keys[i]
+
+        data[key] = value
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> data
+<span class="keyword">end</span>
+
+<span class="comment">--- All of the possible connection statuses for a client connection.
+</span><span class="comment">-- @see Client:getState
+</span>sock.CONNECTION_STATES = {
+    <span class="string">"disconnected"</span>,             <span class="comment">-- Disconnected from the server.
+</span>    <span class="string">"connecting"</span>,               <span class="comment">-- In the process of connecting to the server.
+</span>    <span class="string">"acknowledging_connect"</span>,    <span class="comment">--
+</span>    <span class="string">"connection_pending"</span>,       <span class="comment">--
+</span>    <span class="string">"connection_succeeded"</span>,     <span class="comment">--
+</span>    <span class="string">"connected"</span>,                <span class="comment">-- Successfully connected to the server.
+</span>    <span class="string">"disconnect_later"</span>,         <span class="comment">-- Disconnecting, but only after sending all queued packets.
+</span>    <span class="string">"disconnecting"</span>,            <span class="comment">-- In the process of disconnecting from the server.
+</span>    <span class="string">"acknowledging_disconnect"</span>, <span class="comment">--
+</span>    <span class="string">"zombie"</span>,                   <span class="comment">--
+</span>    <span class="string">"unknown"</span>,                  <span class="comment">--
+</span>}
+
+<span class="comment">--- States that represent the client connecting to a server.
+</span>sock.CONNECTING_STATES = {
+    <span class="string">"connecting"</span>,               <span class="comment">-- In the process of connecting to the server.
+</span>    <span class="string">"acknowledging_connect"</span>,    <span class="comment">--
+</span>    <span class="string">"connection_pending"</span>,       <span class="comment">--
+</span>    <span class="string">"connection_succeeded"</span>,     <span class="comment">--
+</span>}<a id="76"></a>
+
+<span class="comment">--- States that represent the client disconnecting from a server.
+</span>sock.DISCONNECTING_STATES = {
+    <span class="string">"disconnect_later"</span>,         <span class="comment">-- Disconnecting, but only after sending all queued packets.
+</span>    <span class="string">"disconnecting"</span>,            <span class="comment">-- In the process of disconnecting from the server.
+</span>    <span class="string">"acknowledging_disconnect"</span>, <span class="comment">--
+</span>}
+
+<span class="comment">--- Valid modes for sending messages.
+</span>sock.SEND_MODES = {
+    <span class="string">"reliable"</span>,     <span class="comment">-- Message is guaranteed to arrive, and arrive in the order in which it is sent.
+</span>    <span class="string">"unsequenced"</span>,  <span class="comment">-- Message has no guarantee on the order that it arrives.
+</span>    <span class="string">"unreliable"</span>,   <span class="comment">-- Message is not guaranteed to arrive.
+</span>}
+
+<span class="keyword">local</span> <span class="keyword">function</span> isValidSendMode(mode)<a id="91"></a>
+    <span class="keyword">for</span> _, validMode <span class="keyword">in</span> <span class="global">ipairs</span>(sock.SEND_MODES) <span class="keyword">do</span>
+        <span class="keyword">if</span> mode == validMode <span class="keyword">then</span>
+            <span class="keyword">return</span> <span class="keyword">true</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">return</span> <span class="keyword">false</span>
+<span class="keyword">end</span><a id="99"></a>
+
+<span class="keyword">local</span> Logger = {}
+<span class="keyword">local</span> Logger_mt = {__index = Logger}
+
+<span class="keyword">local</span> <span class="keyword">function</span> newLogger(source)
+    <span class="keyword">local</span> logger = <span class="global">setmetatable</span>({
+        source          = source,
+        messages        = {},
+
+        <span class="comment">-- Makes print info more concise, but should still log the full line
+</span>        shortenLines    = <span class="keyword">true</span>,
+        <span class="comment">-- Print all incoming event data
+</span>        printEventData  = <span class="keyword">false</span>,
+        printErrors     = <span class="keyword">true</span>,
+        printWarnings   = <span class="keyword">true</span>,
+    }, Logger_mt)
+
+    <span class="keyword">return</span> logger
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> Logger:log(event, data)
+    <span class="keyword">local</span> time = <span class="global">os</span>.date(<span class="string">"%X"</span>) <span class="comment">-- something like 24:59:59
+</span>    <span class="keyword">local</span> shortLine = (<span class="string">"[%s] %s"</span>):format(event, data)
+    <span class="keyword">local</span> fullLine  = (<span class="string">"[%s][%s][%s] %s"</span>):format(self.source, time, event, data)
+
+    <span class="comment">-- The printed message may or may not be the full message
+</span>    <span class="keyword">local</span> line = fullLine
+    <span class="keyword">if</span> self.shortenLines <span class="keyword">then</span>
+        line = shortLine
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> self.printEventData <span class="keyword">then</span>
+        <span class="global">print</span>(line)
+    <span class="keyword">elseif</span> self.printErrors <span class="keyword">and</span> event == <span class="string">"error"</span> <span class="keyword">then</span>
+        <span class="global">print</span>(line)
+    <span class="keyword">elseif</span> self.printWarnings <span class="keyword">and</span> event == <span class="string">"warning"</span> <span class="keyword">then</span>
+        <span class="global">print</span>(line)
+    <span class="keyword">end</span>
+
+    <span class="comment">-- The logged message is always the full message
+</span>    <span class="global">table</span>.insert(self.messages, fullLine)
+
+    <span class="comment">-- TODO: Dump to a log file
+</span><span class="keyword">end</span>
+
+<span class="keyword">local</span> Listener = {}
+<span class="keyword">local</span> Listener_mt = {__index = Listener}
+
+<span class="keyword">local</span> <span class="keyword">function</span> newListener()
+    <span class="keyword">local</span> listener = <span class="global">setmetatable</span>({
+        triggers        = {},
+        schemas         = {},
+    }, Listener_mt)
+
+    <span class="keyword">return</span> listener
+<span class="keyword">end</span>
+
+<span class="comment">-- Adds a callback to a trigger
+</span><span class="comment">-- Returns: the callback function
+</span><span class="keyword">function</span> Listener:addCallback(event, callback)
+    <span class="keyword">if</span> <span class="keyword">not</span> self.triggers[event] <span class="keyword">then</span>
+        self.triggers[event] = {}
+    <span class="keyword">end</span>
+
+    <span class="global">table</span>.insert(self.triggers[event], callback)
+
+    <span class="keyword">return</span> callback
+<span class="keyword">end</span>
+
+<span class="comment">-- Removes a callback on a given trigger
+</span><span class="comment">-- Returns a boolean indicating if the callback was removed
+</span><span class="keyword">function</span> Listener:removeCallback(callback)
+    <span class="keyword">for</span> _, triggers <span class="keyword">in</span> <span class="global">pairs</span>(self.triggers) <span class="keyword">do</span>
+        <span class="keyword">for</span> i, trigger <span class="keyword">in</span> <span class="global">pairs</span>(triggers) <span class="keyword">do</span>
+            <span class="keyword">if</span> trigger == callback <span class="keyword">then</span>
+                <span class="global">table</span>.remove(triggers, i)
+                <span class="keyword">return</span> <span class="keyword">true</span>
+            <span class="keyword">end</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">return</span> <span class="keyword">false</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- Accepts: event (string), schema (table)
+</span><span class="comment">-- Returns: nothing
+</span><span class="keyword">function</span> Listener:setSchema(event, schema)
+    self.schemas[event] = schema
+<span class="keyword">end</span>
+
+<span class="comment">-- Activates all callbacks for a trigger
+</span><span class="comment">-- Returns a boolean indicating if any callbacks were triggered
+</span><span class="keyword">function</span> Listener:trigger(event, data, client)
+    <span class="keyword">if</span> self.triggers[event] <span class="keyword">then</span>
+        <span class="keyword">for</span> _, trigger <span class="keyword">in</span> <span class="global">pairs</span>(self.triggers[event]) <span class="keyword">do</span>
+            <span class="comment">-- Event has a pre-existing schema defined
+</span>            <span class="keyword">if</span> self.schemas[event] <span class="keyword">then</span>
+                data = zipTable(data, self.schemas[event])
+            <span class="keyword">end</span>
+            trigger(data, client)
+        <span class="keyword">end</span>
+        <span class="keyword">return</span> <span class="keyword">true</span>
+    <span class="keyword">else</span>
+        <span class="keyword">return</span> <span class="keyword">false</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Manages all clients and receives network events.
+</span><span class="comment">-- @type Server
+</span><span class="keyword">local</span> Server = {}
+<span class="keyword">local</span> Server_mt = {__index = Server}
+
+<span class="comment">--- Check for network events and handle them.
+</span><span class="keyword">function</span> Server:update()
+    <span class="keyword">local</span> event = self.host:service(self.messageTimeout)
+
+    <span class="keyword">while</span> event <span class="keyword">do</span>
+        <span class="keyword">if</span> event.<span class="global">type</span> == <span class="string">"connect"</span> <span class="keyword">then</span>
+            <span class="keyword">local</span> eventClient = sock.newClient(event.peer)
+            eventClient:setSerialization(self.serialize, self.deserialize)
+            <span class="global">table</span>.insert(self.peers, event.peer)
+            <span class="global">table</span>.insert(self.clients, eventClient)
+            self:_activateTriggers(<span class="string">"connect"</span>, event.data, eventClient)
+            self:log(event.<span class="global">type</span>, <span class="global">tostring</span>(event.peer) .. <span class="string">" connected"</span>)
+
+        <span class="keyword">elseif</span> event.<span class="global">type</span> == <span class="string">"receive"</span> <span class="keyword">then</span>
+            <span class="keyword">local</span> eventName, data = self:__unpack(event.data)
+            <span class="keyword">local</span> eventClient = self:getClient(event.peer)
+
+            self:_activateTriggers(eventName, data, eventClient)
+            self:log(eventName, data)
+
+        <span class="keyword">elseif</span> event.<span class="global">type</span> == <span class="string">"disconnect"</span> <span class="keyword">then</span>
+            <span class="comment">-- remove from the active peer list
+</span>            <span class="keyword">for</span> i, peer <span class="keyword">in</span> <span class="global">pairs</span>(self.peers) <span class="keyword">do</span>
+                <span class="keyword">if</span> peer == event.peer <span class="keyword">then</span>
+                    <span class="global">table</span>.remove(self.peers, i)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            <span class="keyword">local</span> eventClient = self:getClient(event.peer)
+            <span class="keyword">for</span> i, client <span class="keyword">in</span> <span class="global">pairs</span>(self.clients) <span class="keyword">do</span>
+                <span class="keyword">if</span> client == eventClient <span class="keyword">then</span>
+                    <span class="global">table</span>.remove(self.clients, i)
+                <span class="keyword">end</span>
+            <span class="keyword">end</span>
+            self:_activateTriggers(<span class="string">"disconnect"</span>, event.data, eventClient)
+            self:log(event.<span class="global">type</span>, <span class="global">tostring</span>(event.peer) .. <span class="string">" disconnected"</span>)
+
+        <span class="keyword">end</span>
+
+        event = self.host:service(self.messageTimeout)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- Creates the unserialized message that will be used in callbacks
+</span><span class="comment">-- In: serialized message (string)
+</span><span class="comment">-- Out: event (string), data (mixed)
+</span><span class="keyword">function</span> Server:__unpack(data)
+    <span class="keyword">if</span> <span class="keyword">not</span> self.deserialize <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Can't deserialize message: deserialize was not set"</span>)
+        <span class="global">error</span>(<span class="string">"Can't deserialize message: deserialize was not set"</span>)
+    <span class="keyword">end</span>
+
+    <span class="keyword">local</span> message = self.deserialize(data)
+    <span class="keyword">local</span> eventName, data = message[<span class="number">1</span>], message[<span class="number">2</span>]
+    <span class="keyword">return</span> eventName, data
+<span class="keyword">end</span>
+
+<span class="comment">-- Creates the serialized message that will be sent over the network
+</span><span class="comment">-- In: event (string), data (mixed)
+</span><span class="comment">-- Out: serialized message (string)
+</span><span class="keyword">function</span> Server:__pack(event, data)
+    <span class="keyword">local</span> message = {event, data}
+    <span class="keyword">local</span> serializedMessage
+
+    <span class="keyword">if</span> <span class="keyword">not</span> self.serialize <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Can't serialize message: serialize was not set"</span>)
+        <span class="global">error</span>(<span class="string">"Can't serialize message: serialize was not set"</span>)
+    <span class="keyword">end</span>
+
+    <span class="comment">-- 'Data' = binary data class in Love
+</span>    <span class="keyword">if</span> <span class="global">type</span>(data) == <span class="string">"userdata"</span> <span class="keyword">and</span> data.<span class="global">type</span> <span class="keyword">and</span> data:typeOf(<span class="string">"Data"</span>) <span class="keyword">then</span>
+        message[<span class="number">2</span>] = data:getString()
+        serializedMessage = self.serialize(message)
+    <span class="keyword">else</span>
+        serializedMessage = self.serialize(message)
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> serializedMessage
+<span class="keyword">end</span>
+
+<span class="comment">--- Send a message to all clients, except one.
+</span><span class="comment">-- Useful for when the client does something locally, but other clients
+</span><span class="comment">-- need to be updated at the same time. This way avoids duplicating objects by
+</span><span class="comment">-- never sending its own event to itself in the first place.
+</span><span class="comment">-- @tparam Client client The client to not receive the message.
+</span><span class="comment">-- @tparam string event The event to trigger with this message.
+</span><span class="comment">-- @param data The data to send.
+</span><span class="keyword">function</span> Server:sendToAllBut(client, event, data)
+    <span class="keyword">local</span> serializedMessage = self:__pack(event, data)
+
+    <span class="keyword">for</span> _, p <span class="keyword">in</span> <span class="global">pairs</span>(self.peers) <span class="keyword">do</span>
+        <span class="keyword">if</span> p ~= client.connection <span class="keyword">then</span>
+            self.packetsSent = self.packetsSent + <span class="number">1</span>
+            p:send(serializedMessage, self.sendChannel, self.sendMode)
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+
+    self:resetSendSettings()
+<span class="keyword">end</span>
+
+<span class="comment">--- Send a message to all clients.
+</span><span class="comment">-- @tparam string event The event to trigger with this message.
+</span><span class="comment">-- @param data The data to send.
+</span><span class="comment">--@usage
+</span><span class="comment">--server:sendToAll("gameStarting", true)
+</span><span class="keyword">function</span> Server:sendToAll(event, data)
+    <span class="keyword">local</span> serializedMessage = self:__pack(event, data)
+
+    self.packetsSent = self.packetsSent + #self.peers
+
+    self.host:broadcast(serializedMessage, self.sendChannel, self.sendMode)
+
+    self:resetSendSettings()
+<span class="keyword">end</span>
+
+<span class="comment">--- Send a message to a single peer. Useful to send data to a newly connected player
+</span><span class="comment">-- without sending to everyone who already received it.
+</span><span class="comment">-- @tparam enet_peer peer The enet peer to receive the message.
+</span><span class="comment">-- @tparam string event The event to trigger with this message.
+</span><span class="comment">-- @param data data to send to the peer.
+</span><span class="comment">--@usage
+</span><span class="comment">--server:sendToPeer(peer, "initialGameInfo", {...})
+</span><span class="keyword">function</span> Server:sendToPeer(peer, event, data)
+    <span class="keyword">local</span> serializedMessage = self:__pack(event, data)
+
+    self.packetsSent = self.packetsSent + <span class="number">1</span>
+
+    peer:send(serializedMessage, self.sendChannel, self.sendMode)
+
+    self:resetSendSettings()
+<span class="keyword">end</span>
+
+<span class="comment">--- Add a callback to an event.
+</span><span class="comment">-- @tparam string event The event that will trigger the callback.
+</span><span class="comment">-- @tparam function callback The callback to be triggered.
+</span><span class="comment">-- @treturn function The callback that was passed in.
+</span><span class="comment">--@usage
+</span><span class="comment">--server:on("connect", function(data, client)
+</span><span class="comment">--    print("Client connected!")
+</span><span class="comment">--end)
+</span><span class="keyword">function</span> Server:on(event, callback)
+    <span class="keyword">return</span> self.listener:addCallback(event, callback)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> Server:_activateTriggers(event, data, client)
+    <span class="keyword">local</span> result = self.listener:trigger(event, data, client)
+
+    self.packetsReceived = self.packetsReceived + <span class="number">1</span>
+
+    <span class="keyword">if</span> <span class="keyword">not</span> result <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to activate trigger: '"</span> .. <span class="global">tostring</span>(event) .. <span class="string">"' but it does not exist."</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Remove a specific callback for an event.
+</span><span class="comment">-- @tparam function callback The callback to remove.
+</span><span class="comment">-- @treturn boolean Whether or not the callback was removed.
+</span><span class="comment">--@usage
+</span><span class="comment">--local callback = server:on("chatMessage", function(message)
+</span><span class="comment">--    print(message)
+</span><span class="comment">--end)
+</span><span class="comment">--server:removeCallback(callback)
+</span><span class="keyword">function</span> Server:removeCallback(callback)
+    <span class="keyword">return</span> self.listener:removeCallback(callback)
+<span class="keyword">end</span>
+
+<span class="comment">--- Log an event.
+</span><span class="comment">-- Alias for Server.logger:log.
+</span><span class="comment">-- @tparam string event The type of event that happened.
+</span><span class="comment">-- @tparam string data The message to log.
+</span><span class="comment">--@usage
+</span><span class="comment">--if somethingBadHappened then
+</span><span class="comment">--    server:log("error", "Something bad happened!")
+</span><span class="comment">--end
+</span><span class="keyword">function</span> Server:log(event, data)
+    <span class="keyword">return</span> self.logger:log(event, data)
+<span class="keyword">end</span>
+
+<span class="comment">--- Reset all send options to their default values.
+</span><span class="keyword">function</span> Server:resetSendSettings()
+    self.sendMode = self.defaultSendMode
+    self.sendChannel = self.defaultSendChannel
+<span class="keyword">end</span>
+
+<span class="comment">--- Enables an adaptive order-2 PPM range coder for the transmitted data of all peers. Both the client and server must both either have compression enabled or disabled.
+</span><span class="comment">--
+</span><span class="comment">-- Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+</span><span class="keyword">function</span> Server:enableCompression()
+    <span class="keyword">return</span> self.host:compress_with_range_coder()
+<span class="keyword">end</span>
+
+<span class="comment">--- Destroys the server and frees the port it is bound to.
+</span><span class="keyword">function</span> Server:destroy()
+    self.host:destroy()
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the send mode for the next outgoing message.
+</span><span class="comment">-- The mode will be reset after the next message is sent. The initial default
+</span><span class="comment">-- is "reliable".
+</span><span class="comment">-- @tparam string mode A valid send mode.
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="comment">-- @usage
+</span><span class="comment">--server:setSendMode("unreliable")
+</span><span class="comment">--server:sendToAll("playerState", {...})
+</span><span class="keyword">function</span> Server:setSendMode(mode)
+    <span class="keyword">if</span> <span class="keyword">not</span> isValidSendMode(mode) <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to use invalid send mode: '"</span> .. mode .. <span class="string">"'. Defaulting to reliable."</span>)
+        mode = <span class="string">"reliable"</span>
+    <span class="keyword">end</span>
+
+    self.sendMode = mode
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the default send mode for all future outgoing messages.
+</span><span class="comment">-- The initial default is "reliable".
+</span><span class="comment">-- @tparam string mode A valid send mode.
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Server:setDefaultSendMode(mode)
+    <span class="keyword">if</span> <span class="keyword">not</span> isValidSendMode(mode) <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Tried to set default send mode to invalid mode: '"</span> .. mode .. <span class="string">"'"</span>)
+        <span class="global">error</span>(<span class="string">"Tried to set default send mode to invalid mode: '"</span> .. mode .. <span class="string">"'"</span>)
+    <span class="keyword">end</span>
+
+    self.defaultSendMode = mode
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the send channel for the next outgoing message.
+</span><span class="comment">-- The channel will be reset after the next message. Channels are zero-indexed
+</span><span class="comment">-- and cannot exceed the maximum number of channels allocated. The initial
+</span><span class="comment">-- default is 0.
+</span><span class="comment">-- @tparam number channel Channel to send data on.
+</span><span class="comment">-- @usage
+</span><span class="comment">--server:setSendChannel(2) -- the third channel
+</span><span class="comment">--server:sendToAll("importantEvent", "The message")
+</span><span class="keyword">function</span> Server:setSendChannel(channel)
+    <span class="keyword">if</span> channel &gt; (self.maxChannels - <span class="number">1</span>) <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to use invalid channel: "</span> .. channel .. <span class="string">" (max is "</span> .. self.maxChannels - <span class="number">1</span> .. <span class="string">"). Defaulting to 0."</span>)
+        channel = <span class="number">0</span>
+    <span class="keyword">end</span>
+
+    self.sendChannel = channel
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the default send channel for all future outgoing messages.
+</span><span class="comment">-- The initial default is 0.
+</span><span class="comment">-- @tparam number channel Channel to send data on.
+</span><span class="keyword">function</span> Server:setDefaultSendChannel(channel)
+   self.defaultSendChannel = channel
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the data schema for an event.
+</span><span class="comment">--
+</span><span class="comment">-- Schemas allow you to set a specific format that the data will be sent. If the
+</span><span class="comment">-- client and server both know the format ahead of time, then the table keys
+</span><span class="comment">-- do not have to be sent across the network, which saves bandwidth.
+</span><span class="comment">-- @tparam string event The event to set the data schema for.
+</span><span class="comment">-- @tparam {string,...} schema The data schema.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- server = sock.newServer(...)
+</span><span class="comment">-- client = sock.newClient(...)
+</span><span class="comment">--
+</span><span class="comment">-- -- Without schemas
+</span><span class="comment">-- client:send("update", {
+</span><span class="comment">--     x = 4,
+</span><span class="comment">--     y = 100,
+</span><span class="comment">--     vx = -4.5,
+</span><span class="comment">--     vy = 23.1,
+</span><span class="comment">--     rotation = 1.4365,
+</span><span class="comment">-- })
+</span><span class="comment">-- server:on("update", function(data, client)
+</span><span class="comment">--     -- data = {
+</span><span class="comment">--     --    x = 4,
+</span><span class="comment">--     --    y = 100,
+</span><span class="comment">--     --    vx = -4.5,
+</span><span class="comment">--     --    vy = 23.1,
+</span><span class="comment">--     --    rotation = 1.4365,
+</span><span class="comment">--     -- }
+</span><span class="comment">-- end)
+</span><span class="comment">--
+</span><span class="comment">--
+</span><span class="comment">-- -- With schemas
+</span><span class="comment">-- server:setSchema("update", {
+</span><span class="comment">--     "x",
+</span><span class="comment">--     "y",
+</span><span class="comment">--     "vx",
+</span><span class="comment">--     "vy",
+</span><span class="comment">--     "rotation",
+</span><span class="comment">-- })
+</span><span class="comment">-- -- client no longer has to send the keys, saving bandwidth
+</span><span class="comment">-- client:send("update", {
+</span><span class="comment">--     4,
+</span><span class="comment">--     100,
+</span><span class="comment">--     -4.5,
+</span><span class="comment">--     23.1,
+</span><span class="comment">--     1.4365,
+</span><span class="comment">-- })
+</span><span class="comment">-- server:on("update", function(data, client)
+</span><span class="comment">--     -- data = {
+</span><span class="comment">--     --    x = 4,
+</span><span class="comment">--     --    y = 100,
+</span><span class="comment">--     --    vx = -4.5,
+</span><span class="comment">--     --    vy = 23.1,
+</span><span class="comment">--     --    rotation = 1.4365,
+</span><span class="comment">--     -- }
+</span><span class="comment">-- end)
+</span><span class="keyword">function</span> Server:setSchema(event, schema)
+    <span class="keyword">return</span> self.listener:setSchema(event, schema)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the incoming and outgoing bandwidth limits.
+</span><span class="comment">-- @tparam number incoming The maximum incoming bandwidth in bytes.
+</span><span class="comment">-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
+</span><span class="keyword">function</span> Server:setBandwidthLimit(incoming, outgoing)
+    <span class="keyword">return</span> self.host:bandwidth_limit(incoming, outgoing)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the maximum number of channels.
+</span><span class="comment">-- @tparam number limit The maximum number of channels allowed. If it is 0,
+</span><span class="comment">-- then the maximum number of channels available on the system will be used.
+</span><span class="keyword">function</span> Server:setMaxChannels(limit)
+    self.host:channel_limit(limit)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the timeout to wait for packets.
+</span><span class="comment">-- @tparam number timeout Time to wait for incoming packets in milliseconds. The
+</span><span class="comment">-- initial default is 0.
+</span><span class="keyword">function</span> Server:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the serialization functions for sending and receiving data.
+</span><span class="comment">-- Both the client and server must share the same serialization method.
+</span><span class="comment">-- @tparam function serialize The serialization function to use.
+</span><span class="comment">-- @tparam function deserialize The deserialization function to use.
+</span><span class="comment">-- @usage
+</span><span class="comment">--bitser = require "bitser" -- or any library you like
+</span><span class="comment">--server = sock.newServer("localhost", 22122)
+</span><span class="comment">--server:setSerialization(bitser.dumps, bitser.loads)
+</span><span class="keyword">function</span> Server:setSerialization(serialize, deserialize)
+    <span class="global">assert</span>(<span class="global">type</span>(serialize) == <span class="string">"function"</span>, <span class="string">"Serialize must be a function, got: '"</span>..<span class="global">type</span>(serialize)..<span class="string">"'"</span>)
+    <span class="global">assert</span>(<span class="global">type</span>(deserialize) == <span class="string">"function"</span>, <span class="string">"Deserialize must be a function, got: '"</span>..<span class="global">type</span>(deserialize)..<span class="string">"'"</span>)
+    self.serialize = serialize
+    self.deserialize = deserialize
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets the Client object associated with an enet peer.
+</span><span class="comment">-- @tparam peer peer An enet peer.
+</span><span class="comment">-- @treturn Client Object associated with the peer.
+</span><span class="keyword">function</span> Server:getClient(peer)
+    <span class="keyword">for</span> _, client <span class="keyword">in</span> <span class="global">pairs</span>(self.clients) <span class="keyword">do</span>
+        <span class="keyword">if</span> peer == client.connection <span class="keyword">then</span>
+            <span class="keyword">return</span> client
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets the Client object that has the given connection id.
+</span><span class="comment">-- @tparam number connectId The unique client connection id.
+</span><span class="comment">-- @treturn Client
+</span><span class="keyword">function</span> Server:getClientByConnectId(connectId)
+    <span class="keyword">for</span> _, client <span class="keyword">in</span> <span class="global">pairs</span>(self.clients) <span class="keyword">do</span>
+        <span class="keyword">if</span> connectId == client.connectId <span class="keyword">then</span>
+            <span class="keyword">return</span> client
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the Client object that has the given peer index.
+</span><span class="comment">-- @treturn Client
+</span><span class="keyword">function</span> Server:getClientByIndex(index)
+    <span class="keyword">for</span> _, client <span class="keyword">in</span> <span class="global">pairs</span>(self.clients) <span class="keyword">do</span>
+        <span class="keyword">if</span> index == client:getIndex() <span class="keyword">then</span>
+            <span class="keyword">return</span> client
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the enet_peer that has the given index.
+</span><span class="comment">-- @treturn enet_peer The underlying enet peer object.
+</span><span class="keyword">function</span> Server:getPeerByIndex(index)
+    <span class="keyword">return</span> self.host:get_peer(index)
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total sent data since the server was created.
+</span><span class="comment">-- @treturn number The total sent data in bytes.
+</span><span class="keyword">function</span> Server:getTotalSentData()
+    <span class="keyword">return</span> self.host:total_sent_data()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total received data since the server was created.
+</span><span class="comment">-- @treturn number The total received data in bytes.
+</span><span class="keyword">function</span> Server:getTotalReceivedData()
+    <span class="keyword">return</span> self.host:total_received_data()
+<span class="keyword">end</span>
+<span class="comment">--- Get the total number of packets (messages) sent since the server was created.
+</span><span class="comment">-- Everytime a message is sent or received, the corresponding figure is incremented.
+</span><span class="comment">-- Therefore, this is not necessarily an accurate indicator of how many packets were actually
+</span><span class="comment">-- exchanged over the network.
+</span><span class="comment">-- @treturn number The total number of sent packets.
+</span><span class="keyword">function</span> Server:getTotalSentPackets()
+    <span class="keyword">return</span> self.packetsSent
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total number of packets (messages) received since the server was created.
+</span><span class="comment">-- @treturn number The total number of received packets.
+</span><span class="comment">-- @see Server:getTotalSentPackets
+</span><span class="keyword">function</span> Server:getTotalReceivedPackets()
+    <span class="keyword">return</span> self.packetsReceived
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the last time when network events were serviced.
+</span><span class="comment">-- @treturn number Timestamp of the last time events were serviced.
+</span><span class="keyword">function</span> Server:getLastServiceTime()
+    <span class="keyword">return</span> self.host:service_time()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the number of allocated slots for peers.
+</span><span class="comment">-- @treturn number Number of allocated slots.
+</span><span class="keyword">function</span> Server:getMaxPeers()
+    <span class="keyword">return</span> self.maxPeers
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the number of allocated channels.
+</span><span class="comment">-- Channels are zero-indexed, e.g. 16 channels allocated means that the
+</span><span class="comment">-- maximum channel that can be used is 15.
+</span><span class="comment">-- @treturn number Number of allocated channels.
+</span><span class="keyword">function</span> Server:getMaxChannels()
+    <span class="keyword">return</span> self.maxChannels
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the timeout for packets.
+</span><span class="comment">-- @treturn number Time to wait for incoming packets in milliseconds.
+</span><span class="comment">-- initial default is 0.
+</span><span class="keyword">function</span> Server:getMessageTimeout()
+    <span class="keyword">return</span> self.messageTimeout
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the socket address of the host.
+</span><span class="comment">-- @treturn string A description of the socket address, in the format
+</span><span class="comment">-- "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+</span><span class="keyword">function</span> Server:getSocketAddress()
+    <span class="keyword">return</span> self.host:get_socket_address()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the current send mode.
+</span><span class="comment">-- @treturn string
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Server:getSendMode()
+    <span class="keyword">return</span> self.sendMode
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the default send mode.
+</span><span class="comment">-- @treturn string
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Server:getDefaultSendMode()
+    <span class="keyword">return</span> self.defaultSendMode
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the IP address or hostname that the server was created with.
+</span><span class="comment">-- @treturn string
+</span><span class="keyword">function</span> Server:getAddress()
+    <span class="keyword">return</span> self.address
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the port that the server is hosted on.
+</span><span class="comment">-- @treturn number
+</span><span class="keyword">function</span> Server:getPort()
+    <span class="keyword">return</span> self.port
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the table of Clients actively connected to the server.
+</span><span class="comment">-- @return {Client,...}
+</span><span class="keyword">function</span> Server:getClients()
+    <span class="keyword">return</span> self.clients
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the number of Clients that are currently connected to the server.
+</span><span class="comment">-- @treturn number The number of active clients.
+</span><span class="keyword">function</span> Server:getClientCount()
+    <span class="keyword">return</span> #self.clients
+<span class="keyword">end</span>
+
+
+<span class="comment">--- Connects to servers.
+</span><span class="comment">-- @type Client
+</span><span class="keyword">local</span> Client = {}
+<span class="keyword">local</span> Client_mt = {__index = Client}
+
+<span class="comment">--- Check for network events and handle them.
+</span><span class="keyword">function</span> Client:update()
+    <span class="keyword">local</span> event = self.host:service(self.messageTimeout)
+
+    <span class="keyword">while</span> event <span class="keyword">do</span>
+        <span class="keyword">if</span> event.<span class="global">type</span> == <span class="string">"connect"</span> <span class="keyword">then</span>
+            self:_activateTriggers(<span class="string">"connect"</span>, event.data)
+            self:log(event.<span class="global">type</span>, <span class="string">"Connected to "</span> .. <span class="global">tostring</span>(self.connection))
+        <span class="keyword">elseif</span> event.<span class="global">type</span> == <span class="string">"receive"</span> <span class="keyword">then</span>
+            <span class="keyword">local</span> eventName, data = self:__unpack(event.data)
+
+            self:_activateTriggers(eventName, data)
+            self:log(eventName, data)
+
+        <span class="keyword">elseif</span> event.<span class="global">type</span> == <span class="string">"disconnect"</span> <span class="keyword">then</span>
+            self:_activateTriggers(<span class="string">"disconnect"</span>, event.data)
+            self:log(event.<span class="global">type</span>, <span class="string">"Disconnected from "</span> .. <span class="global">tostring</span>(self.connection))
+        <span class="keyword">end</span>
+
+        event = self.host:service(self.messageTimeout)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Connect to the chosen server.
+</span><span class="comment">-- Connection will not actually occur until the next time <a href="../index.html#Client:update">Client:update</a> is called.
+</span><span class="comment">-- @tparam ?number code A number that can be associated with the connect event.
+</span><span class="keyword">function</span> Client:connect(code)
+    <span class="comment">-- number of channels for the client and server must match
+</span>    self.connection = self.host:connect(self.address .. <span class="string">":"</span> .. self.port, self.maxChannels, code)
+    self.connectId = self.connection:connect_id()
+<span class="keyword">end</span>
+
+<span class="comment">--- Disconnect from the server, if connected. The client will disconnect the
+</span><span class="comment">-- next time that network messages are sent.
+</span><span class="comment">-- @tparam ?number code A code to associate with this disconnect event.
+</span><span class="comment">-- @todo Pass the code into the disconnect callback on the server
+</span><span class="keyword">function</span> Client:disconnect(code)
+    code = code <span class="keyword">or</span> <span class="number">0</span>
+    self.connection:disconnect(code)
+<span class="keyword">end</span>
+
+<span class="comment">--- Disconnect from the server, if connected. The client will disconnect after
+</span><span class="comment">-- sending all queued packets.
+</span><span class="comment">-- @tparam ?number code A code to associate with this disconnect event.
+</span><span class="comment">-- @todo Pass the code into the disconnect callback on the server
+</span><span class="keyword">function</span> Client:disconnectLater(code)
+    code = code <span class="keyword">or</span> <span class="number">0</span>
+    self.connection:disconnect_later(code)
+<span class="keyword">end</span>
+
+<span class="comment">--- Disconnect from the server, if connected. The client will disconnect immediately.
+</span><span class="comment">-- @tparam ?number code A code to associate with this disconnect event.
+</span><span class="comment">-- @todo Pass the code into the disconnect callback on the server
+</span><span class="keyword">function</span> Client:disconnectNow(code)
+    code = code <span class="keyword">or</span> <span class="number">0</span>
+    self.connection:disconnect_now(code)
+<span class="keyword">end</span>
+
+<span class="comment">--- Forcefully disconnects the client. The server is not notified of the disconnection.
+</span><span class="comment">-- @tparam Client client The client to reset.
+</span><span class="keyword">function</span> Client:reset()
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        self.connection:reset()
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">-- Creates the unserialized message that will be used in callbacks
+</span><span class="comment">-- In: serialized message (string)
+</span><span class="comment">-- Out: event (string), data (mixed)
+</span><span class="keyword">function</span> Client:__unpack(data)
+    <span class="keyword">if</span> <span class="keyword">not</span> self.deserialize <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Can't deserialize message: deserialize was not set"</span>)
+        <span class="global">error</span>(<span class="string">"Can't deserialize message: deserialize was not set"</span>)
+    <span class="keyword">end</span>
+
+    <span class="keyword">local</span> message = self.deserialize(data)
+    <span class="keyword">local</span> eventName, data = message[<span class="number">1</span>], message[<span class="number">2</span>]
+    <span class="keyword">return</span> eventName, data
+<span class="keyword">end</span>
+
+<span class="comment">-- Creates the serialized message that will be sent over the network
+</span><span class="comment">-- In: event (string), data (mixed)
+</span><span class="comment">-- Out: serialized message (string)
+</span><span class="keyword">function</span> Client:__pack(event, data)
+    <span class="keyword">local</span> message = {event, data}
+    <span class="keyword">local</span> serializedMessage
+
+    <span class="keyword">if</span> <span class="keyword">not</span> self.serialize <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Can't serialize message: serialize was not set"</span>)
+        <span class="global">error</span>(<span class="string">"Can't serialize message: serialize was not set"</span>)
+    <span class="keyword">end</span>
+
+    <span class="comment">-- 'Data' = binary data class in Love
+</span>    <span class="keyword">if</span> <span class="global">type</span>(data) == <span class="string">"userdata"</span> <span class="keyword">and</span> data.<span class="global">type</span> <span class="keyword">and</span> data:typeOf(<span class="string">"Data"</span>) <span class="keyword">then</span>
+        message[<span class="number">2</span>] = data:getString()
+        serializedMessage = self.serialize(message)
+    <span class="keyword">else</span>
+        serializedMessage = self.serialize(message)
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> serializedMessage
+<span class="keyword">end</span>
+
+<span class="comment">--- Send a message to the server.
+</span><span class="comment">-- @tparam string event The event to trigger with this message.
+</span><span class="comment">-- @param data The data to send.
+</span><span class="keyword">function</span> Client:send(event, data)
+    <span class="keyword">local</span> serializedMessage = self:__pack(event, data)
+
+    self.connection:send(serializedMessage, self.sendChannel, self.sendMode)
+
+    self.packetsSent = self.packetsSent + <span class="number">1</span>
+
+    self:resetSendSettings()
+<span class="keyword">end</span>
+
+<span class="comment">--- Add a callback to an event.
+</span><span class="comment">-- @tparam string event The event that will trigger the callback.
+</span><span class="comment">-- @tparam function callback The callback to be triggered.
+</span><span class="comment">-- @treturn function The callback that was passed in.
+</span><span class="comment">--@usage
+</span><span class="comment">--client:on("connect", function(data)
+</span><span class="comment">--    print("Connected to the server!")
+</span><span class="comment">--end)
+</span><span class="keyword">function</span> Client:on(event, callback)
+    <span class="keyword">return</span> self.listener:addCallback(event, callback)
+<span class="keyword">end</span>
+
+<span class="keyword">function</span> Client:_activateTriggers(event, data)
+    <span class="keyword">local</span> result = self.listener:trigger(event, data)
+
+    self.packetsReceived = self.packetsReceived + <span class="number">1</span>
+
+    <span class="keyword">if</span> <span class="keyword">not</span> result <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to activate trigger: '"</span> .. <span class="global">tostring</span>(event) .. <span class="string">"' but it does not exist."</span>)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Remove a specific callback for an event.
+</span><span class="comment">-- @tparam function callback The callback to remove.
+</span><span class="comment">-- @treturn boolean Whether or not the callback was removed.
+</span><span class="comment">--@usage
+</span><span class="comment">--local callback = client:on("chatMessage", function(message)
+</span><span class="comment">--    print(message)
+</span><span class="comment">--end)
+</span><span class="comment">--client:removeCallback(callback)
+</span><span class="keyword">function</span> Client:removeCallback(callback)
+    <span class="keyword">return</span> self.listener:removeCallback(callback)
+<span class="keyword">end</span>
+
+<span class="comment">--- Log an event.
+</span><span class="comment">-- Alias for Client.logger:log.
+</span><span class="comment">-- @tparam string event The type of event that happened.
+</span><span class="comment">-- @tparam string data The message to log.
+</span><span class="comment">--@usage
+</span><span class="comment">--if somethingBadHappened then
+</span><span class="comment">--    client:log("error", "Something bad happened!")
+</span><span class="comment">--end
+</span><span class="keyword">function</span> Client:log(event, data)
+    <span class="keyword">return</span> self.logger:log(event, data)
+<span class="keyword">end</span>
+
+<span class="comment">--- Reset all send options to their default values.
+</span><span class="keyword">function</span> Client:resetSendSettings()
+    self.sendMode = self.defaultSendMode
+    self.sendChannel = self.defaultSendChannel
+<span class="keyword">end</span>
+
+<span class="comment">--- Enables an adaptive order-2 PPM range coder for the transmitted data of all peers. Both the client and server must both either have compression enabled or disabled.
+</span><span class="comment">--
+</span><span class="comment">-- Note: lua-enet does not currently expose a way to disable the compression after it has been enabled.
+</span><span class="keyword">function</span> Client:enableCompression()
+    <span class="keyword">return</span> self.host:compress_with_range_coder()
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the send mode for the next outgoing message.
+</span><span class="comment">-- The mode will be reset after the next message is sent. The initial default
+</span><span class="comment">-- is "reliable".
+</span><span class="comment">-- @tparam string mode A valid send mode.
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="comment">-- @usage
+</span><span class="comment">--client:setSendMode("unreliable")
+</span><span class="comment">--client:send("position", {...})
+</span><span class="keyword">function</span> Client:setSendMode(mode)
+    <span class="keyword">if</span> <span class="keyword">not</span> isValidSendMode(mode) <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to use invalid send mode: '"</span> .. mode .. <span class="string">"'. Defaulting to reliable."</span>)
+        mode = <span class="string">"reliable"</span>
+    <span class="keyword">end</span>
+
+    self.sendMode = mode
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the default send mode for all future outgoing messages.
+</span><span class="comment">-- The initial default is "reliable".
+</span><span class="comment">-- @tparam string mode A valid send mode.
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Client:setDefaultSendMode(mode)
+    <span class="keyword">if</span> <span class="keyword">not</span> isValidSendMode(mode) <span class="keyword">then</span>
+        self:log(<span class="string">"error"</span>, <span class="string">"Tried to set default send mode to invalid mode: '"</span> .. mode .. <span class="string">"'"</span>)
+        <span class="global">error</span>(<span class="string">"Tried to set default send mode to invalid mode: '"</span> .. mode .. <span class="string">"'"</span>)
+    <span class="keyword">end</span>
+
+    self.defaultSendMode = mode
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the send channel for the next outgoing message.
+</span><span class="comment">-- The channel will be reset after the next message. Channels are zero-indexed
+</span><span class="comment">-- and cannot exceed the maximum number of channels allocated. The initial
+</span><span class="comment">-- default is 0.
+</span><span class="comment">-- @tparam number channel Channel to send data on.
+</span><span class="comment">-- @usage
+</span><span class="comment">--client:setSendChannel(2) -- the third channel
+</span><span class="comment">--client:send("important", "The message")
+</span><span class="keyword">function</span> Client:setSendChannel(channel)
+    <span class="keyword">if</span> channel &gt; (self.maxChannels - <span class="number">1</span>) <span class="keyword">then</span>
+        self:log(<span class="string">"warning"</span>, <span class="string">"Tried to use invalid channel: "</span> .. channel .. <span class="string">" (max is "</span> .. self.maxChannels - <span class="number">1</span> .. <span class="string">"). Defaulting to 0."</span>)
+        channel = <span class="number">0</span>
+    <span class="keyword">end</span>
+
+    self.sendChannel = channel
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the default send channel for all future outgoing messages.
+</span><span class="comment">-- The initial default is 0.
+</span><span class="comment">-- @tparam number channel Channel to send data on.
+</span><span class="keyword">function</span> Client:setDefaultSendChannel(channel)
+    self.defaultSendChannel = channel
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the data schema for an event.
+</span><span class="comment">--
+</span><span class="comment">-- Schemas allow you to set a specific format that the data will be sent. If the
+</span><span class="comment">-- client and server both know the format ahead of time, then the table keys
+</span><span class="comment">-- do not have to be sent across the network, which saves bandwidth.
+</span><span class="comment">-- @tparam string event The event to set the data schema for.
+</span><span class="comment">-- @tparam {string,...} schema The data schema.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- server = sock.newServer(...)
+</span><span class="comment">-- client = sock.newClient(...)
+</span><span class="comment">--
+</span><span class="comment">-- -- Without schemas
+</span><span class="comment">-- server:send("update", {
+</span><span class="comment">--     x = 4,
+</span><span class="comment">--     y = 100,
+</span><span class="comment">--     vx = -4.5,
+</span><span class="comment">--     vy = 23.1,
+</span><span class="comment">--     rotation = 1.4365,
+</span><span class="comment">-- })
+</span><span class="comment">-- client:on("update", function(data)
+</span><span class="comment">--     -- data = {
+</span><span class="comment">--     --    x = 4,
+</span><span class="comment">--     --    y = 100,
+</span><span class="comment">--     --    vx = -4.5,
+</span><span class="comment">--     --    vy = 23.1,
+</span><span class="comment">--     --    rotation = 1.4365,
+</span><span class="comment">--     -- }
+</span><span class="comment">-- end)
+</span><span class="comment">--
+</span><span class="comment">--
+</span><span class="comment">-- -- With schemas
+</span><span class="comment">-- client:setSchema("update", {
+</span><span class="comment">--     "x",
+</span><span class="comment">--     "y",
+</span><span class="comment">--     "vx",
+</span><span class="comment">--     "vy",
+</span><span class="comment">--     "rotation",
+</span><span class="comment">-- })
+</span><span class="comment">-- -- client no longer has to send the keys, saving bandwidth
+</span><span class="comment">-- server:send("update", {
+</span><span class="comment">--     4,
+</span><span class="comment">--     100,
+</span><span class="comment">--     -4.5,
+</span><span class="comment">--     23.1,
+</span><span class="comment">--     1.4365,
+</span><span class="comment">-- })
+</span><span class="comment">-- client:on("update", function(data)
+</span><span class="comment">--     -- data = {
+</span><span class="comment">--     --    x = 4,
+</span><span class="comment">--     --    y = 100,
+</span><span class="comment">--     --    vx = -4.5,
+</span><span class="comment">--     --    vy = 23.1,
+</span><span class="comment">--     --    rotation = 1.4365,
+</span><span class="comment">--     -- }
+</span><span class="comment">-- end)
+</span><span class="keyword">function</span> Client:setSchema(event, schema)
+    <span class="keyword">return</span> self.listener:setSchema(event, schema)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the maximum number of channels.
+</span><span class="comment">-- @tparam number limit The maximum number of channels allowed. If it is 0,
+</span><span class="comment">-- then the maximum number of channels available on the system will be used.
+</span><span class="keyword">function</span> Client:setMaxChannels(limit)
+    self.host:channel_limit(limit)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the timeout to wait for packets.
+</span><span class="comment">-- @tparam number timeout Time to wait for incoming packets in milliseconds. The initial
+</span><span class="comment">-- default is 0.
+</span><span class="keyword">function</span> Client:setMessageTimeout(timeout)
+    self.messageTimeout = timeout
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the incoming and outgoing bandwidth limits.
+</span><span class="comment">-- @tparam number incoming The maximum incoming bandwidth in bytes.
+</span><span class="comment">-- @tparam number outgoing The maximum outgoing bandwidth in bytes.
+</span><span class="keyword">function</span> Client:setBandwidthLimit(incoming, outgoing)
+    <span class="keyword">return</span> self.host:bandwidth_limit(incoming, outgoing)
+<span class="keyword">end</span>
+
+<span class="comment">--- Set how frequently to ping the server.
+</span><span class="comment">-- The round trip time is updated each time a ping is sent. The initial
+</span><span class="comment">-- default is 500ms.
+</span><span class="comment">-- @tparam number interval The interval, in milliseconds.
+</span><span class="keyword">function</span> Client:setPingInterval(interval)
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        self.connection:ping_interval(interval)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Change the probability at which unreliable packets should not be dropped.
+</span><span class="comment">-- @tparam number interval Interval, in milliseconds, over which to measure lowest mean RTT. (default: 5000ms)
+</span><span class="comment">-- @tparam number acceleration Rate at which to increase the throttle probability as mean RTT declines. (default: 2)
+</span><span class="comment">-- @tparam number deceleration Rate at which to decrease the throttle probability as mean RTT increases.
+</span><span class="keyword">function</span> Client:setThrottle(interval, acceleration, deceleration)
+    interval = interval <span class="keyword">or</span> <span class="number">5000</span>
+    acceleration = acceleration <span class="keyword">or</span> <span class="number">2</span>
+    deceleration = deceleration <span class="keyword">or</span> <span class="number">2</span>
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        self.connection:throttle_configure(interval, acceleration, deceleration)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the parameters for attempting to reconnect if a timeout is detected.
+</span><span class="comment">-- @tparam ?number limit A factor that is multiplied with a value that based on the average round trip time to compute the timeout limit. (default: 32)
+</span><span class="comment">-- @tparam ?number minimum Timeout value in milliseconds that a reliable packet has to be acknowledged if the variable timeout limit was exceeded. (default: 5000)
+</span><span class="comment">-- @tparam ?number maximum Fixed timeout in milliseconds for which any packet has to be acknowledged.
+</span><span class="keyword">function</span> Client:setTimeout(limit, minimum, maximum)
+    limit = limit <span class="keyword">or</span> <span class="number">32</span>
+    minimum = minimum <span class="keyword">or</span> <span class="number">5000</span>
+    maximum = maximum <span class="keyword">or</span> <span class="number">30000</span>
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        self.connection:timeout(limit, minimum, maximum)
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Set the serialization functions for sending and receiving data.
+</span><span class="comment">-- Both the client and server must share the same serialization method.
+</span><span class="comment">-- @tparam function serialize The serialization function to use.
+</span><span class="comment">-- @tparam function deserialize The deserialization function to use.
+</span><span class="comment">-- @usage
+</span><span class="comment">--bitser = require "bitser" -- or any library you like
+</span><span class="comment">--client = sock.newClient("localhost", 22122)
+</span><span class="comment">--client:setSerialization(bitser.dumps, bitser.loads)
+</span><span class="keyword">function</span> Client:setSerialization(serialize, deserialize)
+    <span class="global">assert</span>(<span class="global">type</span>(serialize) == <span class="string">"function"</span>, <span class="string">"Serialize must be a function, got: '"</span>..<span class="global">type</span>(serialize)..<span class="string">"'"</span>)
+    <span class="global">assert</span>(<span class="global">type</span>(deserialize) == <span class="string">"function"</span>, <span class="string">"Deserialize must be a function, got: '"</span>..<span class="global">type</span>(deserialize)..<span class="string">"'"</span>)
+    self.serialize = serialize
+    self.deserialize = deserialize
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets whether the client is connected to the server.
+</span><span class="comment">-- @treturn boolean Whether the client is connected to the server.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- client:connect()
+</span><span class="comment">-- client:isConnected() -- false
+</span><span class="comment">-- -- After a few client updates
+</span><span class="comment">-- client:isConnected() -- true
+</span><span class="keyword">function</span> Client:isConnected()
+    <span class="keyword">return</span> self.connection ~= <span class="keyword">nil</span> <span class="keyword">and</span> self:getState() == <span class="string">"connected"</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets whether the client is disconnected from the server.
+</span><span class="comment">-- @treturn boolean Whether the client is connected to the server.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- client:disconnect()
+</span><span class="comment">-- client:isDisconnected() -- false
+</span><span class="comment">-- -- After a few client updates
+</span><span class="comment">-- client:isDisconnected() -- true
+</span><span class="keyword">function</span> Client:isDisconnected()
+    <span class="keyword">return</span> self.connection ~= <span class="keyword">nil</span> <span class="keyword">and</span> self:getState() == <span class="string">"disconnected"</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets whether the client is connecting to the server.
+</span><span class="comment">-- @treturn boolean Whether the client is connected to the server.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- client:connect()
+</span><span class="comment">-- client:isConnecting() -- true
+</span><span class="comment">-- -- After a few client updates
+</span><span class="comment">-- client:isConnecting() -- false
+</span><span class="comment">-- client:isConnected() -- true
+</span><span class="keyword">function</span> Client:isConnecting()
+    <span class="keyword">local</span> inConnectingState = <span class="keyword">false</span>
+    <span class="keyword">for</span> _, state <span class="keyword">in</span> <span class="global">ipairs</span>(sock.CONNECTING_STATES) <span class="keyword">do</span>
+        <span class="keyword">if</span> state == self:getState() <span class="keyword">then</span>
+            inConnectingState = <span class="keyword">true</span>
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">return</span> self.connection ~= <span class="keyword">nil</span> <span class="keyword">and</span> inConnectingState
+<span class="keyword">end</span>
+
+<span class="comment">--- Gets whether the client is disconnecting from the server.
+</span><span class="comment">-- @treturn boolean Whether the client is connected to the server.
+</span><span class="comment">-- @usage
+</span><span class="comment">-- client:disconnect()
+</span><span class="comment">-- client:isDisconnecting() -- true
+</span><span class="comment">-- -- After a few client updates
+</span><span class="comment">-- client:isDisconnecting() -- false
+</span><span class="comment">-- client:isDisconnected() -- true
+</span><span class="keyword">function</span> Client:isDisconnecting()
+    <span class="keyword">local</span> inDisconnectingState = <span class="keyword">false</span>
+    <span class="keyword">for</span> _, state <span class="keyword">in</span> <span class="global">ipairs</span>(sock.DISCONNECTING_STATES) <span class="keyword">do</span>
+        <span class="keyword">if</span> state == self:getState() <span class="keyword">then</span>
+            inDisconnectingState = <span class="keyword">true</span>
+            <span class="keyword">break</span>
+        <span class="keyword">end</span>
+    <span class="keyword">end</span>
+    <span class="keyword">return</span> self.connection ~= <span class="keyword">nil</span> <span class="keyword">and</span> inDisconnectingState
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total sent data since the server was created.
+</span><span class="comment">-- @treturn number The total sent data in bytes.
+</span><span class="keyword">function</span> Client:getTotalSentData()
+    <span class="keyword">return</span> self.host:total_sent_data()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total received data since the server was created.
+</span><span class="comment">-- @treturn number The total received data in bytes.
+</span><span class="keyword">function</span> Client:getTotalReceivedData()
+    <span class="keyword">return</span> self.host:total_received_data()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total number of packets (messages) sent since the client was created.
+</span><span class="comment">-- Everytime a message is sent or received, the corresponding figure is incremented.
+</span><span class="comment">-- Therefore, this is not necessarily an accurate indicator of how many packets were actually
+</span><span class="comment">-- exchanged over the network.
+</span><span class="comment">-- @treturn number The total number of sent packets.
+</span><span class="keyword">function</span> Client:getTotalSentPackets()
+    <span class="keyword">return</span> self.packetsSent
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the total number of packets (messages) received since the client was created.
+</span><span class="comment">-- @treturn number The total number of received packets.
+</span><span class="comment">-- @see Client:getTotalSentPackets
+</span><span class="keyword">function</span> Client:getTotalReceivedPackets()
+    <span class="keyword">return</span> self.packetsReceived
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the last time when network events were serviced.
+</span><span class="comment">-- @treturn number Timestamp of the last time events were serviced.
+</span><span class="keyword">function</span> Client:getLastServiceTime()
+    <span class="keyword">return</span> self.host:service_time()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the number of allocated channels.
+</span><span class="comment">-- Channels are zero-indexed, e.g. 16 channels allocated means that the
+</span><span class="comment">-- maximum channel that can be used is 15.
+</span><span class="comment">-- @treturn number Number of allocated channels.
+</span><span class="keyword">function</span> Client:getMaxChannels()
+    <span class="keyword">return</span> self.maxChannels
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the timeout for packets.
+</span><span class="comment">-- @treturn number Time to wait for incoming packets in milliseconds.
+</span><span class="comment">-- initial default is 0.
+</span><span class="keyword">function</span> Client:getMessageTimeout()
+    <span class="keyword">return</span> self.messageTimeout
+<span class="keyword">end</span>
+
+<span class="comment">--- Return the round trip time (RTT, or ping) to the server, if connected.
+</span><span class="comment">-- It can take a few seconds for the time to approach an accurate value.
+</span><span class="comment">-- @treturn number The round trip time.
+</span><span class="keyword">function</span> Client:getRoundTripTime()
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        <span class="keyword">return</span> self.connection:round_trip_time()
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the unique connection id, if connected.
+</span><span class="comment">-- @treturn number The connection id.
+</span><span class="keyword">function</span> Client:getConnectId()
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        <span class="keyword">return</span> self.connection:connect_id()
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the current connection state, if connected.
+</span><span class="comment">-- @treturn string The connection state.
+</span><span class="comment">-- @see CONNECTION_STATES
+</span><span class="keyword">function</span> Client:getState()
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        <span class="keyword">return</span> self.connection:state()
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the index of the enet peer. All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure.
+</span><span class="comment">-- @treturn number The index of the peer.
+</span><span class="keyword">function</span> Client:getIndex()
+    <span class="keyword">if</span> self.connection <span class="keyword">then</span>
+        <span class="keyword">return</span> self.connection:index()
+    <span class="keyword">end</span>
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the socket address of the host.
+</span><span class="comment">-- @treturn string A description of the socket address, in the format "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
+</span><span class="keyword">function</span> Client:getSocketAddress()
+    <span class="keyword">return</span> self.host:get_socket_address()
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the enet_peer that has the given index.
+</span><span class="comment">-- @treturn enet_peer The underlying enet peer object.
+</span><span class="keyword">function</span> Client:getPeerByIndex(index)
+    <span class="keyword">return</span> self.host:get_peer(index)
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the current send mode.
+</span><span class="comment">-- @treturn string
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Client:getSendMode()
+    <span class="keyword">return</span> self.sendMode
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the default send mode.
+</span><span class="comment">-- @treturn string
+</span><span class="comment">-- @see SEND_MODES
+</span><span class="keyword">function</span> Client:getDefaultSendMode()
+    <span class="keyword">return</span> self.defaultSendMode
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the IP address or hostname that the client was created with.
+</span><span class="comment">-- @treturn string
+</span><span class="keyword">function</span> Client:getAddress()
+    <span class="keyword">return</span> self.address
+<span class="keyword">end</span>
+
+<span class="comment">--- Get the port that the client is connecting to.
+</span><span class="comment">-- @treturn number
+</span><span class="keyword">function</span> Client:getPort()
+    <span class="keyword">return</span> self.port
+<span class="keyword">end</span>
+
+<span class="comment">--- Creates a new Server object.
+</span><span class="comment">-- @tparam ?string address Hostname or IP address to bind to. (default: "localhost")
+</span><span class="comment">-- @tparam ?number port Port to listen to for data. (default: 22122)
+</span><span class="comment">-- @tparam ?number maxPeers Maximum peers that can connect to the server. (default: 64)
+</span><span class="comment">-- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
+</span><span class="comment">-- @tparam ?number inBandwidth Maximum incoming bandwidth (default: 0)
+</span><span class="comment">-- @tparam ?number outBandwidth Maximum outgoing bandwidth (default: 0)
+</span><span class="comment">-- @return A new Server object.
+</span><span class="comment">-- @see Server
+</span><span class="comment">-- @within sock
+</span><span class="comment">-- @usage
+</span><span class="comment">--local sock = require "sock"
+</span><span class="comment">--
+</span><span class="comment">-- -- Local server hosted on localhost:22122 (by default)
+</span><span class="comment">--server = sock.newServer()
+</span><span class="comment">--
+</span><span class="comment">-- -- Local server only, on port 1234
+</span><span class="comment">--server = sock.newServer("localhost", 1234)
+</span><span class="comment">--
+</span><span class="comment">-- -- Server hosted on static IP 123.45.67.89, on port 22122
+</span><span class="comment">--server = sock.newServer("123.45.67.89", 22122)
+</span><span class="comment">--
+</span><span class="comment">-- -- Server hosted on any IP, on port 22122
+</span><span class="comment">--server = sock.newServer("*", 22122)
+</span><span class="comment">--
+</span><span class="comment">-- -- Limit peers to 10, channels to 2
+</span><span class="comment">--server = sock.newServer("*", 22122, 10, 2)
+</span><span class="comment">--
+</span><span class="comment">-- -- Limit incoming/outgoing bandwidth to 1kB/s (1000 bytes/s)
+</span><span class="comment">--server = sock.newServer("*", 22122, 10, 2, 1000, 1000)
+</span>sock.newServer = <span class="keyword">function</span>(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)
+    address         = address <span class="keyword">or</span> <span class="string">"localhost"</span>
+    port            = port <span class="keyword">or</span> <span class="number">22122</span>
+    maxPeers        = maxPeers <span class="keyword">or</span> <span class="number">64</span>
+    maxChannels     = maxChannels <span class="keyword">or</span> <span class="number">1</span>
+    inBandwidth     = inBandwidth <span class="keyword">or</span> <span class="number">0</span>
+    outBandwidth    = outBandwidth <span class="keyword">or</span> <span class="number">0</span>
+
+    <span class="keyword">local</span> server = <span class="global">setmetatable</span>({
+        address         = address,
+        port            = port,
+        host            = <span class="keyword">nil</span>,
+
+        messageTimeout  = <span class="number">0</span>,
+        maxChannels     = maxChannels,
+        maxPeers        = maxPeers,
+        sendMode        = <span class="string">"reliable"</span>,
+        defaultSendMode = <span class="string">"reliable"</span>,
+        sendChannel     = <span class="number">0</span>,
+        defaultSendChannel = <span class="number">0</span>,
+
+        peers           = {},
+        clients         = {},
+
+        listener        = newListener(),
+        logger          = newLogger(<span class="string">"SERVER"</span>),
+
+        serialize       = <span class="keyword">nil</span>,
+        deserialize     = <span class="keyword">nil</span>,
+
+        packetsSent     = <span class="number">0</span>,
+        packetsReceived = <span class="number">0</span>,
+    }, Server_mt)
+
+    <span class="comment">-- ip, max peers, max channels, in bandwidth, out bandwidth
+</span>    <span class="comment">-- number of channels for the client and server must match
+</span>    server.host = enet.host_create(server.address .. <span class="string">":"</span> .. server.port, server.maxPeers, server.maxChannels)
+
+    <span class="keyword">if</span> <span class="keyword">not</span> server.host <span class="keyword">then</span>
+        <span class="global">error</span>(<span class="string">"Failed to create the host. Is there another server running on :"</span>..server.port..<span class="string">"?"</span>)
+    <span class="keyword">end</span>
+
+    server:setBandwidthLimit(inBandwidth, outBandwidth)
+
+    <span class="keyword">if</span> bitserLoaded <span class="keyword">then</span>
+        server:setSerialization(bitser.dumps, bitser.loads)
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> server
+<span class="keyword">end</span>
+
+<span class="comment">--- Creates a new Client instance.
+</span><span class="comment">-- @tparam ?string/peer serverOrAddress Usually the IP address or hostname to connect to. It can also be an enet peer. (default: "localhost")
+</span><span class="comment">-- @tparam ?number port Port number of the server to connect to. (default: 22122)
+</span><span class="comment">-- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
+</span><span class="comment">-- @return A new Client object.
+</span><span class="comment">-- @see Client
+</span><span class="comment">-- @within sock
+</span><span class="comment">-- @usage
+</span><span class="comment">--local sock = require "sock"
+</span><span class="comment">--
+</span><span class="comment">-- -- Client that will connect to localhost:22122 (by default)
+</span><span class="comment">--client = sock.newClient()
+</span><span class="comment">--
+</span><span class="comment">-- -- Client that will connect to localhost:1234
+</span><span class="comment">--client = sock.newClient("localhost", 1234)
+</span><span class="comment">--
+</span><span class="comment">-- -- Client that will connect to 123.45.67.89:1234, using two channels
+</span><span class="comment">-- -- NOTE: Server must also allocate two channels!
+</span><span class="comment">--client = sock.newClient("123.45.67.89", 1234, 2)
+</span>sock.newClient = <span class="keyword">function</span>(serverOrAddress, port, maxChannels)
+    serverOrAddress = serverOrAddress <span class="keyword">or</span> <span class="string">"localhost"</span>
+    port            = port <span class="keyword">or</span> <span class="number">22122</span>
+    maxChannels     = maxChannels <span class="keyword">or</span> <span class="number">1</span>
+
+    <span class="keyword">local</span> client = <span class="global">setmetatable</span>({
+        address         = <span class="keyword">nil</span>,
+        port            = <span class="keyword">nil</span>,
+        host            = <span class="keyword">nil</span>,
+
+        connection      = <span class="keyword">nil</span>,
+        connectId       = <span class="keyword">nil</span>,
+
+        messageTimeout  = <span class="number">0</span>,
+        maxChannels     = maxChannels,
+        sendMode        = <span class="string">"reliable"</span>,
+        defaultSendMode = <span class="string">"reliable"</span>,
+        sendChannel     = <span class="number">0</span>,
+        defaultSendChannel = <span class="number">0</span>,
+
+        listener        = newListener(),
+        logger          = newLogger(<span class="string">"CLIENT"</span>),
+
+        serialize       = <span class="keyword">nil</span>,
+        deserialize     = <span class="keyword">nil</span>,
+
+        packetsReceived = <span class="number">0</span>,
+        packetsSent     = <span class="number">0</span>,
+    }, Client_mt)
+
+    <span class="comment">-- Two different forms for client creation:
+</span>    <span class="comment">-- 1. Pass in (address, port) and connect to that.
+</span>    <span class="comment">-- 2. Pass in (enet peer) and set that as the existing connection.
+</span>    <span class="comment">-- The first would be the common usage for regular client code, while the
+</span>    <span class="comment">-- latter is mostly used for creating clients in the server-side code.
+</span>
+    <span class="comment">-- First form: (address, port)
+</span>    <span class="keyword">if</span> port ~= <span class="keyword">nil</span> <span class="keyword">and</span> <span class="global">type</span>(port) == <span class="string">"number"</span> <span class="keyword">and</span> serverOrAddress ~= <span class="keyword">nil</span> <span class="keyword">and</span> <span class="global">type</span>(serverOrAddress) == <span class="string">"string"</span> <span class="keyword">then</span>
+        client.address = serverOrAddress
+        client.port = port
+        client.host = enet.host_create()
+
+    <span class="comment">-- Second form: (enet peer)
+</span>    <span class="keyword">elseif</span> <span class="global">type</span>(serverOrAddress) == <span class="string">"userdata"</span> <span class="keyword">then</span>
+        client.connection = serverOrAddress
+        client.connectId = client.connection:connect_id()
+    <span class="keyword">end</span>
+
+    <span class="keyword">if</span> bitserLoaded <span class="keyword">then</span>
+        client:setSerialization(bitser.dumps, bitser.loads)
+    <span class="keyword">end</span>
+
+    <span class="keyword">return</span> client
+<span class="keyword">end</span>
+
+<span class="keyword">return</span> sock</pre>
+
+
+</div> <!-- id="content" -->
+</div> <!-- id="main" -->
+<div id="about">
+<i>Generated by <a href="http://github.com/stevedonovan/LDoc">LDoc 1.4.3</a></i>
+<i style="float:right;">Last updated 2017-07-24 19:32:15 </i>
+</div> <!-- id="about" -->
+</div> <!-- id="container" -->
+</body>
+</html>
