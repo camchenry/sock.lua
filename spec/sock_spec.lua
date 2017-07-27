@@ -142,14 +142,18 @@ describe("the client", function()
         end)
 
         it('a string', function()
-            async()
+            local received = false
+
             server:on('test', function(client, data)
                 assert.equal(data, 'this is the test string')
-                done()
+                received = true
             end)
+
             client:send('test', 'this is the test string')
             client:update()
             server:update()
+
+            assert.True(received)
         end)
     end)
 end)
