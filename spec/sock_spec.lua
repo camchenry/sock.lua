@@ -48,7 +48,7 @@ describe("the client", function()
 
         local connected = false
         client:on("connect", function(data)
-            connected = true 
+            connected = true
         end)
 
         client:connect()
@@ -72,7 +72,7 @@ describe("the client", function()
 
         local callback = client:on("helloMessage", helloCallback)
         assert.equal(helloCallback, callback)
-        
+
         local found = false
         for i, callbacks in pairs(client.listener.triggers) do
             for j, callback in pairs(callbacks) do
@@ -123,5 +123,34 @@ describe("the client", function()
 
         client:setSendChannel(7)
         assert.equal(client.sendChannel, 7)
+    end)
+
+    describe('send', function()
+        before_each(function()
+            local client = sock.newClient("localhost", 22122)
+            local server = sock.newServer("0.0.0.0", 22122)
+
+            client:connect()
+
+            client:update()
+            server:update()
+            client:update()
+        end)
+
+        after_each(function()
+            server:destroy()
+        end)
+
+        it('sends strings', function()
+            local received = false
+            server:on('test', function(client, data)
+                assert.equal(data, 'this is the test string')
+                received = true
+            end)
+            client:send('test', 'this is the test string')
+            client:update()
+            server:update()
+            assert.True(received)
+        end)
     end)
 end)
