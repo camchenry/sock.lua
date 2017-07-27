@@ -144,7 +144,7 @@ describe("the client", function()
         it('a string', function()
             local received = false
 
-            server:on('test', function(client, data)
+            server:on('test', function(data, client)
                 assert.equal(data, 'this is the test string')
                 received = true
             end)
