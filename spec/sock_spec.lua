@@ -125,10 +125,10 @@ describe("the client", function()
         assert.equal(client.sendChannel, 7)
     end)
 
-    describe('send', function()
+    insulate('can send', function()
         before_each(function()
-            local client = sock.newClient("localhost", 22122)
-            local server = sock.newServer("0.0.0.0", 22122)
+            _G.client = sock.newClient("localhost", 22122)
+            _G.server = sock.newServer("0.0.0.0", 22122)
 
             client:connect()
 
@@ -141,16 +141,15 @@ describe("the client", function()
             server:destroy()
         end)
 
-        it('sends strings', function()
-            local received = false
+        it('a string', function()
+            async()
             server:on('test', function(client, data)
                 assert.equal(data, 'this is the test string')
-                received = true
+                done()
             end)
             client:send('test', 'this is the test string')
             client:update()
             server:update()
-            assert.True(received)
         end)
     end)
 end)
