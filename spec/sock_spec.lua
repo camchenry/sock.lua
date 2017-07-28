@@ -351,13 +351,14 @@ describe('the server', function()
         before_each(function()
             _G.client = sock.newClient("localhost", 22122)
             _G.server = sock.newServer("0.0.0.0", 22122)
-            _G.peer = client:getPeerByIndex(client:getIndex())
 
             client:connect()
 
             client:update()
             server:update()
             client:update()
+
+            _G.peer = client:getPeerByIndex(client:getIndex())
         end)
 
         after_each(function()
