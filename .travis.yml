@@ -18,7 +18,7 @@ before_install:
 
 install:
     - luarocks install busted
-    - luarocks install enet  
+    - luarocks install enet
     - luarocks install luacov
     - luarocks install luacov-coveralls
     - luarocks install luacheck

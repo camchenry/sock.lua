@@ -125,6 +125,50 @@ describe("the client", function()
         assert.equal(client.sendChannel, 7)
     end)
 
+    it('can send a message with a schema', function()
+        local client = sock.newClient("localhost", 22122)
+        local server = sock.newServer("0.0.0.0", 22122)
+
+        client:connect()
+
+        client:update()
+        server:update()
+        client:update()
+
+        local received = false
+
+        server:setSchema('test', {
+            'first',
+            'second',
+            'third',
+        })
+        client:setSchema('test', {
+            'first',
+            'second',
+            'third',
+        })
+        server:on('test', function(data, client)
+            assert.are.same(data, {
+                first = 'this is the first message',
+                second = 'this is the second message',
+                third = 'this is the third message',
+            })
+            received = true
+        end)
+
+        client:send('test', {
+            first = 'this is the first message',
+            second = 'this is the second message',
+            third = 'this is the third message',
+        })
+        client:update()
+        server:update()
+
+        assert.True(received)
+
+        server:destroy()
+    end)
+
     insulate('can send', function()
         before_each(function()
             _G.client = sock.newClient("localhost", 22122)
