@@ -157,9 +157,9 @@ describe("the client", function()
         end)
 
         client:send('test', {
-            first = 'this is the first message',
-            second = 'this is the second message',
-            third = 'this is the third message',
+            'this is the first message',
+            'this is the second message',
+            'this is the third message',
         })
         client:update()
         server:update()
