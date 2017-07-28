@@ -345,3 +345,38 @@ describe("the client", function()
         end)
     end)
 end)
+
+describe('the server', function()
+    insulate('can send', function()
+        before_each(function()
+            _G.client = sock.newClient("localhost", 22122)
+            _G.server = sock.newServer("0.0.0.0", 22122)
+            _G.peer = client:getPeerByIndex(client:getIndex())
+
+            client:connect()
+
+            client:update()
+            server:update()
+            client:update()
+        end)
+
+        after_each(function()
+            server:destroy()
+        end)
+
+        it('a string', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, 'this is the test string')
+                received = true
+            end)
+
+            server:sendToPeer(peer, 'test', 'this is the test string')
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+    end)
+end)
