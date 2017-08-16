@@ -338,7 +338,7 @@ end
 --server:sendToAll("gameStarting", true)
 function Server:sendToAll(event, data)
     local serializedMessage = self:__pack(event, data)
-    
+
     self.packetsSent = self.packetsSent + #self.peers
 
     self.host:broadcast(serializedMessage, self.sendChannel, self.sendMode)
@@ -722,7 +722,7 @@ local Client_mt = {__index = Client}
 --- Check for network events and handle them.
 function Client:update()
     local event = self.host:service(self.messageTimeout)
-    
+
     while event do
         if event.type == "connect" then
             self:_activateTriggers("connect", event.data)

@@ -56,6 +56,7 @@ describe("the client", function()
         client:update()
         server:update()
         client:update()
+        server:update()
 
         assert.True(client:isConnected())
         assert.True(connected)
@@ -357,6 +358,7 @@ describe('the server', function()
             client:update()
             server:update()
             client:update()
+            server:update()
         end)
 
         after_each(function()
@@ -372,6 +374,166 @@ describe('the server', function()
             end)
 
             server:sendToAll('test', 'this is the test string')
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('an integer', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, 12345678)
+                received = true
+            end)
+
+            server:sendToAll('test', 12345678)
+            client:update()
+            server:update()
+            client:update()
+            server:update()
+
+            assert.True(received)
+        end)
+
+        it('a floating point number', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, 0.123456789)
+                received = true
+            end)
+
+            server:sendToAll('test', 0.123456789)
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('a huge number', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, math.huge)
+                received = true
+            end)
+
+            server:sendToAll('test', math.huge)
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('a negative huge number', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, -math.huge)
+                received = true
+            end)
+
+            server:sendToAll('test', -math.huge)
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('a boolean', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, false)
+                received = true
+            end)
+
+            server:sendToAll('test', false)
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('nil', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.equal(data, nil)
+                received = true
+            end)
+
+            server:sendToAll('test', nil)
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('a table', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.are.same(data, {
+                    a = 0.12,
+                    b = -987345,
+                    c = "test",
+                    d = true,
+                    e = {},
+                })
+                received = true
+            end)
+
+            server:sendToAll('test', {
+                a = 0.12,
+                b = -987345,
+                c = "test",
+                d = true,
+                e = {},
+            })
+            server:update()
+            client:update()
+            server:update()
+            client:update()
+
+            assert.True(received)
+        end)
+
+        it('a table array', function()
+            local received = false
+
+            client:on('test', function(data, client)
+                assert.are.same(data, {
+                    0.12,
+                    -987345,
+                    "test",
+                    true,
+                    {},
+                })
+                received = true
+            end)
+
+            server:sendToAll('test', {
+                0.12,
+                -987345,
+                "test",
+                true,
+                {},
+            })
             server:update()
             client:update()
 
