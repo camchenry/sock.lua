@@ -80,7 +80,7 @@ end
 sock.CONNECTION_STATES = {
     "disconnected",             -- Disconnected from the server.
     "connecting",               -- In the process of connecting to the server.
-    "acknowledging_connect",    -- 
+    "acknowledging_connect",    --
     "connection_pending",       --
     "connection_succeeded",     --
     "connected",                -- Successfully connected to the server.
@@ -94,7 +94,7 @@ sock.CONNECTION_STATES = {
 --- States that represent the client connecting to a server.
 sock.CONNECTING_STATES = {
     "connecting",               -- In the process of connecting to the server.
-    "acknowledging_connect",    -- 
+    "acknowledging_connect",    --
     "connection_pending",       --
     "connection_succeeded",     --
 }
@@ -125,11 +125,11 @@ end
 local Logger = {}
 local Logger_mt = {__index = Logger}
 
-local function newLogger(source) 
+local function newLogger(source)
     local logger = setmetatable({
         source          = source,
         messages        = {},
-        
+
         -- Makes print info more concise, but should still log the full line
         shortenLines    = true,
         -- Print all incoming event data
@@ -137,7 +137,7 @@ local function newLogger(source)
         printErrors     = true,
         printWarnings   = true,
     }, Logger_mt)
-    
+
     return logger
 end
 
@@ -159,7 +159,7 @@ function Logger:log(event, data)
     elseif self.printWarnings and event == "warning" then
         print(line)
     end
-    
+
     -- The logged message is always the full message
     table.insert(self.messages, fullLine)
 
@@ -171,7 +171,7 @@ local Listener_mt = {__index = Listener}
 
 local function newListener()
     local listener = setmetatable({
-        triggers        = {},                           
+        triggers        = {},
         schemas         = {},
     }, Listener_mt)
 
@@ -207,7 +207,7 @@ end
 -- Accepts: event (string), schema (table)
 -- Returns: nothing
 function Listener:setSchema(event, schema)
-    self.schemas[event] = schema 
+    self.schemas[event] = schema
 end
 
 -- Activates all callbacks for a trigger
@@ -235,7 +235,7 @@ local Server_mt = {__index = Server}
 --- Check for network events and handle them.
 function Server:update()
     local event = self.host:service(self.messageTimeout)
-    
+
     while event do
         if event.type == "connect" then
             local eventClient = sock.newClient(event.peer)
@@ -267,7 +267,7 @@ function Server:update()
             end
             self:_activateTriggers("disconnect", event.data, eventClient)
             self:log(event.type, tostring(event.peer) .. " disconnected")
-        
+
         end
 
         event = self.host:service(self.messageTimeout)
@@ -279,8 +279,8 @@ end
 -- Out: event (string), data (mixed)
 function Server:__unpack(data)
     if not self.deserialize then
-        self:log("error", "Can't deserialize message: deserialize was not set") 
-        error("Can't deserialize message: deserialize was not set") 
+        self:log("error", "Can't deserialize message: deserialize was not set")
+        error("Can't deserialize message: deserialize was not set")
     end
 
     local message = self.deserialize(data)
@@ -296,8 +296,8 @@ function Server:__pack(event, data)
     local serializedMessage
 
     if not self.serialize then
-        self:log("error", "Can't serialize message: serialize was not set") 
-        error("Can't serialize message: serialize was not set") 
+        self:log("error", "Can't serialize message: serialize was not set")
+        error("Can't serialize message: serialize was not set")
     end
 
     -- 'Data' = binary data class in Love
@@ -316,7 +316,7 @@ end
 -- need to be updated at the same time. This way avoids duplicating objects by
 -- never sending its own event to itself in the first place.
 -- @tparam Client client The client to not receive the message.
--- @tparam string event The event to trigger with this message. 
+-- @tparam string event The event to trigger with this message.
 -- @param data The data to send.
 function Server:sendToAllBut(client, event, data)
     local serializedMessage = self:__pack(event, data)
@@ -349,13 +349,13 @@ end
 --- Send a message to a single peer. Useful to send data to a newly connected player
 -- without sending to everyone who already received it.
 -- @tparam enet_peer peer The enet peer to receive the message.
--- @tparam string event The event to trigger with this message. 
+-- @tparam string event The event to trigger with this message.
 -- @param data data to send to the peer.
 --@usage
 --server:sendToPeer(peer, "initialGameInfo", {...})
 function Server:sendToPeer(peer, event, data)
     local serializedMessage = self:__pack(event, data)
-    
+
     self.packetsSent = self.packetsSent + 1
 
     peer:send(serializedMessage, self.sendChannel, self.sendMode)
@@ -394,7 +394,7 @@ end
 --end)
 --server:removeCallback(callback)
 function Server:removeCallback(callback)
-    return self.listener:removeCallback(callback)    
+    return self.listener:removeCallback(callback)
 end
 
 --- Log an event.
@@ -427,8 +427,8 @@ function Server:destroy()
     self.host:destroy()
 end
 
---- Set the send mode for the next outgoing message. 
--- The mode will be reset after the next message is sent. The initial default 
+--- Set the send mode for the next outgoing message.
+-- The mode will be reset after the next message is sent. The initial default
 -- is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
@@ -444,7 +444,7 @@ function Server:setSendMode(mode)
     self.sendMode = mode
 end
 
---- Set the default send mode for all future outgoing messages. 
+--- Set the default send mode for all future outgoing messages.
 -- The initial default is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
@@ -457,9 +457,9 @@ function Server:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
---- Set the send channel for the next outgoing message. 
+--- Set the send channel for the next outgoing message.
 -- The channel will be reset after the next message. Channels are zero-indexed
--- and cannot exceed the maximum number of channels allocated. The initial 
+-- and cannot exceed the maximum number of channels allocated. The initial
 -- default is 0.
 -- @tparam number channel Channel to send data on.
 -- @usage
@@ -486,7 +486,7 @@ end
 -- Schemas allow you to set a specific format that the data will be sent. If the
 -- client and server both know the format ahead of time, then the table keys
 -- do not have to be sent across the network, which saves bandwidth.
--- @tparam string event The event to set the data schema for. 
+-- @tparam string event The event to set the data schema for.
 -- @tparam {string,...} schema The data schema.
 -- @usage
 -- server = sock.newServer(...)
@@ -555,7 +555,7 @@ function Server:setMaxChannels(limit)
 end
 
 --- Set the timeout to wait for packets.
--- @tparam number timeout Time to wait for incoming packets in milliseconds. The 
+-- @tparam number timeout Time to wait for incoming packets in milliseconds. The
 -- initial default is 0.
 function Server:setMessageTimeout(timeout)
     self.messageTimeout = timeout
@@ -650,7 +650,7 @@ end
 --- Get the number of allocated slots for peers.
 -- @treturn number Number of allocated slots.
 function Server:getMaxPeers()
-    return self.maxPeers 
+    return self.maxPeers
 end
 
 --- Get the number of allocated channels.
@@ -658,7 +658,7 @@ end
 -- maximum channel that can be used is 15.
 -- @treturn number Number of allocated channels.
 function Server:getMaxChannels()
-    return self.maxChannels 
+    return self.maxChannels
 end
 
 --- Get the timeout for packets.
@@ -669,7 +669,7 @@ function Server:getMessageTimeout()
 end
 
 --- Get the socket address of the host.
--- @treturn string A description of the socket address, in the format 
+-- @treturn string A description of the socket address, in the format
 -- "A.B.C.D:port" where A.B.C.D is the IP address of the used socket.
 function Server:getSocketAddress()
     return self.host:get_socket_address()
@@ -751,7 +751,7 @@ function Client:connect(code)
     self.connectId = self.connection:connect_id()
 end
 
---- Disconnect from the server, if connected. The client will disconnect the 
+--- Disconnect from the server, if connected. The client will disconnect the
 -- next time that network messages are sent.
 -- @tparam ?number code A code to associate with this disconnect event.
 -- @todo Pass the code into the disconnect callback on the server
@@ -807,8 +807,8 @@ function Client:__pack(event, data)
     local serializedMessage
 
     if not self.serialize then
-        self:log("error", "Can't serialize message: serialize was not set") 
-        error("Can't serialize message: serialize was not set") 
+        self:log("error", "Can't serialize message: serialize was not set")
+        error("Can't serialize message: serialize was not set")
     end
 
     -- 'Data' = binary data class in Love
@@ -894,8 +894,8 @@ function Client:enableCompression()
     return self.host:compress_with_range_coder()
 end
 
---- Set the send mode for the next outgoing message. 
--- The mode will be reset after the next message is sent. The initial default 
+--- Set the send mode for the next outgoing message.
+-- The mode will be reset after the next message is sent. The initial default
 -- is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
@@ -911,7 +911,7 @@ function Client:setSendMode(mode)
     self.sendMode = mode
 end
 
---- Set the default send mode for all future outgoing messages. 
+--- Set the default send mode for all future outgoing messages.
 -- The initial default is "reliable".
 -- @tparam string mode A valid send mode.
 -- @see SEND_MODES
@@ -924,9 +924,9 @@ function Client:setDefaultSendMode(mode)
     self.defaultSendMode = mode
 end
 
---- Set the send channel for the next outgoing message. 
+--- Set the send channel for the next outgoing message.
 -- The channel will be reset after the next message. Channels are zero-indexed
--- and cannot exceed the maximum number of channels allocated. The initial 
+-- and cannot exceed the maximum number of channels allocated. The initial
 -- default is 0.
 -- @tparam number channel Channel to send data on.
 -- @usage
@@ -953,7 +953,7 @@ end
 -- Schemas allow you to set a specific format that the data will be sent. If the
 -- client and server both know the format ahead of time, then the table keys
 -- do not have to be sent across the network, which saves bandwidth.
--- @tparam string event The event to set the data schema for. 
+-- @tparam string event The event to set the data schema for.
 -- @tparam {string,...} schema The data schema.
 -- @usage
 -- server = sock.newServer(...)
@@ -1178,7 +1178,7 @@ end
 -- maximum channel that can be used is 15.
 -- @treturn number Number of allocated channels.
 function Client:getMaxChannels()
-    return self.maxChannels 
+    return self.maxChannels
 end
 
 --- Get the timeout for packets.
@@ -1214,7 +1214,7 @@ function Client:getState()
     end
 end
 
---- Get the index of the enet peer. All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure. 
+--- Get the index of the enet peer. All peers of an ENet host are kept in an array. This function finds and returns the index of the peer of its host structure.
 -- @treturn number The index of the peer.
 function Client:getIndex()
     if self.connection then
@@ -1262,7 +1262,7 @@ end
 
 --- Creates a new Server object.
 -- @tparam ?string address Hostname or IP address to bind to. (default: "localhost")
--- @tparam ?number port Port to listen to for data. (default: 22122) 
+-- @tparam ?number port Port to listen to for data. (default: 22122)
 -- @tparam ?number maxPeers Maximum peers that can connect to the server. (default: 64)
 -- @tparam ?number maxChannels Maximum channels available to send and receive data. (default: 1)
 -- @tparam ?number inBandwidth Maximum incoming bandwidth (default: 0)
@@ -1270,7 +1270,7 @@ end
 -- @return A new Server object.
 -- @see Server
 -- @within sock
--- @usage 
+-- @usage
 --local sock = require "sock"
 --
 -- -- Local server hosted on localhost:22122 (by default)
@@ -1291,7 +1291,7 @@ end
 -- -- Limit incoming/outgoing bandwidth to 1kB/s (1000 bytes/s)
 --server = sock.newServer("*", 22122, 10, 2, 1000, 1000)
 sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, outBandwidth)
-    address         = address or "localhost" 
+    address         = address or "localhost"
     port            = port or 22122
     maxPeers        = maxPeers or 64
     maxChannels     = maxChannels or 1
@@ -1302,7 +1302,7 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
         address         = address,
         port            = port,
         host            = nil,
-        
+
         messageTimeout  = 0,
         maxChannels     = maxChannels,
         maxPeers        = maxPeers,
@@ -1312,7 +1312,7 @@ sock.newServer = function(address, port, maxPeers, maxChannels, inBandwidth, out
         defaultSendChannel = 0,
 
         peers           = {},
-        clients         = {}, 
+        clients         = {},
 
         listener        = newListener(),
         logger          = newLogger("SERVER"),
@@ -1389,7 +1389,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
         packetsReceived = 0,
         packetsSent     = 0,
     }, Client_mt)
-    
+
     -- Two different forms for client creation:
     -- 1. Pass in (address, port) and connect to that.
     -- 2. Pass in (enet peer) and set that as the existing connection.
@@ -1398,7 +1398,7 @@ sock.newClient = function(serverOrAddress, port, maxChannels)
 
     -- First form: (address, port)
     if port ~= nil and type(port) == "number" and serverOrAddress ~= nil and type(serverOrAddress) == "string" then
-        client.address = serverOrAddress 
+        client.address = serverOrAddress
         client.port = port
         client.host = enet.host_create()
 
