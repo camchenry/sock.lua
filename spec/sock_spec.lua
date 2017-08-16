@@ -357,8 +357,6 @@ describe('the server', function()
             client:update()
             server:update()
             client:update()
-
-            _G.peer = client:getPeerByIndex(client:getIndex())
         end)
 
         after_each(function()
@@ -373,7 +371,7 @@ describe('the server', function()
                 received = true
             end)
 
-            server:sendToPeer(peer, 'test', 'this is the test string')
+            server:sendToAll('test', 'this is the test string')
             server:update()
             client:update()
 
