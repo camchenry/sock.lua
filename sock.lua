@@ -33,7 +33,7 @@ local sock = {
     ]]
 }
 
-require "enet"
+local enet = require "enet"
 
 -- Current folder trick
 -- http://kiki.to/blog/2014/04/12/rule-5-beware-of-multiple-files/
