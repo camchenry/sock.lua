@@ -5,7 +5,7 @@
 
 sock.lua is a networking library for LÖVE games. Its goal is to make getting started with networking as easy as possible.
 
-[Documentation](http://camchenry.com/sock.lua/)
+[Documentation](https://camchenry.github.io/sock.lua/)
 
 **sock requires [enet](https://github.com/leafo/lua-enet) (which comes with LÖVE 0.9 and up.)**
 
@@ -23,7 +23,7 @@ sock.lua is a networking library for LÖVE games. Its goal is to make getting st
 3. Place bitser.lua in the same directory as sock.lua.
 4. Require the library and start using it. `sock = require 'sock'`
 
-\* If custom serialization support is needed, look at [setSerialization](http://camchenry.com/sock.lua/index.html#Server:setSerialization).
+\* If custom serialization support is needed, look at [setSerialization](https://camchenry.github.io/sock.lua//index.html#Server:setSerialization).
 
 # Example
 
